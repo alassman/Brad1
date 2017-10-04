@@ -1,0 +1,4 @@
+Check Wifi Connection: 		$ iwgetid
+Get IP address of device:	$ hostname -I (35.0.33.218)
+Connect with ssh:			$ ssh pi@35.0.33.218
+							$ password: Brad1
