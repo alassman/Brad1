@@ -225,7 +225,7 @@ class BinaryDictionary(object):
             return 0
         for i in range(0,num_children):
             child_pos = byteutils.to_int(self.bytes, offset + 6 + 3*i, 3)
-            if child_pos < len(self.bytes) and chr(self.bytes[child_pos]) == head:
+            if chr(self.bytes[child_pos]) == head:
                 return self.__get_unigram(word[1:len(word)], child_pos,
                     prefix + head)
         return 0
@@ -259,8 +259,6 @@ class BinaryDictionary(object):
             return 0
 
         head = unigrams[0]
-        if offset + 4 > len(self.bytes):
-            return 0
         num_children = self.bytes[offset+4]
         if num_children == 0:
             return 0
@@ -316,11 +314,7 @@ class BinaryDictionary(object):
         num_children = self.bytes[ngram + offset_num_children]
         children = []
         for i in range(0, num_children):
-            if ngram + offset_children_address + 3*i + 3 > len(self.bytes):
-                continue
             child_address = byteutils.to_int(self.bytes, ngram + offset_children_address + 3*i, 3)
-            if child_address + offset_weight > len(self.bytes):
-                continue
             child_weight = self.bytes[child_address + offset_weight]
             children.append((child_address, child_weight))
         return sorted(children, key=lambda c: c[1], reverse=True)
@@ -344,8 +338,8 @@ class BinaryDictionary(object):
         while parent > self.__get_unigrams_offset():
             ancestors.insert(0, parent)
             parent = self.__get_parent(parent)
-            if parent in ancestors:
-                break
+	    if parent in ancestors:
+		break
         return ancestors
 
     def __get_parent(self, node):
@@ -354,8 +348,6 @@ class BinaryDictionary(object):
         :param node: the child node
         """
         if node <= 0 or node >= self.__get_ngrams_offset():
-            return 0
-        if node + 6 > len(self.bytes):
             return 0
         return byteutils.to_int(self.bytes, node + 3, 3)
 
@@ -394,13 +386,11 @@ class BinaryDictionary(object):
             return ""
         word = ""
         for node in nodes:
-            if node > len(self.bytes):
-                continue
             char_value = self.bytes[node]
             if char_value == 0:
                 continue
             if char_value >= 128:
-                return ""
+            	continue
             word += str(unichr(char_value))
         return word
 
@@ -445,17 +435,16 @@ class BinaryDictionary(object):
         
         TODO: pass max number of desired completions
         """
-
         unigrams = self.__get_unigrams(words)
         ngram = self.__get_ngram(unigrams)
         children = self.__get_ngram_children(ngram)
         predictions = []
-        print(children)
         for child in children:
             unigram = self.__get_unigram_from_ngram(child[0])
             ancestors = self.__get_ancestors(unigram)
             word = self.__construct_word(ancestors)
-            predictions.append((word, child[1]))
+            if word.isalnum():
+            	predictions.append((word, child[1]))
         return predictions
 
     def get_corrections(self, word):
@@ -495,9 +484,18 @@ class BinaryDictionary(object):
     def get_suggestions(self, word, depth):
         """TODO"""
         pass
-
+    
+    def get_predictions_four_words(self, words):
+    	while(len(words) > 4):
+    		del words[0]
+    	prediction = []
+    	for i in range(4):
+    		prediction += self.get_predictions(words[i:])
+    	prediction = list(set(prediction))
+    	prediction.sort(key=lambda tup: tup[1], reverse=True)
+    	return prediction
+    
+    
 if __name__ == "__main__":
-    bindict = BinaryDictionary.from_file('big.dict')
-    print(len(bindict.bytes))
-    #a = bindict.get_predictions(['hello']) # => [('there',10),('sir',3)]
-    #print(a)
+    bindict_ = BinaryDictionary.from_file('../dictionaries/test/big.dict')
+    print(bindict_.get_predictions_four_words(['hello'])) # => [('there',10),('sir',3)]
