@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from . import application_screen
 from application_screen import applicationScreen
 from settings import settingsScreen
 from tutorial import tutorialScreen

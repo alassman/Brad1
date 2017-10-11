@@ -1,5 +1,5 @@
 import tkinter as tk 
-import navigation
+from . import navigation
 from navigation import *
 from tkinter import *
 
