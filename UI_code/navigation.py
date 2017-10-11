@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import *
-from . import application_screen
-from application_screen import applicationScreen
-from settings import settingsScreen
-from tutorial import tutorialScreen
+from UI_code.application_screen import applicationScreen
+from UI_code.settings import settingsScreen
+from UI_code.tutorial import tutorialScreen
 
 def startSettings(root):
 	root.destroy()

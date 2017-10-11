@@ -1,6 +1,5 @@
 import tkinter as tk 
-from . import navigation
-from navigation import *
+from UI_code.navigation import *
 from tkinter import *
 
 '''

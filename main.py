@@ -1,9 +1,8 @@
 import tkinter as tk 
-from UI_code import application_screen, main_menu, settings, tutorial
-from application_screen import applicationScreen
-from main_menu import menuFrame
-from settings import settingsScreen
-from tutorial import tutorialScreen
+from UI_code.application_screen import applicationScreen
+from UI_code.main_menu import menuFrame
+from UI_code.settings import settingsScreen
+from UI_code.tutorial import tutorialScreen
 from tkinter import *
 
 def main():
