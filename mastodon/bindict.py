@@ -315,6 +315,7 @@ class BinaryDictionary(object):
         children = []
         for i in range(0, num_children):
             child_address = byteutils.to_int(self.bytes, ngram + offset_children_address + 3*i, 3)
+            if child_address + offset_weight>= len(self.bytes): continue
             child_weight = self.bytes[child_address + offset_weight]
             children.append((child_address, child_weight))
         return sorted(children, key=lambda c: c[1], reverse=True)
@@ -386,6 +387,8 @@ class BinaryDictionary(object):
             return ""
         word = ""
         for node in nodes:
+            if node >= len(self.bytes): 
+        		continue
             char_value = self.bytes[node]
             if char_value == 0:
                 continue
@@ -488,14 +491,20 @@ class BinaryDictionary(object):
     def get_predictions_four_words(self, words):
     	while(len(words) > 4):
     		del words[0]
-    	prediction = []
-    	for i in range(4):
-    		prediction += self.get_predictions(words[i:])
-    	prediction = list(set(prediction))
-    	prediction.sort(key=lambda tup: tup[1], reverse=True)
-    	return prediction
+    	predictions = {}
+    	for i in range(len(words)):
+    		get_pred_result = self.get_predictions(words[i:])
+    		for x in get_pred_result:
+    			if x[0] in predictions:
+    				predictions[x[0]] += x[1] * (len(words) - i)
+    			else:
+    				predictions[x[0]] = x[1] * (len(words) - i)
+		prediction_res = []
+        for key, value in sorted(predictions.iteritems(), reverse = True, key=lambda (k,v): (v,k)):
+    	    prediction_res.append(key)
+    	return prediction_res
     
     
 if __name__ == "__main__":
-    bindict_ = BinaryDictionary.from_file('../dictionaries/test/big.dict')
-    print(bindict_.get_predictions_four_words(['hello'])) # => [('there',10),('sir',3)]
+    bindict_ = BinaryDictionary.from_file('../dictionaries/test/fiction.dict')
+    print(bindict_.get_predictions_four_words(['there', 'how'])) # => [('there',10),('sir',3)]
