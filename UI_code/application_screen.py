@@ -1,6 +1,8 @@
 import tkinter as tk 
 import _thread
 from tkinter import *
+from speechToText.speak import listen
+from mastodon.bindict import BinaryDictionary
 
 class applicationScreen(Frame):
 	def __init__(self, parent=None):
@@ -17,9 +19,20 @@ class applicationScreen(Frame):
 		self.form_screen()
 
 	def listen_for_words(self):
-		# fill in with code from Jenny
-		# set all four word variables
-		pass
+		# establish binary dictionary for later prediction
+		binary_dict = BinaryDictionary()
+		# call Jenny's function to hear from microphone
+		words_from_mic = listen()
+		# parse words from Jenny's function
+		words_list = words_from_mic.split()
+		# call Lihu's function
+		word_predictions = binary_dict.get_predictions_four_words(words_list)
+		# update the labels
+		self.first_word["text"] = word_predictions[0]
+		self.second_word["text"] = word_predictions[1]
+		self.third_word["text"] = word_predictions[2]
+		self.fourth_word["text"] = word_predictions[3]
+
 
 	def send_word(self):
 		# send the chosen word to Lihu's code
@@ -53,25 +66,25 @@ class applicationScreen(Frame):
 			font=("Times New Roman", 48), fg="black", bg="#ff8080", width=10)
 		back_button.place(relx=0.15, rely=0.6, height=55)
 		# first word
-		first_word = Label(self.parent, text="Where", 
+		self.first_word = Label(self.parent, text="Where", 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		first_word.place(relx=0.15, rely=0.5, height=55)
+		self.first_word.place(relx=0.15, rely=0.5, height=55)
 		# second word
-		second_word = Label(self.parent, text="Are", 
+		self.second_word = Label(self.parent, text="Are", 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		second_word.place(rely=.2, relx=.4, height=55)
+		self.second_word.place(rely=.2, relx=.4, height=55)
 		# third word
-		third_word = Label(self.parent, text= "Michigan" , 
+		self.third_word = Label(self.parent, text= "Michigan" , 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		third_word.place(rely=0.5, relx=.65, height=55)
+		self.third_word.place(rely=0.5, relx=.65, height=55)
 		# fourth word
-		fourth_word = Label(self.parent, text="Helloy", 
+		self.fourth_word = Label(self.parent, text="Helloy", 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
-		fourth_word.place(rely=.3, relx=.4, height=55)
+		self.fourth_word.place(rely=.3, relx=.4, height=55)
 		# fifth word
-		fifth_word = Label(self.parent, text="You", 
+		self.fifth_word = Label(self.parent, text="You", 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
-		fifth_word.place(rely=0.6, relx=.65, height=55)
+		self.fifth_word.place(rely=0.6, relx=.65, height=55)
 
 	def load_legend(self):
 		legend_text = """
