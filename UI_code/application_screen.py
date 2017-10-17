@@ -24,7 +24,7 @@ class applicationScreen(Frame):
 		binary_dict = BinaryDictionary()
 		while True:
 			# no word on screen was selected
-			if selected_word is None:
+			if self.selected_word is None:
 				# call Jenny's function to hear from microphone
 				words_from_mic = listen()
 				# parse words from Jenny's function
@@ -34,7 +34,7 @@ class applicationScreen(Frame):
 			# predict word from selected word on screen
 			else:
 				# call Lihu's function
-				word_predictions = binary_dict.get_predictions_four_words(selected_word)
+				word_predictions = binary_dict.get_predictions_four_words(self.selected_word)
 			# update the labels
 			self.first_word["text"] = word_predictions[0]
 			self.second_word["text"] = word_predictions[1]

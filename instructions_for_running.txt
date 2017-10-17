@@ -1,0 +1,11 @@
+You must run the following terminal commands on the raspberry pi:
+	1. sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+		- The above install Linuxbrew, a fork of Homebrew designed for the Raspberry Pi
+	2. sudo apt-get install python3-pip
+		- The above installs pip3 for the Raspberry Pi
+	3. brew install portaudio
+	4. pip install pyaudio
+		- The above install the requirement for using the microphone with the Raspberry Pi
+	5. pip install SpeechRecognition
+		- The above installs the requirement for using the sphinx engine on the Raspberry Pi
+	6. navigate to the directory entitled "Brad1" and run: python main.py
