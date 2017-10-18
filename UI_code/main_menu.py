@@ -1,5 +1,5 @@
 import tkinter as tk 
-from UI_code.navigation import *
+from UI_code.navigation import startTutorial, startApplication, startSettings
 from tkinter import *
 
 '''

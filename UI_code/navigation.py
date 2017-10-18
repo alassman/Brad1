@@ -3,6 +3,7 @@ from tkinter import *
 from UI_code.application_screen import applicationScreen
 from UI_code.settings import settingsScreen
 from UI_code.tutorial import tutorialScreen
+# from UI_code.main_menu import menuFrame
 
 def startSettings(root):
 	root.destroy()
@@ -27,4 +28,9 @@ def startApplication(root):
 
 def back_to_menu(root):
 	root.destroy()
-	main()
+	menu = tk.Tk()
+	menu.attributes('-fullscreen', True)
+	menu_frame = menuFrame(menu)
+	menu.mainloop()
+
+	
