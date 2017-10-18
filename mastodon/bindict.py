@@ -6,8 +6,8 @@
 
 import math
 from collections import defaultdict
-import mastodon.corrector
-import mastodon.byteutils as byteutils
+import corrector
+import byteutils
 
 CACHE_ENABLED = True
 
@@ -64,7 +64,7 @@ class BinaryDictionary(object):
         """
         d = BinaryDictionary()
         with open (filename, 'r') as file:
-            d.bytes = bytearray(file.read().encode('utf-8'))
+            d.bytes = bytearray(file.read())
         return d
 
 
@@ -507,4 +507,6 @@ class BinaryDictionary(object):
     
 if __name__ == "__main__":
     bindict_ = BinaryDictionary.from_file('fiction.dict')
-    print(bindict_.get_predictions_four_words(['there', 'how'])) # => [('there',10),('sir',3)]
+    user_input = input('User Input Word Prediction: ')
+    input_list = user_input.split(" ")
+    print(bindict_.get_predictions_four_words(input_list)) # => [('there',10),('sir',3)]
