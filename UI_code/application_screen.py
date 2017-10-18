@@ -31,7 +31,7 @@ class applicationScreen(Frame):
 
 	def listen_for_words(self):
 		# establish binary dictionary for later prediction
-		binary_dict = BinaryDictionary.from_file('../mastodon/fiction.dict')
+		binary_dict = BinaryDictionary.from_file('/Users/jennywinkler/Desktop/Senior/EECS_498/Brad1/mastodon/fiction.dict')
 		while True:
 			# no word on screen was selected
 			if self.selected_word is None:

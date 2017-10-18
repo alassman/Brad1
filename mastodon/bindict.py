@@ -63,8 +63,8 @@ class BinaryDictionary(object):
         :param filename: the file to read the dictionary from
         """
         d = BinaryDictionary()
-        with open (filename, 'r') as file:
-            d.bytes = bytearray(file.read())
+        with open (filename, 'r', encoding='utf-8', errors='ignore') as file:
+            d.bytes = bytearray(file.read().encode('utf-8'))
         return d
 
 
