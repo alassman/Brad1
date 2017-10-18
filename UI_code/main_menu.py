@@ -1,5 +1,5 @@
 import tkinter as tk 
-from UI_code.navigation import startTutorial, startApplication, startSettings
+import UI_code.navigation # import startTutorial, startApplication, startSettings
 from tkinter import *
 
 '''
@@ -43,15 +43,15 @@ class menuFrame(Frame):
 		title.pack(fill=X)
 		tutorial = Button(self.parent, text="Tutorial", 
 			font=("Times New Roman", 48), fg="black", width=10, 
-			command= lambda: startTutorial(self.parent))
+			command= lambda: UI_code.navigation.startTutorial(self.parent))
 		tutorial.place(relx=0.15, rely=0.5, height=55)
 		start = Button(self.parent, text="Start", 
 			font=("Times New Roman", 48), fg="black", width=10, 
-			command= lambda: startApplication(self.parent))
+			command= lambda: UI_code.navigation.startApplication(self.parent))
 		start.place(rely=.3, relx=.4, height=55)
 		settings = Button(self.parent, text="Settings", 
 			font=("Times New Roman", 48), fg="black", width=10, 
-			command =lambda: startSettings(self.parent))
+			command =lambda: UI_code.navigation.startSettings(self.parent))
 		settings.place(rely=0.5, relx=.65, height=55)
 
 	def load_arrows(self):

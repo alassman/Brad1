@@ -2,7 +2,7 @@ import tkinter as tk
 import _thread, time
 import subprocess
 import tty, termios, sys
-#from UI_code.navigation import back_to_menu
+import UI_code.navigation
 from tkinter import *
 from speechToText.speak import listen
 from mastodon.bindict import BinaryDictionary
@@ -108,6 +108,7 @@ class applicationScreen(Frame):
 					if(self.first_key == 63234):
 						print("DOUBLE LEFT PRESS")
 						# WE NEED TO RESOLVE GOING BACK!!! CIRCULAR DEPENDENCIES
+						UI_code.navigation.back_to_menu(self.parent)
 					# up press
 					elif(self.first_key == 63232):
 						print("DOUBLE UP PRESS")
@@ -126,7 +127,7 @@ class applicationScreen(Frame):
 					self.first_key = self.second_key
 					self.second_key = None
 
-				if selected_word is not None:
+				if self.selected_word is not None:
 					subprocess.call('say ' + self.selected_word, shell=True)
 				
 

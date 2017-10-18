@@ -1,5 +1,6 @@
 import tkinter as tk 
 from tkinter import *
+import UI_code.navigation
 
 class tutorialScreen(Frame):
 	def __init__(self, parent=None):
@@ -29,5 +30,5 @@ class tutorialScreen(Frame):
 		instructions.place(relx=.05, rely=.4)
 
 	# navigate back to the menu screen
-	def on_button_press(self):
-		pass
+	def on_button_press(self, event):
+		UI_code.navigation.back_to_menu(self.parent)
