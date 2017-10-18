@@ -1,5 +1,6 @@
 import tkinter as tk 
 from tkinter import *
+import UI_code.navigation
 
 class tutorialScreen(Frame):
 	def __init__(self, parent=None):
@@ -7,6 +8,7 @@ class tutorialScreen(Frame):
 		self.parent = parent
 		self.pack()
 		self.form_screen()
+		self.parent.bind("<KeyRelease>", self.on_button_press)
 
 	def form_screen(self):
     	# set color to off-white
@@ -23,3 +25,10 @@ class tutorialScreen(Frame):
 	def load_titles(self):
 		title = Label(self.parent, text="Tutorial", font=("Times New Roman", 72), fg="black")
 		title.pack(fill=X)
+		text = "FOR THIS ALPHA VERSION,\nNAVIGATE THE MAIN\nAPPLICATION PAGE USING THE ARROW KEYS\nPRESS ANY KEY TO GO BACK TO THE MAIN MENU"
+		instructions = Label(self.parent, text= text, font=("Times New Roman", 48), fg="black")
+		instructions.place(relx=.05, rely=.4)
+
+	# navigate back to the menu screen
+	def on_button_press(self, event):
+		UI_code.navigation.back_to_menu(self.parent)

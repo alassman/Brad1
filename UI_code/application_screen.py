@@ -1,6 +1,11 @@
 import tkinter as tk 
-import _thread
+import _thread, time
+import subprocess
+import tty, termios, sys
+import UI_code.navigation
 from tkinter import *
+from speechToText.speak import listen
+from mastodon.bindict import BinaryDictionary
 
 class applicationScreen(Frame):
 	def __init__(self, parent=None):
@@ -11,24 +16,171 @@ class applicationScreen(Frame):
 		self.third_word = None
 		self.fourth_word = None
 		self.fifth_word = None
-		_thread.start_new_thread(self.listen_for_words, ())
-		_thread.start_new_thread(self.listen_for_button_press, ())
+		self.selected_word = None
+		#_thread.start_new_thread(self.listen_for_words, ())
+		#_thread.start_new_thread(self.listen_for_button_press, ())
 		self.pack()
 		self.form_screen()
+		# alpha code only
+		self.first_key = None
+		self.second_key = None
+		self.end_time = None
+		self.parent.bind("<KeyRelease>", self.on_button_press)
+		_thread.start_new_thread(self.wait_on_button_press, ())
+
 
 	def listen_for_words(self):
-		# fill in with code from Jenny
-		# set all four word variables
-		pass
+		# establish binary dictionary for later prediction
+		binary_dict = BinaryDictionary()
+		while True:
+			# no word on screen was selected
+			if self.selected_word is None:
+				# call Jenny's function to hear from microphone
+				words_from_mic = listen()
+				# parse words from Jenny's function
+				words_list = words_from_mic.split()
+				# call Lihu's function
+				word_predictions = binary_dict.get_predictions_four_words(words_list)
+			# predict word from selected word on screen
+			else:
+				# call Lihu's function
+				word_predictions = binary_dict.get_predictions_four_words(self.selected_word)
+				# set the selected word to None
+				self.selected_word = None
+			# update the labels
+			self.first_word["text"] = word_predictions[0]
+			self.second_word["text"] = word_predictions[1]
+			self.third_word["text"] = word_predictions[2]
+			self.fourth_word["text"] = word_predictions[3]
+			# sleep for 5 seconds before listening again
+			time.sleep(5)
 
-	def send_word(self):
-		# send the chosen word to Lihu's code
-		pass
+	# this function is alpha only
+	def on_button_press(self, event):
+		if self.first_key is None:
+			print("FIRST KEY")
+			#first_key = sys.stdin.read(1)
+			#first_key = ord( first_key )
+			self.first_key = ord(event.char)
+			self.end_time = time.time() + 1
+			print("You pressed " + str(self.first_key))
+		else:
+			print("SECOND KEY")
+			if time.time() < self.end_time:
+				self.second_key = ord(event.char)
+				print("You pressed " + str(self.second_key))
+			else:
+				self.first_key = ord(event.char)
+				self.end_time = time.time() + 1
+				print("You pressed " + str(self.first_key) + "after time expired")
+	
+	# this function is alpha only		
+	def wait_on_button_press(self):
+		'''engine = pyttsx.init()
+		engine.say("HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED")
+		engine.runAndWait()'''
+		text = "HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED"
+		subprocess.call('say ' + text, shell=True)
+		while True:
+			if self.end_time is not None:
+				# this is terrible, but keyboard interrupts are so terrible in this
+				while time.time() < self.end_time:
+					pass
+				# only 1 key pressed
+				if self.second_key is None:
+					# left press
+					if(self.first_key == 63234):
+						print("SINGLE LEFT PRESS")
+						self.selected_word = self.first_word["text"]
+					# up press
+					elif(self.first_key == 63232):
+						print("SINGLE UP PRESS")
+						self.selected_word = self.second_word["text"]
+					# down press
+					elif(self.first_key == 63235):
+						print("SINGLE RIGHT PRESS")
+						self.selected_word = self.third_word["text"]
+					self.first_key = None
+					self.end_time = None
+				# double click
+				elif self.first_key == self.second_key:
+					# left press
+					if(self.first_key == 63234):
+						print("DOUBLE LEFT PRESS")
+						# WE NEED TO RESOLVE GOING BACK!!! CIRCULAR DEPENDENCIES
+						UI_code.navigation.back_to_menu(self.parent)
+					# up press
+					elif(self.first_key == 63232):
+						print("DOUBLE UP PRESS")
+						self.selected_word = self.fourth_word["text"]
+					# down press
+					elif(self.first_key == 63235):
+						print("DOUBLE RIGHT PRESS")
+						self.selected_word = self.fifth_word["text"]
+					self.first_key = None
+					self.second_key = None
+					self.end_time = None
+				# assume first key press was a mistake, second key becomes first
+				# key and second key is reset to nothing
+				else:
+					self.end_time = time.time()
+					self.first_key = self.second_key
+					self.second_key = None
 
+				if self.selected_word is not None:
+					subprocess.call('say ' + self.selected_word, shell=True)
+				
+
+	'''
 	def listen_for_button_press(self):
+		print("I AM IN THIS FUNCTION")
 		# fill in with code to interact with Adam's raspberry pi
 		# map directions to the words
-		pass
+		
+		while True:
+			if first_key is None:
+				#first_key = sys.stdin.read(1)
+				#first_key = ord( first_key )
+				first_key = key_in()
+				print("YOU Pressed" + str(first_key))
+			else:
+				end = time.time() + 1
+				while time.time() < end:
+					second_key = sys.stdin.read(1)
+					second_key = ord( second_key[0] )
+				# only 1 key pressed
+				if second_key is None:
+					# left press
+					if(first_key == 37):
+						print("SINGLE LEFT PRESS")
+					# up press
+					elif(first_key == 38):
+						print("SINGLE UP PRESS")
+					# down press
+					elif(first_key == 39):
+						print("SINGLE RIGHT PRESS")
+					first_key = None
+				# double click
+				elif first_key == second_key:
+					# left press
+					if(first_key == 37):
+						print("DOUBLE LEFT PRESS")
+					# up press
+					elif(first_key == 38):
+						print("DOUBLE UP PRESS")
+					# down press
+					elif(first_key == 39):
+						print("DOUBLE RIGHT PRESS")
+					first_key = None
+					second_key = None
+				# assume first key press was a mistake, second key becomes first
+				# key and second key is reset to nothing
+				else:
+					first_key = second_key
+					second_key = None
+		'''
+
+
 
 	def form_screen(self):
     	# set color to off-white
@@ -53,25 +205,25 @@ class applicationScreen(Frame):
 			font=("Times New Roman", 48), fg="black", bg="#ff8080", width=10)
 		back_button.place(relx=0.15, rely=0.6, height=55)
 		# first word
-		first_word = Label(self.parent, text="Where", 
+		self.first_word = Label(self.parent, text=self.first_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		first_word.place(relx=0.15, rely=0.5, height=55)
+		self.first_word.place(relx=0.15, rely=0.5, height=55)
 		# second word
-		second_word = Label(self.parent, text="Are", 
+		self.second_word = Label(self.parent, text=self.second_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		second_word.place(rely=.2, relx=.4, height=55)
+		self.second_word.place(rely=.2, relx=.4, height=55)
 		# third word
-		third_word = Label(self.parent, text= "Michigan" , 
+		self.third_word = Label(self.parent, text=self.third_word , 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		third_word.place(rely=0.5, relx=.65, height=55)
+		self.third_word.place(rely=0.5, relx=.65, height=55)
 		# fourth word
-		fourth_word = Label(self.parent, text="Helloy", 
+		self.fourth_word = Label(self.parent, text=self.fourth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
-		fourth_word.place(rely=.3, relx=.4, height=55)
+		self.fourth_word.place(rely=.3, relx=.4, height=55)
 		# fifth word
-		fifth_word = Label(self.parent, text="You", 
+		self.fifth_word = Label(self.parent, text=self.fifth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
-		fifth_word.place(rely=0.6, relx=.65, height=55)
+		self.fifth_word.place(rely=0.6, relx=.65, height=55)
 
 	def load_legend(self):
 		legend_text = """

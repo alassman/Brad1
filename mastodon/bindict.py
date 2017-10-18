@@ -6,8 +6,8 @@
 
 import math
 from collections import defaultdict
-import corrector
-import byteutils
+import mastodon.corrector
+import mastodon.byteutils
 
 CACHE_ENABLED = True
 
@@ -339,8 +339,8 @@ class BinaryDictionary(object):
         while parent > self.__get_unigrams_offset():
             ancestors.insert(0, parent)
             parent = self.__get_parent(parent)
-	    if parent in ancestors:
-		break
+            if parent in ancestors:
+                break
         return ancestors
 
     def __get_parent(self, node):
@@ -387,8 +387,8 @@ class BinaryDictionary(object):
             return ""
         word = ""
         for node in nodes:
-            if node >= len(self.bytes): 
-        		continue
+            if node >= len(self.bytes):
+                continue
             char_value = self.bytes[node]
             if char_value == 0:
                 continue
@@ -489,20 +489,20 @@ class BinaryDictionary(object):
         pass
     
     def get_predictions_four_words(self, words):
-    	while(len(words) > 4):
-    		del words[0]
-    	predictions = {}
-    	for i in range(len(words)):
-    		get_pred_result = self.get_predictions(words[i:])
-    		for x in get_pred_result:
-    			if x[0] in predictions:
-    				predictions[x[0]] += x[1] * (len(words) - i)
-    			else:
-    				predictions[x[0]] = x[1] * (len(words) - i)
-		prediction_res = []
-        for key, value in sorted(predictions.iteritems(), reverse = True, key=lambda (k,v): (v,k)):
+        while(len(words) > 4):
+            del words[0]
+        predictions = {}
+        for i in range(len(words)):
+            get_pred_result = self.get_predictions(words[i:])
+            for x in get_pred_result:
+                if x[0] in predictions:
+                    predictions[x[0]] += x[1] * (len(words) - i)
+                else:
+                    predictions[x[0]] = x[1] * (len(words) - i)
+        prediction_res = []
+        for key, value in sorted(predictions.iteritems(), reverse = True, key=lambda kv: (kv[1], kv[0])):
     	    prediction_res.append(key)
-    	return prediction_res
+        return prediction_res
     
     
 if __name__ == "__main__":
