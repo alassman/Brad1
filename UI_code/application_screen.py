@@ -52,7 +52,8 @@ class applicationScreen(Frame):
 			self.first_word["text"] = words_list[0]
 			self.second_word["text"] = words_list[1]
 			self.third_word["text"] = words_list[2]
-			self.fourth_word["text"] = words_list[3]
+			if len(words_list) > 3:
+				self.fourth_word["text"] = words_list[3]
 			# sleep for 5 seconds before listening again
 			time.sleep(3)
 
