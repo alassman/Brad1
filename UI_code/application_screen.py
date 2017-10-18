@@ -17,7 +17,7 @@ class applicationScreen(Frame):
 		self.fourth_word = None
 		self.fifth_word = None
 		self.selected_word = None
-		#_thread.start_new_thread(self.listen_for_words, ())
+		_thread.start_new_thread(self.listen_for_words, ())
 		#_thread.start_new_thread(self.listen_for_button_press, ())
 		self.pack()
 		self.form_screen()
@@ -31,7 +31,7 @@ class applicationScreen(Frame):
 
 	def listen_for_words(self):
 		# establish binary dictionary for later prediction
-		binary_dict = BinaryDictionary()
+		binary_dict = BinaryDictionary.from_file('../mastodon/fiction.dict')
 		while True:
 			# no word on screen was selected
 			if self.selected_word is None:
@@ -76,11 +76,11 @@ class applicationScreen(Frame):
 	
 	# this function is alpha only		
 	def wait_on_button_press(self):
-		'''engine = pyttsx.init()
-		engine.say("HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED")
-		engine.runAndWait()'''
-		text = "HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED"
-		subprocess.call('say ' + text, shell=True)
+		#'''engine = pyttsx.init()
+		#engine.say("HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED")
+		#engine.runAndWait()'''
+		#text = "HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED"
+		#subprocess.call('say ' + text, shell=True)
 		while True:
 			if self.end_time is not None:
 				# this is terrible, but keyboard interrupts are so terrible in this

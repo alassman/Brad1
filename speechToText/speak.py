@@ -55,8 +55,7 @@ def listen():
 	r = sr.Recognizer()
 
 	while(1):
-
-		print(word)
+		print("listening")
 
 		#r = sr.Recognizer()
 		with sr.Microphone(device_index = None, sample_rate = 48000) as source:
@@ -84,6 +83,8 @@ def listen():
 				
 				#set global var
 				word = r.recognize_sphinx(audio)
+				print(word)
+				return word
 
 			except sr.UnknownValueError:
 				print("Did not understand")
