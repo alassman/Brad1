@@ -45,13 +45,13 @@ class applicationScreen(Frame):
 			else:
 				# call Lihu's function
 				word_predictions = binary_dict.get_predictions_four_words(self.selected_word)
+				# set the selected word to None
+				self.selected_word = None
 			# update the labels
 			self.first_word["text"] = word_predictions[0]
 			self.second_word["text"] = word_predictions[1]
 			self.third_word["text"] = word_predictions[2]
 			self.fourth_word["text"] = word_predictions[3]
-			# set the selected word to None
-			self.selected_word = None
 			# sleep for 5 seconds before listening again
 			time.sleep(5)
 
