@@ -49,13 +49,17 @@ class applicationScreen(Frame):
 				# set the selected word to None
 				self.selected_word = None
 			# update the labels
-			self.first_word["text"] = words_list[0]
-			self.second_word["text"] = words_list[1]
-			self.third_word["text"] = words_list[2]
+			if len(words_list) > 0:
+				self.first_word["text"] = words_list[0]
+			if len(words_list) > 1:
+				self.second_word["text"] = words_list[1]
+			if len(words_list) > 2:
+				self.third_word["text"] = words_list[2]
 			if len(words_list) > 3:
 				self.fourth_word["text"] = words_list[3]
 			# sleep for 5 seconds before listening again
 			time.sleep(3)
+			words_list = []
 
 	# this function is alpha only
 	def on_button_press(self, event):
