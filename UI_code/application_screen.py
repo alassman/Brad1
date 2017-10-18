@@ -1,5 +1,5 @@
 import tkinter as tk 
-import _thread, time
+import _thread, time, os
 import subprocess
 import tty, termios, sys
 import UI_code.navigation
@@ -31,7 +31,8 @@ class applicationScreen(Frame):
 
 	def listen_for_words(self):
 		# establish binary dictionary for later prediction
-		binary_dict = BinaryDictionary.from_file('/Users/jennywinkler/Desktop/Senior/EECS_498/Brad1/mastodon/fiction.dict')
+		path = os.getcwd() + "/mastodon/fiction.dict"
+		binary_dict = BinaryDictionary.from_file(path)
 		while True:
 			# no word on screen was selected
 			if self.selected_word is None:
