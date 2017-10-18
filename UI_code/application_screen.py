@@ -5,7 +5,7 @@ import tty, termios, sys
 import UI_code.navigation
 from tkinter import *
 from speechToText.speak import listen
-from mastodon.bindict import BinaryDictionary
+# from mastodon.bindict import BinaryDictionary
 
 class applicationScreen(Frame):
 	def __init__(self, parent=None):
@@ -52,7 +52,7 @@ class applicationScreen(Frame):
 			self.first_word["text"] = words_list[0]
 			self.second_word["text"] = words_list[1]
 			self.third_word["text"] = words_list[2]
-			#self.fourth_word["text"] = word_predictions[3]
+			self.fourth_word["text"] = words_list[3]
 			# sleep for 5 seconds before listening again
 			time.sleep(3)
 
