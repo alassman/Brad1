@@ -7,7 +7,7 @@
 import math
 from collections import defaultdict
 import mastodon.corrector
-import mastodon.byteutils
+import mastodon.byteutils as byteutils
 
 CACHE_ENABLED = True
 
@@ -63,7 +63,7 @@ class BinaryDictionary(object):
         :param filename: the file to read the dictionary from
         """
         d = BinaryDictionary()
-        with open (filename, 'r', encoding='utf-8', errors='ignore') as file:
+        with open (filename, 'r') as file:
             d.bytes = bytearray(file.read().encode('utf-8'))
         return d
 
