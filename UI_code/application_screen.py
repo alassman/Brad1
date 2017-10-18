@@ -37,9 +37,9 @@ class applicationScreen(Frame):
 			# no word on screen was selected
 			if self.selected_word is None:
 				# call Jenny's function to hear from microphone
-				#words_from_mic = listen()
+				words_from_mic = listen()
 				# parse words from Jenny's function
-				#words_list = words_from_mic.split()
+				words_list = words_from_mic.split()
 				# call Lihu's function
 				#word_predictions = binary_dict.get_predictions_four_words(words_list)
 			# predict word from selected word on screen
