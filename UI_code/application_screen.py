@@ -32,7 +32,7 @@ class applicationScreen(Frame):
 	def listen_for_words(self):
 		# establish binary dictionary for later prediction
 		path = os.getcwd() + "/mastodon/fiction.dict"
-		binary_dict = BinaryDictionary.from_file(path)
+		#binary_dict = BinaryDictionary.from_file(path)
 		while True:
 			# no word on screen was selected
 			if self.selected_word is None:
@@ -41,20 +41,20 @@ class applicationScreen(Frame):
 				# parse words from Jenny's function
 				words_list = words_from_mic.split()
 				# call Lihu's function
-				word_predictions = binary_dict.get_predictions_four_words(words_list)
+				#word_predictions = binary_dict.get_predictions_four_words(words_list)
 			# predict word from selected word on screen
 			else:
 				# call Lihu's function
-				word_predictions = binary_dict.get_predictions_four_words(self.selected_word)
+				#word_predictions = binary_dict.get_predictions_four_words(self.selected_word)
 				# set the selected word to None
 				self.selected_word = None
 			# update the labels
-			self.first_word["text"] = word_predictions[0]
-			self.second_word["text"] = word_predictions[1]
-			self.third_word["text"] = word_predictions[2]
-			self.fourth_word["text"] = word_predictions[3]
+			self.first_word["text"] = words_list[0]
+			self.second_word["text"] = words_list[1]
+			self.third_word["text"] = words_list[2]
+			#self.fourth_word["text"] = word_predictions[3]
 			# sleep for 5 seconds before listening again
-			time.sleep(5)
+			time.sleep(3)
 
 	# this function is alpha only
 	def on_button_press(self, event):
@@ -101,6 +101,8 @@ class applicationScreen(Frame):
 					elif(self.first_key == 63235):
 						print("SINGLE RIGHT PRESS")
 						self.selected_word = self.third_word["text"]
+					else:
+						self.selected_word = None
 					self.first_key = None
 					self.end_time = None
 				# double click
@@ -111,13 +113,15 @@ class applicationScreen(Frame):
 						# WE NEED TO RESOLVE GOING BACK!!! CIRCULAR DEPENDENCIES
 						UI_code.navigation.back_to_menu(self.parent)
 					# up press
-					elif(self.first_key == 63232):
+					elif(self.fourth_word["text"] and self.first_key == 63232):
 						print("DOUBLE UP PRESS")
 						self.selected_word = self.fourth_word["text"]
 					# down press
-					elif(self.first_key == 63235):
+					elif(self.fifth_word["text"] and self.first_key == 63235):
 						print("DOUBLE RIGHT PRESS")
 						self.selected_word = self.fifth_word["text"]
+					else:
+						self.selected_word = None
 					self.first_key = None
 					self.second_key = None
 					self.end_time = None
