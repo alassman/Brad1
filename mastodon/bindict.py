@@ -506,5 +506,5 @@ class BinaryDictionary(object):
     
     
 if __name__ == "__main__":
-    bindict_ = BinaryDictionary.from_file('../dictionaries/test/fiction.dict')
+    bindict_ = BinaryDictionary.from_file('fiction.dict')
     print(bindict_.get_predictions_four_words(['there', 'how'])) # => [('there',10),('sir',3)]
