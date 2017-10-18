@@ -37,9 +37,9 @@ class applicationScreen(Frame):
 			# no word on screen was selected
 			if self.selected_word is None:
 				# call Jenny's function to hear from microphone
-				words_from_mic = listen()
+				#words_from_mic = listen()
 				# parse words from Jenny's function
-				words_list = words_from_mic.split()
+				#words_list = words_from_mic.split()
 				# call Lihu's function
 				#word_predictions = binary_dict.get_predictions_four_words(words_list)
 			# predict word from selected word on screen
@@ -101,6 +101,8 @@ class applicationScreen(Frame):
 					elif(self.first_key == 63235):
 						print("SINGLE RIGHT PRESS")
 						self.selected_word = self.third_word["text"]
+					else:
+						self.selected_word = None
 					self.first_key = None
 					self.end_time = None
 				# double click
@@ -111,13 +113,15 @@ class applicationScreen(Frame):
 						# WE NEED TO RESOLVE GOING BACK!!! CIRCULAR DEPENDENCIES
 						UI_code.navigation.back_to_menu(self.parent)
 					# up press
-					elif(self.first_key == 63232):
+					elif(self.fourth_word["text"] and self.first_key == 63232):
 						print("DOUBLE UP PRESS")
 						self.selected_word = self.fourth_word["text"]
 					# down press
-					elif(self.first_key == 63235):
+					elif(self.fifth_word["text"] and self.first_key == 63235):
 						print("DOUBLE RIGHT PRESS")
 						self.selected_word = self.fifth_word["text"]
+					else:
+						self.selected_word = None
 					self.first_key = None
 					self.second_key = None
 					self.end_time = None
