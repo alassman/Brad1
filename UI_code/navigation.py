@@ -25,20 +25,25 @@ def startTutorial(root):
 	tutorial_screen = tutorial_ui.tutorialScreen(tutorial)
 	tutorial.mainloop()
 
-def startApplication(root):
+def startApplication(root, num_words, sleeptime, clicktime):
 	root.destroy()
 	app = tk.Tk()
 	app.attributes('-fullscreen', True)
-	application_screen = UI_code.application_screen.applicationScreen(app)
+	application_screen = UI_code.application_screen.applicationScreen(app, 
+		num_words, sleeptime, clicktime)
 	app.mainloop()
 
-def back_to_menu(root, from_app=False):
+def back_to_menu(root, from_app=False, num_words=None, sleeptime=None, clicktime=None):
 	if not from_app:
 		root.destroy()
 		menu = tk.Tk()
 		menu.attributes('-fullscreen', True)
-		menu_frame = UI_code.main_menu.menuFrame(menu)
-		menu.mainloop()
+		if (num_words is not None) and (sleeptime is not None) and (clicktime is not None):
+			menu_frame = UI_code.main_menu.menuFrame(menu, num_words, sleeptime, clicktime)
+			menu.mainloop()
+		else:
+			menu_frame = UI_code.main_menu.menuFrame(menu)
+			menu.mainloop()
 	else:
 		print("from main")
 		root.destroy()
