@@ -488,8 +488,8 @@ class BinaryDictionary(object):
         """TODO"""
         pass
     
-    def get_predictions_four_words(self, words):
-        while(len(words) > 4):
+    def get_predictions_five_words(self, words, num_words):
+        while(len(words) > 5):
             del words[0]
         predictions = {}
         for i in range(len(words)):
@@ -502,6 +502,8 @@ class BinaryDictionary(object):
         prediction_res = []
         for key, value in sorted(predictions.iteritems(), reverse = True, key=lambda kv: (kv[1], kv[0])):
     	    prediction_res.append(key)
+        if len(prediction_res) > num_words:
+            prediction_res = prediction_res[:num_words]
         return prediction_res
     
     

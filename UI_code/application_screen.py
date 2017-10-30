@@ -8,8 +8,13 @@ from speechToText.speak import listen
 # from mastodon.bindict import BinaryDictionary
 
 class applicationScreen(Frame):
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, num_words=3, mic_sleep=3, clicktime=1):
 		Frame.__init__(self, parent)
+		# THE FOLLOWING VARIABLES COME FROM SETTINGS
+		self.num_words = num_words
+		self.sleeptime = mic_sleep
+		self.clicktime = clicktime
+		# THE FOLLOWING ARE NECESSARY FOR THIS APP TO FUNCTION
 		self.parent = parent
 		self.first_word = None
 		self.second_word = None
@@ -42,14 +47,18 @@ class applicationScreen(Frame):
 				# parse words from Jenny's function
 				words_list = words_from_mic.split()
 				# call Lihu's function
-				#word_predictions = binary_dict.get_predictions_four_words(words_list)
+				#word_predictions = binary_dict.get_predictions_five_words(words_list,
+					#self.num_words)
 			# predict word from selected word on screen
 			else:
+				# append to words_list
+				words_list.append[self.selected_word]
 				# call Lihu's function
-				#word_predictions = binary_dict.get_predictions_four_words(self.selected_word)
+				#word_predictions = binary_dict.get_predictions_five_words(words_list, 
+					#self.num_words)
 				# set the selected word to None
 				self.selected_word = None
-			# update the labels
+			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
 			if len(words_list) > 0:
 				self.first_word["text"] = words_list[0]
 			if len(words_list) > 1:
@@ -58,9 +67,11 @@ class applicationScreen(Frame):
 				self.third_word["text"] = words_list[2]
 			if len(words_list) > 3:
 				self.fourth_word["text"] = words_list[3]
+			if len(words_list) > 4:
+				self.fifth_word["text"] = words_list[4]
 			# sleep for 5 seconds before listening again
-			time.sleep(3)
-			words_list = []
+			time.sleep(self.sleeptime)
+			#words_list = []
 
 	# this function is alpha only
 	def on_button_press(self, event):
@@ -69,7 +80,7 @@ class applicationScreen(Frame):
 			#first_key = sys.stdin.read(1)
 			#first_key = ord( first_key )
 			self.first_key = ord(event.char)
-			self.end_time = time.time() + 1
+			self.end_time = time.time() + self.clicktime
 			print("You pressed " + str(self.first_key))
 		else:
 			print("SECOND KEY")
@@ -78,7 +89,7 @@ class applicationScreen(Frame):
 				print("You pressed " + str(self.second_key))
 			else:
 				self.first_key = ord(event.char)
-				self.end_time = time.time() + 1
+				self.end_time = time.time() + self.clicktime
 				print("You pressed " + str(self.first_key) + "after time expired")
 	
 	# this function is alpha only		
