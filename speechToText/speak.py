@@ -59,7 +59,7 @@ def listen():
 		    r.adjust_for_ambient_noise(source, duration=2)
 		    r.dynamic_energy_threshold = True  
 		    print("listen")
-		    audio = r.record(source, duration = 2)
+		    audio = r.record(source, duration = 5)
 		    print("done")
 		with open("speechToText/microphone-results.wav", "wb") as f:
 		    f.write(audio.get_wav_data())
