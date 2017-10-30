@@ -32,11 +32,20 @@ def startApplication(root):
 	application_screen = UI_code.application_screen.applicationScreen(app)
 	app.mainloop()
 
-def back_to_menu(root):
-	root.destroy()
-	menu = tk.Tk()
-	menu.attributes('-fullscreen', True)
-	menu_frame = UI_code.main_menu.menuFrame(menu)
-	menu.mainloop()
+def back_to_menu(root, from_app=False):
+	if not from_app:
+		root.destroy()
+		menu = tk.Tk()
+		menu.attributes('-fullscreen', True)
+		menu_frame = UI_code.main_menu.menuFrame(menu)
+		menu.mainloop()
+	else:
+		print("from main")
+		root.destroy()
+		menu = tk.Tk()
+		menu.attributes('-fullscreen', True)
+		menu_frame = UI_code.main_menu.menuFrame(menu)
+		menu.mainloop()
+	
 
 	

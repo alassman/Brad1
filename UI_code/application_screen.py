@@ -17,7 +17,7 @@ class applicationScreen(Frame):
 		self.fourth_word = None
 		self.fifth_word = None
 		self.selected_word = None
-		_thread.start_new_thread(self.listen_for_words, ())
+		self.t1 = _thread.start_new_thread(self.listen_for_words, ())
 		#_thread.start_new_thread(self.listen_for_button_press, ())
 		self.pack()
 		self.form_screen()
@@ -25,15 +25,16 @@ class applicationScreen(Frame):
 		self.first_key = None
 		self.second_key = None
 		self.end_time = None
+		self.quit = False
 		self.parent.bind("<KeyRelease>", self.on_button_press)
-		_thread.start_new_thread(self.wait_on_button_press, ())
+		self.t2 = _thread.start_new_thread(self.wait_on_button_press, ())
 
 
 	def listen_for_words(self):
 		# establish binary dictionary for later prediction
 		path = os.getcwd() + "/mastodon/fiction.dict"
 		#binary_dict = BinaryDictionary.from_file(path)
-		while True:
+		while not self.quit:
 			# no word on screen was selected
 			if self.selected_word is None:
 				# call Jenny's function to hear from microphone
@@ -56,6 +57,7 @@ class applicationScreen(Frame):
 				self.fourth_word["text"] = words_list[3]
 			# sleep for 5 seconds before listening again
 			time.sleep(3)
+		self.t1.exit()
 
 	# this function is alpha only
 	def on_button_press(self, event):
@@ -83,7 +85,7 @@ class applicationScreen(Frame):
 		#engine.runAndWait()'''
 		#text = "HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED"
 		#subprocess.call('say ' + text, shell=True)
-		while True:
+		while not self.quit:
 			if self.end_time is not None:
 				# this is terrible, but keyboard interrupts are so terrible in this
 				while time.time() < self.end_time:
@@ -112,7 +114,8 @@ class applicationScreen(Frame):
 					if(self.first_key == 63234):
 						print("DOUBLE LEFT PRESS")
 						# WE NEED TO RESOLVE GOING BACK!!! CIRCULAR DEPENDENCIES
-						UI_code.navigation.back_to_menu(self.parent)
+						UI_code.navigation.back_to_menu(self.parent, True)
+						self.quit = True
 					# up press
 					elif(self.fourth_word["text"] and self.first_key == 63232):
 						print("DOUBLE UP PRESS")
@@ -135,6 +138,7 @@ class applicationScreen(Frame):
 
 				if self.selected_word is not None:
 					subprocess.call('say ' + self.selected_word, shell=True)
+		self.t2.exit()
 				
 
 	'''

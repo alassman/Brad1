@@ -1,3 +1,4 @@
 1. remove duplicate words
 2. remove punctuation
 3. properly exiting threads before closing the main program
+4. NOT AN ERROR: ADD A VISUAL QUE OF SELECTED WORD
