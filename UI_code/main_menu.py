@@ -7,9 +7,12 @@ THEY SHOULD BE FRAMES NOT SEPARATE applications - maybe???
 '''
 
 class menuFrame(Frame):
-	def __init__(self,parent=None):
+	def __init__(self, parent=None, sleeptime=3, clicktime=1, num_words=3):
 		Frame.__init__(self, parent)
 		self.parent = parent
+		self.sleeptime = sleeptime
+		self.clicktime = clicktime
+		self.num_words = num_words
 		self.pack()
 		self.form_screen()
 
@@ -47,7 +50,8 @@ class menuFrame(Frame):
 		tutorial.place(relx=0.15, rely=0.5, height=55)
 		start = Button(self.parent, text="Start", 
 			font=("Times New Roman", 48), fg="black", width=10, 
-			command= lambda: UI_code.navigation.startApplication(self.parent))
+			command= lambda: UI_code.navigation.startApplication(self.parent,
+				self.num_words, self.sleeptime, self.clicktime))
 		start.place(rely=.3, relx=.4, height=55)
 		settings = Button(self.parent, text="Settings", 
 			font=("Times New Roman", 48), fg="black", width=10, 

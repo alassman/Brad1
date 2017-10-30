@@ -8,8 +8,13 @@ from speechToText.speak import listen
 # from mastodon.bindict import BinaryDictionary
 
 class applicationScreen(Frame):
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, num_words=3, mic_sleep=3, clicktime=1):
 		Frame.__init__(self, parent)
+		# THE FOLLOWING VARIABLES COME FROM SETTINGS
+		self.num_words = num_words
+		self.sleeptime = mic_sleep
+		self.clicktime = clicktime
+		# THE FOLLOWING ARE NECESSARY FOR THIS APP TO FUNCTION
 		self.parent = parent
 		self.first_word = None
 		self.second_word = None
@@ -17,7 +22,7 @@ class applicationScreen(Frame):
 		self.fourth_word = None
 		self.fifth_word = None
 		self.selected_word = None
-		_thread.start_new_thread(self.listen_for_words, ())
+		self.t1 = _thread.start_new_thread(self.listen_for_words, ())
 		#_thread.start_new_thread(self.listen_for_button_press, ())
 		self.pack()
 		self.form_screen()
@@ -25,15 +30,16 @@ class applicationScreen(Frame):
 		self.first_key = None
 		self.second_key = None
 		self.end_time = None
+		self.quit = False
 		self.parent.bind("<KeyRelease>", self.on_button_press)
-		_thread.start_new_thread(self.wait_on_button_press, ())
+		self.t2 = _thread.start_new_thread(self.wait_on_button_press, ())
 
 
 	def listen_for_words(self):
 		# establish binary dictionary for later prediction
 		path = os.getcwd() + "/mastodon/fiction.dict"
 		#binary_dict = BinaryDictionary.from_file(path)
-		while True:
+		while not self.quit:
 			# no word on screen was selected
 			if self.selected_word is None:
 				# call Jenny's function to hear from microphone
@@ -41,14 +47,18 @@ class applicationScreen(Frame):
 				# parse words from Jenny's function
 				words_list = words_from_mic.split()
 				# call Lihu's function
-				#word_predictions = binary_dict.get_predictions_four_words(words_list)
+				#word_predictions = binary_dict.get_predictions_five_words(words_list,
+					#self.num_words)
 			# predict word from selected word on screen
 			else:
+				# append to words_list
+				words_list.append[self.selected_word]
 				# call Lihu's function
-				#word_predictions = binary_dict.get_predictions_four_words(self.selected_word)
+				#word_predictions = binary_dict.get_predictions_five_words(words_list, 
+					#self.num_words)
 				# set the selected word to None
 				self.selected_word = None
-			# update the labels
+			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
 			if len(words_list) > 0:
 				self.first_word["text"] = words_list[0]
 			if len(words_list) > 1:
@@ -57,9 +67,11 @@ class applicationScreen(Frame):
 				self.third_word["text"] = words_list[2]
 			if len(words_list) > 3:
 				self.fourth_word["text"] = words_list[3]
+			if len(words_list) > 4:
+				self.fifth_word["text"] = words_list[4]
 			# sleep for 5 seconds before listening again
-			time.sleep(3)
-			words_list = []
+			time.sleep(self.sleeptime)
+			#words_list = []
 
 	# this function is alpha only
 	def on_button_press(self, event):
@@ -68,7 +80,7 @@ class applicationScreen(Frame):
 			#first_key = sys.stdin.read(1)
 			#first_key = ord( first_key )
 			self.first_key = ord(event.char)
-			self.end_time = time.time() + 1
+			self.end_time = time.time() + self.clicktime
 			print("You pressed " + str(self.first_key))
 		else:
 			print("SECOND KEY")
@@ -77,7 +89,7 @@ class applicationScreen(Frame):
 				print("You pressed " + str(self.second_key))
 			else:
 				self.first_key = ord(event.char)
-				self.end_time = time.time() + 1
+				self.end_time = time.time() + self.clicktime
 				print("You pressed " + str(self.first_key) + "after time expired")
 	
 	# this function is alpha only		
@@ -87,7 +99,7 @@ class applicationScreen(Frame):
 		#engine.runAndWait()'''
 		#text = "HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED"
 		#subprocess.call('say ' + text, shell=True)
-		while True:
+		while not self.quit:
 			if self.end_time is not None:
 				# this is terrible, but keyboard interrupts are so terrible in this
 				while time.time() < self.end_time:
@@ -116,7 +128,8 @@ class applicationScreen(Frame):
 					if(self.first_key == 63234):
 						print("DOUBLE LEFT PRESS")
 						# WE NEED TO RESOLVE GOING BACK!!! CIRCULAR DEPENDENCIES
-						UI_code.navigation.back_to_menu(self.parent)
+						UI_code.navigation.back_to_menu(self.parent, True)
+						self.quit = True
 					# up press
 					elif(self.fourth_word["text"] and self.first_key == 63232):
 						print("DOUBLE UP PRESS")
