@@ -2,8 +2,6 @@ import tkinter as tk
 from tkinter import *
 import UI_code.navigation
 
-# TODO: I MUST PASS IN THE SETTINGS TO DISPLAY THEM CORRECTLY!!!!
-
 class settingsScreen(Frame):
 	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
 		Frame.__init__(self, parent)

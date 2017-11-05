@@ -131,7 +131,8 @@ class applicationScreen(Frame):
 					if(self.first_key == 63234):
 						print("DOUBLE LEFT PRESS")
 						# WE NEED TO RESOLVE GOING BACK!!! CIRCULAR DEPENDENCIES
-						UI_code.navigation.back_to_menu(self.parent, True)
+						UI_code.navigation.back_to_menu(self.parent, True, 
+							self.num_words, self.sleeptime, self.clicktime)
 						self.quit = True
 					# up press
 					elif(self.fourth_word["text"] and self.first_key == 63232):
@@ -155,56 +156,6 @@ class applicationScreen(Frame):
 
 				if self.selected_word is not None:
 					subprocess.call('say ' + self.selected_word, shell=True)
-				
-
-	'''
-	def listen_for_button_press(self):
-		print("I AM IN THIS FUNCTION")
-		# fill in with code to interact with Adam's raspberry pi
-		# map directions to the words
-		
-		while True:
-			if first_key is None:
-				#first_key = sys.stdin.read(1)
-				#first_key = ord( first_key )
-				first_key = key_in()
-				print("YOU Pressed" + str(first_key))
-			else:
-				end = time.time() + 1
-				while time.time() < end:
-					second_key = sys.stdin.read(1)
-					second_key = ord( second_key[0] )
-				# only 1 key pressed
-				if second_key is None:
-					# left press
-					if(first_key == 37):
-						print("SINGLE LEFT PRESS")
-					# up press
-					elif(first_key == 38):
-						print("SINGLE UP PRESS")
-					# down press
-					elif(first_key == 39):
-						print("SINGLE RIGHT PRESS")
-					first_key = None
-				# double click
-				elif first_key == second_key:
-					# left press
-					if(first_key == 37):
-						print("DOUBLE LEFT PRESS")
-					# up press
-					elif(first_key == 38):
-						print("DOUBLE UP PRESS")
-					# down press
-					elif(first_key == 39):
-						print("DOUBLE RIGHT PRESS")
-					first_key = None
-					second_key = None
-				# assume first key press was a mistake, second key becomes first
-				# key and second key is reset to nothing
-				else:
-					first_key = second_key
-					second_key = None
-		'''
 
 
 

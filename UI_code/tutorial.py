@@ -3,7 +3,7 @@ from tkinter import *
 import UI_code.navigation
 
 class tutorialScreen(Frame):
-	def __init__(self, parent=None, num_words, sleeptime, clicktime):
+	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
 		Frame.__init__(self, parent)
 		self.parent = parent
 		self.pack()
