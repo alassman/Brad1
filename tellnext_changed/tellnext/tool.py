@@ -57,9 +57,7 @@ def main():
 
     store = tellnext.store.SQLiteStore(path=args.database)
     model = tellnext.model.MarkovModel(store=store)
-
     args.func(args, model)
-
 
 def train_by_twitter(args, model):
     for path in args.path:
@@ -116,8 +114,8 @@ def generate(args, model):
         )
         print(line)
 
-
 def next_word(args, model, num_returned = 5):
+    print(model)
     if args.word2:
         word_1 = args.word1
         word_2 = args.word2
@@ -125,6 +123,19 @@ def next_word(args, model, num_returned = 5):
         word_1 = None
         word_2 = args.word1
 
+    trigram_model = model.get_trigram_model(word_1, word_2)
+    return_list = []
+    for word, score in trigram_model.most_common(num_returned):
+        return_list.append(word)
+    return return_list
+
+def new_next_word(word_1 = None, word_2 = None, model = tellnext.model.MarkovModel(store=tellnext.store.SQLiteStore(path='MODEL.db')), num_returned = 5):
+    if not word_1 and not word_2:
+        return []
+    elif word_1 and not word_2:
+        word_2 = word_1
+        word_1 = None
+        
     trigram_model = model.get_trigram_model(word_1, word_2)
     return_list = []
     for word, score in trigram_model.most_common(num_returned):
