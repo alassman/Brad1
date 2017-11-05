@@ -11,18 +11,18 @@ from UI_code.tutorial import tutorialScreen
 '''
 # from UI_code.main_menu import menuFrame
 
-def startSettings(root):
+def startSettings(root, num_words, sleeptime, clicktime):
 	root.destroy()
 	settings = tk.Tk()
 	settings.attributes('-fullscreen', True)
-	settings_screen = settings_ui.settingsScreen(settings)
+	settings_screen = settings_ui.settingsScreen(settings, num_words, sleeptime, clicktime)
 	settings.mainloop()
 
-def startTutorial(root):
+def startTutorial(root, num_words, sleeptime, clicktime):
 	root.destroy()
 	tutorial = tk.Tk()
 	tutorial.attributes('-fullscreen', True)
-	tutorial_screen = tutorial_ui.tutorialScreen(tutorial)
+	tutorial_screen = tutorial_ui.tutorialScreen(tutorial, num_words, sleeptime, clicktime)
 	tutorial.mainloop()
 
 def startApplication(root, num_words, sleeptime, clicktime):
@@ -49,7 +49,10 @@ def back_to_menu(root, from_app=False, num_words=None, sleeptime=None, clicktime
 		root.destroy()
 		menu = tk.Tk()
 		menu.attributes('-fullscreen', True)
-		menu_frame = UI_code.main_menu.menuFrame(menu)
+		if (num_words is not None) and (sleeptime is not None) and (clicktime is not None):
+			menu_frame = UI_code.main_menu.menuFrame(menu, num_words, sleeptime, clicktime)
+		else:
+			menu_frame = UI_code.main_menu.menuFrame(menu)
 		menu.mainloop()
 	
 

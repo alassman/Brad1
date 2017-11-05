@@ -7,7 +7,7 @@ THEY SHOULD BE FRAMES NOT SEPARATE applications - maybe???
 '''
 
 class menuFrame(Frame):
-	def __init__(self, parent=None, sleeptime=3, clicktime=1, num_words=3):
+	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
 		Frame.__init__(self, parent)
 		self.parent = parent
 		self.sleeptime = sleeptime
@@ -29,24 +29,13 @@ class menuFrame(Frame):
 		self.load_arrows()
 
 
-		
-	'''
-	def cover_full_screen(self):
-		# make it cover the entire screen
-		w, h = menu.winfo_screenwidth(), menu.winfo_screenheight()
-		menu.overrideredirect(1)
-		menu.geometry("%dx%d+0-20" % (w, h))
-
-		menu.focus_set() # <-- move focus to this widget
-		menu.bind("<Escape>", lambda e: e.widget.quit())
-	'''
-
 	def load_titles(self):
 		title = Label(self.parent, text="Main Menu", font=("Times New Roman", 72), fg="black")
 		title.pack(fill=X)
 		tutorial = Button(self.parent, text="Tutorial", 
 			font=("Times New Roman", 48), fg="black", width=10, 
-			command= lambda: UI_code.navigation.startTutorial(self.parent))
+			command= lambda: UI_code.navigation.startTutorial(self.parent, 
+				self.num_words, self.sleeptime, self.clicktime))
 		tutorial.place(relx=0.15, rely=0.5, height=55)
 		start = Button(self.parent, text="Start", 
 			font=("Times New Roman", 48), fg="black", width=10, 
@@ -55,7 +44,8 @@ class menuFrame(Frame):
 		start.place(rely=.3, relx=.4, height=55)
 		settings = Button(self.parent, text="Settings", 
 			font=("Times New Roman", 48), fg="black", width=10, 
-			command =lambda: UI_code.navigation.startSettings(self.parent))
+			command =lambda: UI_code.navigation.startSettings(self.parent, 
+				self.num_words, self.sleeptime, self.clicktime))
 		settings.place(rely=0.5, relx=.65, height=55)
 
 	def load_arrows(self):

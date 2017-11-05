@@ -3,12 +3,17 @@ from tkinter import *
 import UI_code.navigation
 
 class tutorialScreen(Frame):
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, num_words, sleeptime, clicktime):
 		Frame.__init__(self, parent)
 		self.parent = parent
 		self.pack()
 		self.form_screen()
 		self.parent.bind("<KeyRelease>", self.on_button_press)
+
+		# required for carrying the settings
+		self.num_words = num_words
+		self.sleeptime = sleeptime
+		self.clicktime = clicktime
 
 	def form_screen(self):
     	# set color to off-white
@@ -31,4 +36,5 @@ class tutorialScreen(Frame):
 
 	# navigate back to the menu screen
 	def on_button_press(self, event):
-		UI_code.navigation.back_to_menu(self.parent)
+		UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+			self.sleeptime, self.clicktime)

@@ -5,7 +5,10 @@ import tty, termios, sys
 import UI_code.navigation
 from tkinter import *
 from speechToText.speak import listen
+
 # from mastodon.bindict import BinaryDictionary
+
+# CHANGE TO LIHU'S CODE: I WILL ONLY NEED TO CALL next_word() FROM tellnext_changed.tellnext.tool
 
 class applicationScreen(Frame):
 	def __init__(self, parent=None, num_words=3, mic_sleep=3, clicktime=1):
