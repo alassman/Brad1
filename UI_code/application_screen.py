@@ -5,6 +5,7 @@ import tty, termios, sys
 import UI_code.navigation
 from tkinter import *
 from speechToText.speak import listen
+import tellnext_changed.tellnext.tool as tellnext
 
 # from mastodon.bindict import BinaryDictionary
 

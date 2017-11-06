@@ -5,8 +5,8 @@ import unicodedata
 import langdetect
 from langdetect.lang_detect_exception import LangDetectException
 
-import tellnext.util
-import tellnext.token
+import tellnext_changed.tellnext.util
+import tellnext_changed.tellnext.token
 
 
 _logger = logging.getLogger(__name__)

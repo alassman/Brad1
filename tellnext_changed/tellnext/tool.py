@@ -3,12 +3,12 @@ import logging
 import random
 import sys
 
-import tellnext.store
-import tellnext.model
-import tellnext.training
-import tellnext.token
-import tellnext.generator
-import tellnext.util
+import tellnext_changed.tellnext.store as store
+import tellnext_changed.tellnext.model as model
+import tellnext_changed.tellnext.training
+import tellnext_changed.tellnext.token
+import tellnext_changed.tellnext.generator
+import tellnext_changed.tellnext.util
 
 
 _logger = logging.getLogger(__name__)
@@ -129,7 +129,7 @@ def next_word(args, model, num_returned = 5):
         return_list.append(word)
     return return_list
 
-def new_next_word(word_1 = None, word_2 = None, model = tellnext.model.MarkovModel(store=tellnext.store.SQLiteStore(path='MODEL.db')), num_returned = 5):
+def new_next_word(word_1 = None, word_2 = None, model = model.MarkovModel(store=store.SQLiteStore(path='MODEL.db')), num_returned = 5):
     if not word_1 and not word_2:
         return []
     elif word_1 and not word_2:

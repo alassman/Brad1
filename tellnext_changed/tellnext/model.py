@@ -1,7 +1,7 @@
 import collections
 import random
 
-from tellnext.store import SQLiteStore
+from tellnext_changed.tellnext.store import SQLiteStore
 
 
 class TrigramModel(collections.Counter):
