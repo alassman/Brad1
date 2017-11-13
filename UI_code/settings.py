@@ -45,25 +45,25 @@ class settingsScreen(Frame):
 		# instruction label
 		text = "Press the up key to rotate.\nLeft to lessen variable.\nRight to increase variable value."
 		self.instructions = Label(self.parent, text= text, font=("Times New Roman", 18), fg="black")
-		self.instructions.place(relx=.4, rely=.2)
+		self.instructions.place(relx=.35, rely=.2)
 		# number of words label
 		self.num_words_label = Label(self.parent, 
 			text="Number of words for the app to display is: " + str(self.num_words), 
 			font=("Times New Roman", 18), fg="black")
-		self.num_words_label.place(relx=.4, rely=.4)
+		self.num_words_label.place(relx=.35, rely=.4)
 		# sleep time label
 		self.sleeptime_label = Label(self.parent, 
 			text="Number of seconds for the microphone to sleep after listening: " + str(self.sleeptime), 
 			font=("Times New Roman", 18), fg="black")
-		self.sleeptime_label.place(relx=.4, rely=.5)
+		self.sleeptime_label.place(relx=.35, rely=.5)
 		# click time lable
 		self.clicktime_label = Label(self.parent, 
 			text="Number of seconds to consider the double-click interval: " + str(self.clicktime), 
 			font=("Times New Roman", 18), fg="black")
-		self.clicktime_label.place(relx=.4, rely=.6)
+		self.clicktime_label.place(relx=.35, rely=.6)
 		# exit label
 		self.exit = Label(self.parent, text="Exit", font=("Times New Roman", 18, "bold"), fg="black")
-		self.exit.place(relx=.45, rely=.7)
+		self.exit.place(relx=.4, rely=.7)
 
 
 

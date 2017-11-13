@@ -31,22 +31,23 @@ class menuFrame(Frame):
 
 	def load_titles(self):
 		title = Label(self.parent, text="Main Menu", font=("Times New Roman", 72), fg="black")
-		title.pack(fill=X)
+		#title.pack(fill=X)
+		title.place(rely=0, relx=.3)
 		tutorial = Button(self.parent, text="Tutorial", 
 			font=("Times New Roman", 48), fg="black", width=10, 
 			command= lambda: UI_code.navigation.startTutorial(self.parent, 
 				self.num_words, self.sleeptime, self.clicktime))
-		tutorial.place(relx=0.15, rely=0.5, height=55)
+		tutorial.place(relx=0.04, rely=0.5, height=55)
 		start = Button(self.parent, text="Start", 
 			font=("Times New Roman", 48), fg="black", width=10, 
 			command= lambda: UI_code.navigation.startApplication(self.parent,
 				self.num_words, self.sleeptime, self.clicktime))
-		start.place(rely=.3, relx=.4, height=55)
+		start.place(rely=.3, relx=.35, height=55)
 		settings = Button(self.parent, text="Settings", 
 			font=("Times New Roman", 48), fg="black", width=10, 
 			command =lambda: UI_code.navigation.startSettings(self.parent, 
 				self.num_words, self.sleeptime, self.clicktime))
-		settings.place(rely=0.5, relx=.65, height=55)
+		settings.place(rely=0.5, relx=.66, height=55)
 
 	def load_arrows(self):
 		# arrow left

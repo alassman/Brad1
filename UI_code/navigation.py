@@ -14,21 +14,24 @@ from UI_code.tutorial import tutorialScreen
 def startSettings(root, num_words, sleeptime, clicktime):
 	root.destroy()
 	settings = tk.Tk()
-	settings.attributes('-fullscreen', True)
+	settings.geometry("800x480")
+	#settings.attributes('-fullscreen', True)
 	settings_screen = settings_ui.settingsScreen(settings, num_words, sleeptime, clicktime)
 	settings.mainloop()
 
 def startTutorial(root, num_words, sleeptime, clicktime):
 	root.destroy()
 	tutorial = tk.Tk()
-	tutorial.attributes('-fullscreen', True)
+	tutorial.geometry("800x480")
+	#tutorial.attributes('-fullscreen', True)
 	tutorial_screen = tutorial_ui.tutorialScreen(tutorial, num_words, sleeptime, clicktime)
 	tutorial.mainloop()
 
 def startApplication(root, num_words, sleeptime, clicktime):
 	root.destroy()
 	app = tk.Tk()
-	app.attributes('-fullscreen', True)
+	app.geometry("800x480")
+	#app.attributes('-fullscreen', True)
 	application_screen = UI_code.application_screen.applicationScreen(app, 
 		num_words, sleeptime, clicktime)
 	app.mainloop()
@@ -37,7 +40,8 @@ def back_to_menu(root, from_app=False, num_words=None, sleeptime=None, clicktime
 	if not from_app:
 		root.destroy()
 		menu = tk.Tk()
-		menu.attributes('-fullscreen', True)
+		menu.geometry("800x480")
+		#menu.attributes('-fullscreen', True)
 		if (num_words is not None) and (sleeptime is not None) and (clicktime is not None):
 			menu_frame = UI_code.main_menu.menuFrame(menu, num_words, sleeptime, clicktime)
 			menu.mainloop()

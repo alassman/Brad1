@@ -176,32 +176,32 @@ class applicationScreen(Frame):
 
 
 	def load_titles(self):
-		title = Label(self.parent, text="The Microphone is Listening", font=("Times New Roman", 72), fg="black")
+		title = Label(self.parent, text="The Microphone is Listening", font=("Times New Roman", 60), fg="black")
 		title.pack(fill=X)
 		# back button - always there
 		back_button = Label(self.parent, text="Back", 
 			font=("Times New Roman", 48), fg="black", bg="#ff8080", width=10)
-		back_button.place(relx=0.15, rely=0.6, height=55)
+		back_button.place(relx=0.05, rely=0.54, height=55)
 		# first word
 		self.first_word = Label(self.parent, text=self.first_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		self.first_word.place(relx=0.15, rely=0.5, height=55)
+		self.first_word.place(relx=0.05, rely=0.44, height=55)
 		# second word
 		self.second_word = Label(self.parent, text=self.second_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		self.second_word.place(rely=.2, relx=.4, height=55)
+		self.second_word.place(rely=.17, relx=.365, height=55)
 		# third word
 		self.third_word = Label(self.parent, text=self.third_word , 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		self.third_word.place(rely=0.5, relx=.65, height=55)
+		self.third_word.place(rely=0.44, relx=.675, height=55)
 		# fourth word
 		self.fourth_word = Label(self.parent, text=self.fourth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
-		self.fourth_word.place(rely=.3, relx=.4, height=55)
+		self.fourth_word.place(rely=.27, relx=.365, height=55)
 		# fifth word
 		self.fifth_word = Label(self.parent, text=self.fifth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
-		self.fifth_word.place(rely=0.6, relx=.65, height=55)
+		self.fifth_word.place(rely=0.54, relx=.675, height=55)
 
 	def load_legend(self):
 		legend_text = """
@@ -211,7 +211,7 @@ class applicationScreen(Frame):
 ------------------------"""
 		legend_frame = LabelFrame(self.parent,text='Legend',padx=5, pady=5, 
 			foreground="black", font=("Times New Roman", 24))
-		legend_frame.place(relx=.4, rely=.7)
+		legend_frame.place(relx=.354, rely=.67)
 		legend_label = Label(legend_frame,text=legend_text, fg="black",
 			font=("Times New Roman", 24))
 		legend_label.pack()

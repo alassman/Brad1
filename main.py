@@ -7,7 +7,8 @@ from tkinter import *
 
 def main():
 	menu = tk.Tk()
-	menu.attributes('-fullscreen', True)
+	menu.geometry("800x480")
+	#menu.attributes('-fullscreen', True)
 	menu_frame = menuFrame(menu)
 	menu.mainloop()
 		

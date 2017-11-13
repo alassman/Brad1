@@ -33,7 +33,7 @@ class tutorialScreen(Frame):
 	def load_titles(self):
 		title = Label(self.parent, text="Tutorial", font=("Times New Roman", 72), fg="black")
 		#title.pack(fill=X, side=TOP, anchor=W)
-		title.place(relx=.4, rely=0)
+		title.place(relx=.35, rely=0)
 		#text = "FOR THIS ALPHA VERSION,\nNAVIGATE THE MAIN\nAPPLICATION PAGE USING THE ARROW KEYS\nPRESS ANY KEY TO GO BACK TO THE MAIN MENU"
 		#instructions = Label(self.parent, text= text, font=("Times New Roman", 48), fg="black")
 		#instructions.place(relx=.05, rely=.4)
