@@ -26,6 +26,7 @@ class applicationScreen(Frame):
 		self.fourth_word = None
 		self.fifth_word = None
 		self.selected_word = None
+		self.selected_word_label = None
 		self.t1 = _thread.start_new_thread(self.listen_for_words, ())
 		#_thread.start_new_thread(self.listen_for_button_press, ())
 		self.pack()
@@ -155,7 +156,11 @@ class applicationScreen(Frame):
 					self.first_key = self.second_key
 					self.second_key = None
 
+				# if a word has been selected
 				if self.selected_word is not None:
+					# display the word
+					self.selected_word_label["text"] = self.selected_word
+					# say the word
 					subprocess.call('say ' + self.selected_word, shell=True)
 
 
@@ -202,6 +207,14 @@ class applicationScreen(Frame):
 		self.fifth_word = Label(self.parent, text=self.fifth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
 		self.fifth_word.place(rely=0.54, relx=.675, height=55)
+		# last selected word
+		self.selected_word_label = Label(self.parent, text="", 
+			font=("Times New Roman", 48), fg="black", width=10, borderwidth=1,
+			relief="solid")
+		self.selected_word_label.place(rely=.7, relx=.6)
+		temp_label = Label(self.parent, text="Selected Word ^^^", 
+			font=("Times New Roman", 36), fg="black", width=15)
+		temp_label.place(rely=.83, relx=.58)
 
 	def load_legend(self):
 		legend_text = """
@@ -209,9 +222,9 @@ class applicationScreen(Frame):
 |   Single Click = Blue   |
 |  Double Click = Red   |
 ------------------------"""
-		legend_frame = LabelFrame(self.parent,text='Legend',padx=5, pady=5, 
+		legend_frame = LabelFrame(self.parent,text='Legend',padx=0, pady=5, 
 			foreground="black", font=("Times New Roman", 24))
-		legend_frame.place(relx=.354, rely=.67)
+		legend_frame.place(relx=.1, rely=.67)
 		legend_label = Label(legend_frame,text=legend_text, fg="black",
 			font=("Times New Roman", 24))
 		legend_label.pack()
