@@ -31,9 +31,9 @@ class tutorialScreen(Frame):
 		#self.load_arrows()
 
 	def load_titles(self):
-		title = Label(self.parent, text="Tutorial", font=("Times New Roman", 72), fg="black")
+		title = Label(self.parent, text="Tutorial", font=("Times New Roman", 60), fg="black")
 		#title.pack(fill=X, side=TOP, anchor=W)
-		title.place(relx=.35, rely=0)
+		title.place(relx=.38, rely=0)
 		#text = "FOR THIS ALPHA VERSION,\nNAVIGATE THE MAIN\nAPPLICATION PAGE USING THE ARROW KEYS\nPRESS ANY KEY TO GO BACK TO THE MAIN MENU"
 		#instructions = Label(self.parent, text= text, font=("Times New Roman", 48), fg="black")
 		#instructions.place(relx=.05, rely=.4)
@@ -45,11 +45,18 @@ class tutorialScreen(Frame):
 				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/first_slide.gif',
 				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/second_slide.gif',
 				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/third_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/fourth_slide.gif'
+				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/fourth_slide.gif',
+				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/fifth_slide.gif',
+				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/sixth_slide.gif',
+				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/seventh_slide.gif',
+				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/eigth_slide.gif',
+				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/ninth_slide.gif',
+				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/tenth_slide.gif',
+				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/eleventh_slide.gif',
 				]
 			self.slideshow_counter = 0
 			self.picture_display = tk.Label(self)
-			self.picture_display.pack(pady=120, anchor=CENTER)
+			self.picture_display.pack(pady=57, anchor=CENTER)
 		self.picture = tk.PhotoImage(file=self.image_files[self.slideshow_counter])
 		self.picture_display.config(image=self.picture)
 
