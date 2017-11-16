@@ -50,7 +50,7 @@ def listen():
 
 	#create global var of word so that main driver can access it
 	#global word
-
+	print("listening")
 	while(1):
 		r = sr.Recognizer()
 		with sr.Microphone(device_index = None, sample_rate = 48000) as source:
@@ -67,10 +67,8 @@ def listen():
 		AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "microphone-results.wav")
 
 		# use the audio file as the audio source
-
 		with sr.AudioFile(AUDIO_FILE) as source:
 			audio = r.record(source)
-
 			try:
 				word = r.recognize_sphinx(audio)
 				print(word)

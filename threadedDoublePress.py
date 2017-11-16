@@ -43,49 +43,67 @@ class ButtonListener:
             GPIO.cleanup()
 
     def buttonPress(self, buttonNum):
-    state = NotPressed
-    while True:
-        # get input from the GPIO
-        newState = GPIO.input(buttonNum)
-        # main application or potentially tutorial???
-        if self.allowDoubleClick:
-            if newState == Pressed and state == NotPressed:
-                # two button presses have occurred within the double-click interval
-                if(self.lastTime is not None):
-                    # potential double click (same button)
-                    if(self.lastPressed == buttonNum):
-                        # valid double press
-                        if time.time() < (self.lastTime + MaxDelay):
-                            print("Double press", buttonNum)
-                            self.lastTime = None
-                            self.lastPressed = None
-                    # reset last pressed and last time --> this is a correction in a double press
+        state = NotPressed
+        while True:
+            # get input from the GPIO
+            newState = GPIO.input(buttonNum)
+            # main application or potentially tutorial???
+            if self.allowDoubleClick:
+                if newState == Pressed and state == NotPressed:
+                    # two button presses have occurred within the double-click interval
+                    if(self.lastTime is not None):
+                        # potential double click (same button)
+                        if(self.lastPressed == buttonNum):
+                            # valid double press
+                            if time.time() < (self.lastTime + MaxDelay):
+                                print("Double press", buttonNum)
+                                if(buttonNum == self.left):
+                                    self.selection = 4
+                                elif(buttonNum == self.up):
+                                    self.selection  = 5
+                                else:
+                                    self.selection = 6
+                                self.lastTime = None
+                                self.lastPressed = None
+                        # reset last pressed and last time --> this is a correction in a double press
+                        else:
+                            self.lastTime = time.time()
+                            self.lastPressed = buttonNum
+                    # Single push
                     else:
                         self.lastTime = time.time()
                         self.lastPressed = buttonNum
-                # Single push
-                else:
-                    self.lastTime = time.time()
-                    self.lastPressed = buttonNum
-                # Deals with debouncing
-                time.sleep(0.05)
-            # no push --> not input to read
-            elif newState == NotPressed:
-                state = NotPressed
-                        # check if the interval has expired to pick up a single press
-            if (self.lastTime is not None 
-                and time.time() >= (self.lastTime + self.MaxDelay)
-                and self.lastPressed == buttonNum):
-                    self.lastTime = None
-                    print("Single Press", self.lastPressed)
-                    self.lastPressed = None
-        # no double clicks - register click immediately
-        else:
-            if newState == Pressed and state == NotPressed:
-                print("Single Press", buttonNum)
-                state = Pressed
-            elif newState == NotPressed:
-                state = NotPressed
+                    # Deals with debouncing
+                    time.sleep(0.05)
+                # no push --> not input to read
+                elif newState == NotPressed:
+                    state = NotPressed
+                            # check if the interval has expired to pick up a single press
+                if (self.lastTime is not None 
+                    and time.time() >= (self.lastTime + self.MaxDelay)
+                    and self.lastPressed == buttonNum):
+                        print("Single Press", self.lastPressed)
+                        if(buttonNum == self.left):
+                            self.selection = 1
+                        elif(buttonNum == self.up):
+                            self.selection  = 2
+                        else:
+                            self.selection = 3
+                        self.lastTime = None
+                        self.lastPressed = None
+            # no double clicks - register click immediately
+            else:
+                if newState == Pressed and state == NotPressed:
+                    print("Single Press", buttonNum)
+                    if(buttonNum == self.left):
+                        self.selection = 1
+                    elif(buttonNum == self.up):
+                        self.selection  = 2
+                    else:
+                        self.selection = 3
+                    state = Pressed
+                elif newState == NotPressed:
+                    state = NotPressed
 
     def reset(self):
         self.lastPressed = None

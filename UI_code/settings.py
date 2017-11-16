@@ -1,6 +1,8 @@
 import tkinter as tk 
 from tkinter import *
 import UI_code.navigation
+import threadedDoublePress
+import _thread
 
 class settingsScreen(Frame):
 	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
@@ -12,11 +14,9 @@ class settingsScreen(Frame):
 		self.parent = parent
 		self.pack()
 		
-		self.parent.bind("<KeyRelease>", self.on_button_press)
-
 		self.font_size = 40
 		self.font_array = [12, 18, 24, 32, 40, 48, 56, 64]
-		self.parent.bind("<KeyRelease>", self.on_button_press)
+		#self.parent.bind("<KeyRelease>", self.on_button_press)
 		# titles are below
 		self.title = None
 		self.font_size_label = None
@@ -25,6 +25,68 @@ class settingsScreen(Frame):
 		self.location = 0
 
 		self.form_screen()
+
+		# launch button listener
+		self.buttonListener = ButtonListener(self.clicktime)
+		self.buttonListener.launch()
+		_thread.start_new_thread(self.wait_on_button_signal, ())
+
+	def wait_on_button_signal():
+		while True:
+			# if there is a selection
+			if self.buttonListener.selection:
+				# left button was pressed
+				if self.buttonListener.selection == 1:
+					print("LEFT")
+					if self.location == 0:
+						UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+							self.sleeptime, self.clicktime)
+					elif self.location == 1:
+						if self.clicktime > 1:
+							self.clicktime = self.clicktime - 1
+							self.clicktime_label["text"] = ("Number of seconds to consider the double-click interval: " + str(self.clicktime))
+					elif self.location == 2:
+						if self.sleeptime > 1:
+							self.sleeptime = self.sleeptime - 1
+							self.sleeptime_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.sleeptime)
+					else:
+						if self.num_words > 3:
+							self.num_words = self.num_words - 1
+							self.num_words_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.num_words)
+				# up button was pressed
+				elif self.buttonListener.selection == 2:
+					print("UP")
+					if(self.location == 0):
+						self.exit["font"] = ("Times New Roman", 18)
+						self.clicktime_label["font"] = ("Times New Roman", 18, "bold")
+					elif self.location == 1:
+						self.clicktime_label["font"] = ("Times New Roman", 18)
+						self.sleeptime_label["font"] = ("Times New Roman", 18, "bold")
+					elif self.location == 2:
+						self.sleeptime_label["font"] = ("Times New Roman", 18)
+						self.num_words_label["font"] = ("Times New Roman", 18, "bold")
+					else:
+						self.num_words_label["font"] = ("Times New Roman", 18)
+						self.exit["font"] = ("Times New Roman", 18, "bold")
+					self.location = (self.location + 1) % 4
+				# right button was pressed
+				else:
+					print("Right")
+					if self.location == 0:
+						UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+							self.sleeptime, self.clicktime)
+					elif self.location == 1:
+						self.clicktime = 1 + self.clicktime
+						self.clicktime_label["text"] = ("Number of seconds to consider the double-click interval: " + str(self.clicktime))
+					elif self.location == 2:
+						self.sleeptime = self.sleeptime + 1
+						self.sleeptime_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.sleeptime)
+					else:
+						if self.num_words < 5:
+							self.num_words = self.num_words + 1
+							self.num_words_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.num_words)
+			# this will ensure that the selected word is only spoken once
+			self.buttonListener.selection = None
 
 
 	def form_screen(self):
@@ -67,7 +129,7 @@ class settingsScreen(Frame):
 
 
 
-
+	# YOU CAN DELETE THIS FUNCTION AFTER YOU HAVE IT WORKING ON RASP. PI
 	# navigate back to the menu screen
 	def on_button_press(self, event):
 		key = ord(event.char)
