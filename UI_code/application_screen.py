@@ -106,8 +106,7 @@ class applicationScreen(Frame):
 				words_list.append[self.selected_word]
 				words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
-				#word_predictions = binary_dict.get_predictions_five_words(words_list, 
-					#self.num_words)
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
 				# set the selected word to None
 				self.selected_word = None
 			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
