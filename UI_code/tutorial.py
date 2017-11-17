@@ -2,7 +2,7 @@ from itertools import cycle
 import tkinter as tk 
 from tkinter import *
 import UI_code.navigation
-import threadedDoublePress
+#import threadedDoublePress
 
 class tutorialScreen(Frame):
 	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
@@ -10,7 +10,7 @@ class tutorialScreen(Frame):
 		self.parent = parent
 		self.pack()
 		self.form_screen()
-		#self.parent.bind("<KeyRelease>", self.on_button_press)
+		self.parent.bind("<KeyRelease>", self.on_button_press)
 
 		# set up the slideshow
 		self.slideshow_counter = None
@@ -22,9 +22,9 @@ class tutorialScreen(Frame):
 		self.clicktime = clicktime
 
 		# start button listener
-		self.buttonListener = ButtonListener(self.clicktime)
-		self.buttonListener.launch()
-		_thread.start_new_thread(self.wait_on_button_signal, ())
+		#self.buttonListener = ButtonListener(self.clicktime)
+		#self.buttonListener.launch()
+		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal():
 		while True:
