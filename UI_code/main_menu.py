@@ -1,6 +1,6 @@
 import tkinter as tk 
 import UI_code.navigation # import startTutorial, startApplication, startSettings
-import threadedDoublePress
+#import threadedDoublePress
 from tkinter import *
 
 '''
@@ -17,9 +17,9 @@ class menuFrame(Frame):
 		self.pack()
 		self.form_screen()
 		# launch button listener
-		self.buttonListener = ButtonListener(self.clicktime)
-		self.buttonListener.launch()
-		_thread.start_new_thread(self.wait_on_button_signal, ())
+		#self.buttonListener = ButtonListener(self.clicktime)
+		#self.buttonListener.launch()
+		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal():
 		while True:

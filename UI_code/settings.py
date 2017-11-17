@@ -1,7 +1,7 @@
 import tkinter as tk 
 from tkinter import *
 import UI_code.navigation
-import threadedDoublePress
+#import threadedDoublePress
 import _thread
 
 class settingsScreen(Frame):
@@ -16,7 +16,7 @@ class settingsScreen(Frame):
 		
 		self.font_size = 40
 		self.font_array = [12, 18, 24, 32, 40, 48, 56, 64]
-		#self.parent.bind("<KeyRelease>", self.on_button_press)
+		self.parent.bind("<KeyRelease>", self.on_button_press)
 		# titles are below
 		self.title = None
 		self.font_size_label = None
@@ -27,9 +27,9 @@ class settingsScreen(Frame):
 		self.form_screen()
 
 		# launch button listener
-		self.buttonListener = ButtonListener(self.clicktime)
-		self.buttonListener.launch()
-		_thread.start_new_thread(self.wait_on_button_signal, ())
+		#self.buttonListener = ButtonListener(self.clicktime)
+		#self.buttonListener.launch()
+		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal():
 		while True:

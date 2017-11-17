@@ -4,6 +4,7 @@
 
 import speech_recognition as sr
 import os
+import _thread
 from os import path
 
 
@@ -12,6 +13,7 @@ def listen():
 	#create global var of word so that main driver can access it
 	#global word
 	print("listening")
+	print("thread id in listen(): " + str(_thread.get_ident()))
 	while(1):
 		r = sr.Recognizer()
 		with sr.Microphone(device_index = None, sample_rate = 48000) as source:
