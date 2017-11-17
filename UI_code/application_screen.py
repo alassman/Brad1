@@ -1,7 +1,7 @@
 import tkinter as tk 
 import _thread, time, os
 import subprocess
-import tty, termios, sys
+import sys
 import UI_code.navigation
 from tkinter import *
 from speechToText.speak import listen
