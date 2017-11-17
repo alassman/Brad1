@@ -1,11 +1,13 @@
 import tkinter as tk 
 import _thread, time, os
 import subprocess
-import tty, termios, sys
+import tty, sys
 import UI_code.navigation
 from tkinter import *
 from speechToText.speak import listen
 import tellnext_changed.tellnext.tool as tellnext
+import tellnext_changed.tellnext.model as tellnext_model
+import tellnext_changed.tellnext.store as store
 #import threadedDoublePress
 
 # from mastodon.bindict import BinaryDictionary
@@ -81,8 +83,8 @@ class applicationScreen(Frame):
 
 
 	def listen_for_words(self):
-		print("Thread id: " + str(_thread.get_ident()))
 		print("listening for words")
+		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
 		# establish binary dictionary for later prediction
 		path = os.getcwd() + "/mastodon/fiction.dict"
 		#binary_dict = BinaryDictionary.from_file(path)
@@ -99,25 +101,26 @@ class applicationScreen(Frame):
 				elif(len(words_list) == 1):
 					words_list.append(None) 
 				# call Lihu's function
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
 			# predict word from selected word on screen
 			else:
 				# append to words_list
 				words_list.append[selected_word]
 				words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
 				# set the selected word to None
 				selected_word = None
+			print("length of word predictions: " +str(len(word_predictions)))
 			self.last_spoken = words_list
 			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
-			self.first_word["text"] = words_list[0]
-			self.second_word["text"] = words_list[1]
-			self.third_word["text"] = words_list[2]
+			self.first_word["text"] = word_predictions[0]
+			self.second_word["text"] = word_predictions[1]
+			self.third_word["text"] = word_predictions[2]
 			if self.num_words > 3:
-				self.fourth_word["text"] = words_list[3]
+				self.fourth_word["text"] = word_predictions[3]
 			if self.num_words > 4:
-				self.fifth_word["text"] = words_list[4]
+				self.fifth_word["text"] = word_predictions[4]
 			# sleep for 5 seconds before listening again
 			time.sleep(self.sleeptime)
 			#words_list = []
