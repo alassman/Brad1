@@ -6,7 +6,9 @@ import UI_code.navigation
 from tkinter import *
 from speechToText.speak import listen
 import tellnext_changed.tellnext.tool as tellnext
-import threadedDoublePress
+import tellnext_changed.tellnext.model as tellnext_model
+import tellnext_changed.tellnext.store as store
+
 
 # from mastodon.bindict import BinaryDictionary
 
@@ -28,7 +30,7 @@ class applicationScreen(Frame):
 		self.fifth_word = None
 		self.selected_word = None
 		self.selected_word_label = None
-		self.words_list = []
+		self.last_spoken = []
 		#self.t1 = _thread.start_new_thread(self.listen_for_words, ())
 		_thread.start_new_thread(self.listen_for_words, ())
 		#_thread.start_new_thread(self.listen_for_button_press, ())
@@ -86,6 +88,7 @@ class applicationScreen(Frame):
 		print("listening for words")
 		# establish binary dictionary for later prediction
 		path = os.getcwd() + "/mastodon/fiction.dict"
+		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
 		#binary_dict = BinaryDictionary.from_file(path)
 		while self.quit is not True:
 			# no word on screen was selected
@@ -94,20 +97,22 @@ class applicationScreen(Frame):
 				# call Jenny's function to hear from microphone
 				words_from_mic = listen()
 				# parse words from Jenny's function
-				self.words_list = words_from_mic.split()
+				words_list = words_from_mic.split()
 				if(len(words_list) > 2):
-					self.words_list = words_list[len(words_list) - 2:]
+					words_list = words_list[len(words_list) - 2:]
 				elif(len(words_list) == 1):
-					self.words_list.append(None) 
+					words_list.append(None) 
 				# call Lihu's function
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				self.last_spoken = words_list
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
 			# predict word from selected word on screen
 			else:
 				# append to words_list
-				self.words_list.append[self.selected_word]
-				self.words_list = words_list[len(words_list) - 2:]
+				words_list.append[self.selected_word]
+				words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				self.last_spoken = words_list
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
 				# set the selected word to None
 				self.selected_word = None
 			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
