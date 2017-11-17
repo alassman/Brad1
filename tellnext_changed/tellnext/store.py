@@ -1,6 +1,7 @@
 import abc
 import collections
 import sqlite3
+import random
 
 
 class BaseStore(object, metaclass=abc.ABCMeta):
@@ -102,8 +103,15 @@ class SQLiteStore(BaseStore):
                 sql_cmd_tmp = 'DELETE FROM markov_model WHERE word_1 = %s AND word_2 = %s AND word_3 = %s' %(i[0], i[1], i[2])
                 self.connection.execute( sql_cmd_tmp )
 
+    def get_rand_word(self):
+        numrow = self.count()
+        print(numrow)
+        query = self.connection.execute(
+            '''SELECT word_1 FROM markov_model LIMIT 1 OFFSET %d''' % int(numrow * random.random())
+        )
 
-# (word_1, word_2, word_3) in (
+        for row in query:
+            return row[0]
             
 
 

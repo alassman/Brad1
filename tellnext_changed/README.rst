@@ -19,7 +19,7 @@ Dependencies::
 
 Train your language model::
 
-    python -m tellnext --database MODEL.db train 1.TXT
+    python -m tellnext_changed.tellnext --database MODEL.db train .\tellnext_changed\test.TXT
 
 Train using Twitter Tweets::
 
