@@ -204,6 +204,12 @@ class applicationScreen(Frame):
 					self.first_key = self.second_key
 					self.second_key = None
 
+				if self.selected_word is not None:
+					# display the word
+					self.selected_word_label["text"] = self.selected_word
+					# say the word
+					subprocess.call('say ' + self.selected_word, shell=True)
+
 				
 
 
