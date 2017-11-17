@@ -230,6 +230,16 @@ class applicationScreen(Frame):
 
 
 	def load_titles(self):
+		# get word predictions
+		word_predictions = tellnext.new_next_word()
+		self.first_word = word_predictions[0]
+		self.second_word = word_predictions[1]
+		self.third_word = word_predictions[2]
+		if self.num_words > 3:
+			self.fourth_word = word_predictions[3]
+		if self.num_words > 4:
+			self.fifth_word = word_predictions[4]
+		# load titles
 		title = Label(self.parent, text="The Microphone is Listening", font=("Times New Roman", 60), fg="black")
 		title.pack(fill=X)
 		# back button - always there
