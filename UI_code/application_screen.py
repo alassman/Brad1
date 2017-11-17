@@ -28,6 +28,7 @@ class applicationScreen(Frame):
 		self.fifth_word = None
 		self.selected_word = None
 		self.selected_word_label = None
+		self.words_list = []
 		#self.t1 = _thread.start_new_thread(self.listen_for_words, ())
 		_thread.start_new_thread(self.listen_for_words, ())
 		#_thread.start_new_thread(self.listen_for_button_press, ())
@@ -93,33 +94,30 @@ class applicationScreen(Frame):
 				# call Jenny's function to hear from microphone
 				words_from_mic = listen()
 				# parse words from Jenny's function
-				words_list = words_from_mic.split()
+				self.words_list = words_from_mic.split()
 				if(len(words_list) > 2):
-					words_list = words_list[len(words_list) - 2:]
+					self.words_list = words_list[len(words_list) - 2:]
 				elif(len(words_list) == 1):
-					words_list.append(None) 
+					self.words_list.append(None) 
 				# call Lihu's function
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
 			# predict word from selected word on screen
 			else:
 				# append to words_list
-				words_list.append[self.selected_word]
-				words_list = words_list[len(words_list) - 2:]
+				self.words_list.append[self.selected_word]
+				self.words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
 				# set the selected word to None
 				self.selected_word = None
 			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
-			if len(words_list) > 0:
-				self.first_word["text"] = words_list[0]
-			if len(words_list) > 1:
-				self.second_word["text"] = words_list[1]
-			if len(words_list) > 2:
-				self.third_word["text"] = words_list[2]
-			if len(words_list) > 3:
-				self.fourth_word["text"] = words_list[3]
-			if len(words_list) > 4:
-				self.fifth_word["text"] = words_list[4]
+			self.first_word["text"] = self.words_list[0]
+			self.second_word["text"] = self.words_list[1]
+			self.third_word["text"] = self.words_list[2]
+			if self.num_words > 3:
+				self.fourth_word["text"] = self.words_list[3]
+			if self.num_words > 4:
+				self.fifth_word["text"] = self.words_list[4]
 			# sleep for 5 seconds before listening again
 			time.sleep(self.sleeptime)
 			#words_list = []
