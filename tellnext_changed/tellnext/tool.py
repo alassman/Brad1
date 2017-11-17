@@ -55,13 +55,13 @@ def main():
         arg_parser.print_usage()
         sys.exit(1)
 
-    store = tellnext.store.SQLiteStore(path=args.database)
-    model = tellnext.model.MarkovModel(store=store)
+    store = tellnext_changed.tellnext.store.SQLiteStore(path=args.database)
+    model = tellnext_changed.tellnext.model.MarkovModel(store=store)
     args.func(args, model)
 
 def train_by_twitter(args, model):
     for path in args.path:
-        lines = tellnext.training.from_twitter_dump(path, sample=args.sample)
+        lines = tellnext_changed.tellnext.training.from_twitter_dump(path, sample=args.sample)
 
         train(args, model, lines)
 
@@ -73,10 +73,8 @@ def train_by_plain_text(args, model):
 
 def train(args, model, lines, lower_case=True):
     count = 0
-
-    trigrams = tellnext.training.process_trigrams(lines, lower_case=lower_case)
-
-    for index, trigrams_group in enumerate(tellnext.util.group(trigrams, size=10000)):
+    trigrams = tellnext_changed.tellnext.training.process_trigrams(lines, lower_case=lower_case)
+    for index, trigrams_group in enumerate(tellnext_changed.tellnext.util.group(trigrams, size=10000)):
         model.train(trigrams_group)
 
         count += len(trigrams_group)
@@ -90,7 +88,7 @@ def train(args, model, lines, lower_case=True):
 
 
 def generate(args, model):
-    generator = tellnext.generator.Generator(model)
+    generator = tellnext_changed.tellnext.generator.Generator(model)
 
     if args.seed_word:
         words = args.seed_word.split()

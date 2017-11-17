@@ -13,10 +13,10 @@ _logger = logging.getLogger(__name__)
 
 
 def from_twitter_dump(dir_path, sample=None):
-    docs = tellnext.util.iter_archive_dir_json(dir_path)
+    docs = tellnext_changed.tellnext.util.iter_archive_dir_json(dir_path)
 
     if sample:
-        docs = tellnext.util.sample_from(docs, sample)
+        docs = tellnext_changed.tellnext.util.sample_from(docs, sample)
 
     for doc in docs:
         line = filter_twitter_text(doc)
@@ -86,11 +86,11 @@ def process_trigrams(lines, lower_case=True):
         if index % 10000 == 0:
             _logger.info('Processed %d lines', index)
 
-        sentences = tellnext.token.sentence_tokenize(line)
+        sentences = tellnext_changed.tellnext.token.sentence_tokenize(line)
 
         for sentence in sentences:
-            words = tellnext.token.prepare_tokens(sentence,
+            words = tellnext_changed.tellnext.token.prepare_tokens(sentence,
                                                   lower_case=lower_case)
 
-            for trigram in tellnext.token.to_trigrams(words):
+            for trigram in tellnext_changed.tellnext.token.to_trigrams(words):
                 yield trigram
