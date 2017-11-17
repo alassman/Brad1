@@ -6,6 +6,7 @@ import UI_code.navigation
 from tkinter import *
 from speechToText.speak import listen
 import tellnext_changed.tellnext.tool as tellnext
+import threadedDoublePress
 
 # from mastodon.bindict import BinaryDictionary
 
@@ -27,40 +28,85 @@ class applicationScreen(Frame):
 		self.fifth_word = None
 		self.selected_word = None
 		self.selected_word_label = None
-		self.t1 = _thread.start_new_thread(self.listen_for_words, ())
+		#self.t1 = _thread.start_new_thread(self.listen_for_words, ())
+		_thread.start_new_thread(self.listen_for_words, ())
 		#_thread.start_new_thread(self.listen_for_button_press, ())
 		self.pack()
 		self.form_screen()
-		# alpha code only
-		self.first_key = None
-		self.second_key = None
-		self.end_time = None
+		# launch the button listener
+		self.buttonListener = ButtonListener(self.clicktime, True)
+		self.buttonListener.launch()
+		_thread.start_new_thread(self.wait_on_button_signal, ())
+		# ALPHA CODE ONLY
+		#self.first_key = None
+		#self.second_key = None
+		#self.end_time = None
 		self.quit = False
-		self.parent.bind("<KeyRelease>", self.on_button_press)
-		self.t2 = _thread.start_new_thread(self.wait_on_button_press, ())
+
+		#self.parent.bind("<KeyRelease>", self.on_button_press)
+		#self.t2 = _thread.start_new_thread(self.wait_on_button_press, ())
+		#_thread.start_new_thread(self.wait_on_button_press, ())
+
+	def wait_on_button_signal():
+		while self.quit is not True:
+			# if there is a selection
+			if self.buttonListener.selection:
+				# set the selected word
+				if self.buttonListener.selection == 1:
+					print("SINGLE PRESS LEFT")
+					self.selected_word = self.first_word["text"]
+				elif self.buttonListener.selection == 2:
+					print("SINGLE PRESS UP")
+					self.selected_word = self.second_word["text"]
+				elif self.buttonListener.selection == 3:
+					print("SINGLE PRESS RIGHT")
+					self.selected_word = self.third_word["text"]
+				elif self.buttonListener.selection == 4:
+					print("DOUBLE PRESS LEFT")
+					UI_code.navigation.back_to_menu(self.parent, True, 
+						self.num_words, self.sleeptime, self.clicktime)
+					self.quit = True
+				elif self.buttonListener.selection == 5:
+					print("DOUBLE PRESS UP")
+					self.selected_word = self.fourth_word["text"]
+				else:
+					print("DOUBLE PRESS RIGHT")
+					self.selected_word = self.fifth_word["text"]
+
+				# display the word
+				self.selected_word_label["text"] = self.selected_word
+				# say the word
+				subprocess.call('say ' + self.selected_word, shell=True)
+			# this will ensure that the selected word is only spoken once
+			self.buttonListener.selection = None
 
 
 	def listen_for_words(self):
+		print("listening for words")
 		# establish binary dictionary for later prediction
 		path = os.getcwd() + "/mastodon/fiction.dict"
 		#binary_dict = BinaryDictionary.from_file(path)
-		while not self.quit:
+		while self.quit is not True:
 			# no word on screen was selected
 			if self.selected_word is None:
+				print("no selected word")
 				# call Jenny's function to hear from microphone
 				words_from_mic = listen()
 				# parse words from Jenny's function
 				words_list = words_from_mic.split()
+				if(len(words_list) > 2):
+					words_list = words_list[len(words_list) - 2:]
+				elif(len(words_list) == 1):
+					words_list.append(None) 
 				# call Lihu's function
-				#word_predictions = binary_dict.get_predictions_five_words(words_list,
-					#self.num_words)
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
 			# predict word from selected word on screen
 			else:
 				# append to words_list
 				words_list.append[self.selected_word]
+				words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
-				#word_predictions = binary_dict.get_predictions_five_words(words_list, 
-					#self.num_words)
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
 				# set the selected word to None
 				self.selected_word = None
 			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
@@ -99,6 +145,7 @@ class applicationScreen(Frame):
 	
 	# this function is alpha only		
 	def wait_on_button_press(self):
+		print("waiting on button press")
 		#'''engine = pyttsx.init()
 		#engine.say("HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED")
 		#engine.runAndWait()'''
@@ -156,12 +203,7 @@ class applicationScreen(Frame):
 					self.first_key = self.second_key
 					self.second_key = None
 
-				# if a word has been selected
-				if self.selected_word is not None:
-					# display the word
-					self.selected_word_label["text"] = self.selected_word
-					# say the word
-					subprocess.call('say ' + self.selected_word, shell=True)
+				
 
 
 

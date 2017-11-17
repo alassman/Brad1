@@ -2,6 +2,7 @@ from itertools import cycle
 import tkinter as tk 
 from tkinter import *
 import UI_code.navigation
+import threadedDoublePress
 
 class tutorialScreen(Frame):
 	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
@@ -9,7 +10,7 @@ class tutorialScreen(Frame):
 		self.parent = parent
 		self.pack()
 		self.form_screen()
-		self.parent.bind("<KeyRelease>", self.on_button_press)
+		#self.parent.bind("<KeyRelease>", self.on_button_press)
 
 		# set up the slideshow
 		self.slideshow_counter = None
@@ -19,6 +20,25 @@ class tutorialScreen(Frame):
 		self.num_words = num_words
 		self.sleeptime = sleeptime
 		self.clicktime = clicktime
+
+		# start button listener
+		self.buttonListener = ButtonListener(self.clicktime)
+		self.buttonListener.launch()
+		_thread.start_new_thread(self.wait_on_button_signal, ())
+
+	def wait_on_button_signal():
+		while True:
+			# if there is a selection
+			if self.buttonListener.selection:
+				# left button was pressed
+				if self.slideshow_counter < (len(self.image_files) - 1):
+					self.slideshow_counter += 1
+					self.slideshow()
+				else:
+					UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+						self.sleeptime, self.clicktime)
+			# this will ensure that the selected word is only spoken once
+			self.buttonListener.selection = None
 
 	def form_screen(self):
     	# set color to off-white

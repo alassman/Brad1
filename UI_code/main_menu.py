@@ -1,5 +1,6 @@
 import tkinter as tk 
 import UI_code.navigation # import startTutorial, startApplication, startSettings
+import threadedDoublePress
 from tkinter import *
 
 '''
@@ -15,6 +16,29 @@ class menuFrame(Frame):
 		self.num_words = num_words
 		self.pack()
 		self.form_screen()
+		# launch button listener
+		self.buttonListener = ButtonListener(self.clicktime)
+		self.buttonListener.launch()
+		_thread.start_new_thread(self.wait_on_button_signal, ())
+
+	def wait_on_button_signal():
+		while True:
+			# if there is a selection
+			if self.buttonListener.selection:
+				# left button was pressed
+				if self.buttonListener.selection == 1:
+					UI_code.navigation.startTutorial(self.parent, 
+						self.num_words, self.sleeptime, self.clicktime)
+				# up button was pressed
+				elif self.buttonListener.selection == 2:
+					UI_code.navigation.startApplication(self.parent,
+						self.num_words, self.sleeptime, self.clicktime)
+				# right button was pressed
+				else:
+					UI_code.navigation.startSettings(self.parent, 
+						self.num_words, self.sleeptime, self.clicktime)
+			# this will ensure that the selected word is only spoken once
+			self.buttonListener.selection = None
 
 	def form_screen(self):
     	# set color to off-white
