@@ -19,7 +19,7 @@ Dependencies::
 
 Train your language model::
 
-    python -m tellnext_changed.tellnext --database MODEL.db train .\tellnext_changed\test.TXT
+    python -m tellnext_changed.tellnext --database MODEL.db train .\tellnext_changed\1.TXT .\tellnext_changed\2.TXT .\tellnext_changed\3.TXT .\tellnext_changed\4.TXT .\tellnext_changed\5.TXT .\tellnext_changed\6.TXT .\tellnext_changed\7.TXT .\tellnext_changed\8.TXT .\tellnext_changed\9.TXT .\tellnext_changed\ButterflyEffect.TXT
 
 Train using Twitter Tweets::
 

@@ -45,6 +45,8 @@ class applicationScreen(Frame):
 		self.second_key = None
 		self.end_time = None
 		self.quit = False
+		self.model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
+		self.last_two_words = [None, None]
 
 		self.parent.bind("<KeyRelease>", self.on_button_press)
 		_thread.start_new_thread(self.wait_on_button_press, ())
@@ -79,13 +81,14 @@ class applicationScreen(Frame):
 				self.selected_word_label["text"] = self.selected_word
 				# say the word
 				subprocess.call('say ' + self.selected_word, shell=True)
+				tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word, self.model)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
 
 
 	def listen_for_words(self):
 		print("listening for words")
-		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
+		
 		# establish binary dictionary for later prediction
 		path = os.getcwd() + "/mastodon/fiction.dict"
 		#binary_dict = BinaryDictionary.from_file(path)
@@ -102,14 +105,18 @@ class applicationScreen(Frame):
 				elif(len(words_list) == 1):
 					words_list.append(None) 
 				# call Lihu's function
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], self.model)
+				self.last_two_words[0] = words_list[0]
+				self.last_two_words[1] = words_list[1]
 			# predict word from selected word on screen
 			else:
 				# append to words_list
 				words_list.append[selected_word]
 				words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], self.model)
+				self.last_two_words[0] = words_list[0]
+				self.last_two_words[1] = words_list[1]
 				# set the selected word to None
 				selected_word = None
 			print("length of word predictions: " +str(len(word_predictions)))
@@ -210,8 +217,8 @@ class applicationScreen(Frame):
 					self.selected_word_label["text"] = self.selected_word
 					# say the word
 					subprocess.call('say ' + self.selected_word, shell=True)
+					
 
-				
 
 
 

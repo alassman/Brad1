@@ -127,23 +127,31 @@ def next_word(args, model, num_returned = 5):
         return_list.append(word)
     return return_list
 
-def new_next_word(word_1 = None, word_2 = None, store = store.SQLiteStore(path='MODEL.db'), model = model.MarkovModel(store=store.SQLiteStore(path='MODEL.db')), num_returned = 5, explore_prob = 0.8):
-    if not word_1 and not word_2:
-        return []
-    elif word_1 and not word_2:
+def new_next_word(word_1, word_2, model, num_returned = 5, explore_prob = 1):
+
+    if word_1 and not word_2:
         word_2 = word_1
         word_1 = None
         
     trigram_model = model.get_trigram_model(word_1, word_2)
     return_list = []
-    for word, score in trigram_model.most_common(num_returned):
-        return_list.append(word)
-    # if random.random() < explore_prob:
-    #     return_list[len(return_list) - 1] = store.get_rand_word()
+    for word, score in trigram_model.most_common(100):
+        if word.isalpha():
+            return_list.append(word)
+            if len(return_list) >= num_returned:
+                break
+    print(return_list)
+    if random.random() < explore_prob:
+        return_list[len(return_list) - 1] = model.store.get_rand_word()
     print(return_list)
     return return_list
 
-def update_model(word_1, word_2, word_3, model = model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))):
+def update_model(word_1, word_2, word_3, model, lower_case = True):
+    if not word_3:
+        return
+    if word_1 and not word_2:
+        word_2 = word_1
+        word_1 = None
     line = word_1 + ' ' + word_2 + ' ' + word_3
     trigrams = tellnext_changed.tellnext.training.process_trigrams([line], lower_case=lower_case)
     for index, trigrams_group in enumerate(tellnext_changed.tellnext.util.group(trigrams, size=10000)):

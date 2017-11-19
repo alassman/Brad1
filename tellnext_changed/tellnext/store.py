@@ -105,7 +105,6 @@ class SQLiteStore(BaseStore):
 
     def get_rand_word(self):
         numrow = self.count()
-        print(numrow)
         query = self.connection.execute(
             '''SELECT word_1 FROM markov_model LIMIT 1 OFFSET %d''' % int(numrow * random.random())
         )
