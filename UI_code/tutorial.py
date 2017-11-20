@@ -22,6 +22,8 @@ class tutorialScreen(Frame):
 		self.sleeptime = sleeptime
 		self.clicktime = clicktime
 
+		self.last_key = None
+		self.key = None
 		# start button listener
 		#self.buttonListener = ButtonListener(self.clicktime)
 		#self.buttonListener.launch()
@@ -84,10 +86,36 @@ class tutorialScreen(Frame):
 
 	# navigate back to the menu screen
 	def on_button_press(self, event):
-		if self.slideshow_counter < (len(self.image_files) - 1):
+		self.key = int(ord(event.char))
+		if (self.slideshow_counter == 0 or self.slideshow_counter == 4 
+			or self.slideshow_counter == 5 or self.slideshow_counter == 8
+			or self.slideshow_counter == 9):
 			self.slideshow_counter += 1
 			self.slideshow()
-		else:
+		elif (self.slideshow_counter == 1 and self.key == 63232):
+			print("Here")
+			self.slideshow_counter += 1
+			self.slideshow()
+		elif self.slideshow_counter == 2 and int(self.key) == 63235:
+			self.slideshow_counter += 1
+			self.slideshow()
+		elif self.slideshow_counter == 3 and self.key == 63234:
+			self.slideshow_counter += 1
+			self.slideshow()
+		elif self.slideshow_counter == 6:
+			if self.key == self.last_key:
+				self.last_key = None
+				self.slideshow_counter += 1
+				self.slideshow()
+			else:
+				self.last_key = self.key
+		elif self.slideshow_counter == 7:
+			if self.key == 63234 and self.last_key == 63234:
+				self.last_key = None
+				self.slideshow_counter += 1
+				self.slideshow()
+			else:
+				self.last_key = self.key
+		elif self.slideshow_counter == 10:
 			UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
 				self.sleeptime, self.clicktime)
-
