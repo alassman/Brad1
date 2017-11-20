@@ -10,6 +10,8 @@ import tellnext_changed.tellnext.token
 import tellnext_changed.tellnext.generator
 import tellnext_changed.tellnext.util
 
+# ERROR 1: If you only say one word, it only predicts 1 word
+# ERROR 2: not returning words when more than 2 are spoken
 
 _logger = logging.getLogger(__name__)
 
