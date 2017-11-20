@@ -137,16 +137,16 @@ def new_next_word(word_1, word_2, model, num_returned = 5, explore_prob = 1):
         
     trigram_model = model.get_trigram_model(word_1, word_2)
     return_list = []
-    for word, score in trigram_model.most_common(100):
-        print("word: " + word + " --- score: " + str(score))
+    for word, score in trigram_model.most_common(2 * num_returned):
         if word.isalpha():
             return_list.append(word)
             if len(return_list) >= num_returned:
                 break
-    print(return_list)
-    if random.random() < explore_prob:
+    if random.random() < explore_prob and len(return_list) > 1:
         return_list[len(return_list) - 1] = model.store.get_rand_word()
-    print(return_list)
+    if len(return_list) < num_returned:
+        for _ in range(num_returned - len(return_list)):
+            return_list.append("")
     return return_list
 
 def update_model(word_1, word_2, word_3, model, lower_case = True):

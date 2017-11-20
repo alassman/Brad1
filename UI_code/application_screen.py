@@ -80,7 +80,8 @@ class applicationScreen(Frame):
 				self.selected_word_label["text"] = self.selected_word
 				# say the word
 				subprocess.call('say ' + self.selected_word, shell=True)
-				tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word, self.model)
+				model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
+				tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word, model)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
 
@@ -105,6 +106,7 @@ class applicationScreen(Frame):
 					words_list.append(None) 
 				# call Lihu's function
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
+				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]
 			# predict word from selected word on screen
@@ -114,6 +116,7 @@ class applicationScreen(Frame):
 				words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
+				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]
 				# set the selected word to None
