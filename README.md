@@ -17,7 +17,7 @@ You must run the following terminal commands on a Mac computer:
 	4. brew install portaudio
 
 	5. pip install pyaudio
-		- The above install the requirement for using the microphone with the Mac
+		- The above installs the requirement for using the microphone with the Mac
 
 	6. pip install SpeechRecognition
 		- The above installs the requirement for using the sphinx engine on the Mac
@@ -25,20 +25,22 @@ You must run the following terminal commands on a Mac computer:
 	7. pip install tkinter
 		- This installs the tkinter package for building GUIs in Python
 		
+	8. follow the instructions in the following link to install NLTK (version >= 3.0)
+		- http://www.nltk.org/install.html
+	
+	9. pip install langdetect
+		- The above installs the requirement for using tellnext word prediction
+			
 	8. navigate to the directory entitled "Brad1" and run: python main.py
 
 # User Instructions:
 
-	We ran into some of the issues with running the word prediction software on Mac. However, it works on Linux. 
-	As of now, this program listens for words, and the words it hears populates the screen (instead of the
-	predicted words). The arrows on the screen correspond to directional buttons on the keyboard, and selecting
-	an arrow will cause the corresponding word to be said outloud. The program is constantly listening, so new 
-	words will populate the screen every 5-10 seconds. 
-
-	The word prediction is a standalone. Go to the mastadon folder and type ./bindict.py. If you get an error saying
-	permission denied, please tpye $ chmod 777 *. This will give you read/write access to all files in the mastodon
-	directory. Again, run ./bindict.py and you will be prompted to enter words for the prediction tree. Make sure
-	the input is surrounded by quotation marks.
-
-
+	This is a word prediction program, navigated via a custom foot pedal. For this release, the foot pedal
+	is not integrated into the system, but it is complete. As of now, the program starts with populated
+	predicted words. Simultaneously, the program listens for words, and the words it hears are sent to the
+	word prediction software. The arrows on the screen correspond to directional buttons on the keyboard, and selecting
+	an arrow will cause the corresponding word to be said outloud. 
+	
+	In addition, there is a tutorial which walks the user through the flow of the system. There are also customizable 
+	settings which can be changed at any time. 
 
