@@ -1,5 +1,6 @@
 from itertools import cycle
 import tkinter as tk 
+import os, sys
 from tkinter import *
 import UI_code.navigation
 #import threadedDoublePress
@@ -61,18 +62,19 @@ class tutorialScreen(Frame):
 	def slideshow(self):
 		# set up the slideshow variables
 		if self.slideshow_counter is None:
+			print(os.getcwd())
 			self.image_files = [
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/first_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/second_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/third_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/fourth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/fifth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/sixth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/seventh_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/eigth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/ninth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/tenth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/eleventh_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/first_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/second_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/third_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/fourth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/fifth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/sixth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/seventh_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/eigth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/ninth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/tenth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/eleventh_slide.gif',
 				]
 			self.slideshow_counter = 0
 			self.picture_display = tk.Label(self)
