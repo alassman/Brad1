@@ -45,7 +45,12 @@ class applicationScreen(Frame):
 		self.second_key = None
 		self.end_time = None
 		self.quit = False
+<<<<<<< HEAD
+		self.model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
+		print(self.model)
+=======
 		
+>>>>>>> f3114a236f6e8e9af564d4d212f3632379c5e1a6
 		self.last_two_words = [None, None]
 
 		self.parent.bind("<KeyRelease>", self.on_button_press)
