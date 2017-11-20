@@ -136,6 +136,7 @@ def new_next_word(word_1, word_2, num_returned = 5, explore_prob = 1):
         word_1 = None
         
     trigram_model = model1.get_trigram_model(word_1, word_2)
+    print(trigram_model)
     return_list = []
     for word, score in trigram_model.most_common(2 * num_returned):
         if word.isalpha():

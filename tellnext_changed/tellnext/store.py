@@ -111,6 +111,9 @@ class SQLiteStore(BaseStore):
 
         for row in query:
             return row[0]
+
+    def __del__(self):
+        self.connection.close()
             
 
 
