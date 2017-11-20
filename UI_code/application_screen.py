@@ -46,6 +46,7 @@ class applicationScreen(Frame):
 		self.end_time = None
 		self.quit = False
 		self.model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
+		print(self.model)
 		self.last_two_words = [None, None]
 
 		self.parent.bind("<KeyRelease>", self.on_button_press)
@@ -239,7 +240,7 @@ class applicationScreen(Frame):
 
 	def load_titles(self):
 		# get word predictions
-		word_predictions = tellnext.new_next_word()
+		word_predictions = tellnext.new_next_word(None, None, self.model)
 		self.first_word = word_predictions[0]
 		self.second_word = word_predictions[1]
 		self.third_word = word_predictions[2]
