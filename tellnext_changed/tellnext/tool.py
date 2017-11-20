@@ -144,9 +144,9 @@ def new_next_word(word_1, word_2, model, num_returned = 5, explore_prob = 1):
                 break
     if random.random() < explore_prob and len(return_list) > 1:
         return_list[len(return_list) - 1] = model.store.get_rand_word()
+    preset_list = ['I', 'Brad', 'what', 'how', 'that']
     if len(return_list) < num_returned:
-        for _ in range(num_returned - len(return_list)):
-            return_list.append("")
+        return_list += preset_list[:(num_returned - len(return_list))]
     return return_list
 
 def update_model(word_1, word_2, word_3, model, lower_case = True):

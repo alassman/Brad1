@@ -89,6 +89,7 @@ class applicationScreen(Frame):
 	def listen_for_words(self):
 		print("listening for words")
 		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
+		print(model)
 		# establish binary dictionary for later prediction
 		path = os.getcwd() + "/mastodon/fiction.dict"
 		#binary_dict = BinaryDictionary.from_file(path)
