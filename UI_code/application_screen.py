@@ -5,7 +5,7 @@ import sys
 
 import UI_code.navigation
 from tkinter import *
-from speechToText.speak import listen
+from speechToText.speak import Listener
 import tellnext_changed.tellnext.tool as tellnext
 import tellnext_changed.tellnext.model as tellnext_model
 import tellnext_changed.tellnext.store as store
@@ -36,6 +36,7 @@ class applicationScreen(Frame):
 		_thread.start_new_thread(self.listen_for_words, ())
 		self.pack()
 		self.form_screen()
+		self.listener = Listener()
 		# launch the button listener
 		#self.buttonListener = ButtonListener(self.clicktime, True)
 		#self.buttonListener.launch()
@@ -78,11 +79,19 @@ class applicationScreen(Frame):
 
 				# display the word
 				self.selected_word_label["text"] = self.selected_word
+				self.selected_word_label["foreground"] = "black"
 				# say the word
 				subprocess.call('say ' + self.selected_word, shell=True)
 				tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
+
+	def error_check_listening(self):
+		while True:
+			if(self.listener.speakAgain is True):
+				self.listener.speakAgain = False
+				self.selected_word_label["text"] = "Speak Again"
+				self.selected_word_label["foreground"] = "red"
 
 
 	def listen_for_words(self):
@@ -95,7 +104,10 @@ class applicationScreen(Frame):
 			if self.selected_word is None:
 				print("no selected word")
 				# call Jenny's function to hear from microphone
-				words_from_mic = listen()
+				_thread.start_new_thread(self.error_check_listening, ())
+				words_from_mic = self.listener.listen()
+				if self.selected_word_label["foreground"] == "red":
+					self.selected_word_label["text"] = ""
 				# parse words from Jenny's function
 				words_list = words_from_mic.split()
 				if(len(words_list) > 2):
@@ -225,6 +237,7 @@ class applicationScreen(Frame):
 				if toSay is not None:
 					# display the word
 					self.selected_word_label["text"] = toSay
+					self.selected_word_label["foreground"] = "black"
 					# say the word
 					subprocess.call('say ' + toSay, shell=True)
 					
@@ -262,7 +275,7 @@ class applicationScreen(Frame):
 		title = Label(self.parent, text="The Microphone is Listening", font=("Times New Roman", 60), fg="black")
 		title.pack(fill=X)
 		# back button - always there
-		back_button = Label(self.parent, text="Back", 
+		back_button = Label(self.parent, text="Exit", 
 			font=("Times New Roman", 48), fg="black", bg="#ff8080", width=10)
 		back_button.place(relx=0.05, rely=0.54, height=55)
 		# first word
