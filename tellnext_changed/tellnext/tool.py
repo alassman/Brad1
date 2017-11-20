@@ -150,6 +150,7 @@ def new_next_word(word_1, word_2, num_returned = 5, explore_prob = 1):
     return return_list
 
 def update_model(word_1, word_2, word_3, lower_case = True):
+    model1 = model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
     if not word_3:
         return
     if word_1 and not word_2:
@@ -158,7 +159,7 @@ def update_model(word_1, word_2, word_3, lower_case = True):
     line = word_1 + ' ' + word_2 + ' ' + word_3
     trigrams = tellnext_changed.tellnext.training.process_trigrams([line], lower_case=lower_case)
     for index, trigrams_group in enumerate(tellnext_changed.tellnext.util.group(trigrams, size=10000)):
-        model.train(trigrams_group)
+        model1.train(trigrams_group)
 
 def test(store=store.SQLiteStore(path='MODEL.db')):
     print(store.get_rand_word())
