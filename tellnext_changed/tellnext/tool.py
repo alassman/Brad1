@@ -130,12 +130,12 @@ def next_word(args, model, num_returned = 5):
     return return_list
 
 def new_next_word(word_1, word_2, model, num_returned = 5, explore_prob = 1):
-
     if word_1 and not word_2:
         word_2 = word_1
         word_1 = None
         
     trigram_model = model.get_trigram_model(word_1, word_2)
+    print(trigram_model)
     return_list = []
     for word, score in trigram_model.most_common(2 * num_returned):
         if word.isalpha():
