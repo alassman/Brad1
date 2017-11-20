@@ -80,19 +80,15 @@ class applicationScreen(Frame):
 				self.selected_word_label["text"] = self.selected_word
 				# say the word
 				subprocess.call('say ' + self.selected_word, shell=True)
-				model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
-				tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word, model)
+				#model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
+				#tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word, model)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
 
 
 	def listen_for_words(self):
 		print("listening for words")
-		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
-		print(model)
-		# establish binary dictionary for later prediction
-		path = os.getcwd() + "/mastodon/fiction.dict"
-		#binary_dict = BinaryDictionary.from_file(path)
+		# establish binary dictionary for later prediction		#binary_dict = BinaryDictionary.from_file(path)
 		while self.quit is not True:
 			# no word on screen was selected
 			if self.selected_word is None:
@@ -106,6 +102,7 @@ class applicationScreen(Frame):
 				elif(len(words_list) == 1):
 					words_list.append(None) 
 				# call Lihu's function
+				model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
 				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
@@ -116,6 +113,7 @@ class applicationScreen(Frame):
 				words_list.append(self.selected_word)
 				words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
+				model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
 				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
@@ -244,6 +242,7 @@ class applicationScreen(Frame):
 		# get word predictions
 		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
 		word_predictions = tellnext.new_next_word(None, None, model)
+		word_predictions = ['I', 'Brad', 'what', 'how', 'that']
 		self.first_word = word_predictions[0]
 		self.second_word = word_predictions[1]
 		self.third_word = word_predictions[2]
