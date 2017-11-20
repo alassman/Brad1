@@ -104,6 +104,7 @@ class applicationScreen(Frame):
 					words_list.append(None) 
 				# call Lihu's function
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]
 			# predict word from selected word on screen
@@ -248,7 +249,8 @@ class applicationScreen(Frame):
 
 	def load_titles(self):
 		# get word predictions
-		word_predictions = tellnext.new_next_word(None, None)
+		#word_predictions = tellnext.new_next_word(None, None)
+		word_predictions = ["I", "How", "Hello",  "My", "Can"]
 		self.first_word = word_predictions[0]
 		self.second_word = word_predictions[1]
 		self.third_word = word_predictions[2]
