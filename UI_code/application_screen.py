@@ -108,7 +108,6 @@ class applicationScreen(Frame):
 				self.last_two_words[1] = words_list[1]
 			# predict word from selected word on screen
 			else:
-				print("IN HERE")
 				# append to words_list
 				words_list.append(self.selected_word)
 				if(len(words_list) >= 2):
@@ -162,6 +161,7 @@ class applicationScreen(Frame):
 		#engine.runAndWait()'''
 		#text = "HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED"
 		#subprocess.call('say ' + text, shell=True)
+		toSay = None
 		while not self.quit:
 			if self.end_time is not None:
 				# this is terrible, but keyboard interrupts are so terrible in this
@@ -173,16 +173,20 @@ class applicationScreen(Frame):
 					if(self.first_key == 63234):
 						print("SINGLE LEFT PRESS")
 						self.selected_word = self.first_word["text"]
+						toSay = self.selected_word
 					# up press
 					elif(self.first_key == 63232):
 						print("SINGLE UP PRESS")
 						self.selected_word = self.second_word["text"]
+						toSay = self.selected_word
 					# down press
 					elif(self.first_key == 63235):
 						print("SINGLE RIGHT PRESS")
 						self.selected_word = self.third_word["text"]
+						toSay = self.selected_word
 					else:
 						self.selected_word = None
+						toSay = self.selected_word
 					self.first_key = None
 					self.end_time = None
 				# double click
@@ -198,12 +202,15 @@ class applicationScreen(Frame):
 					elif(self.fourth_word["text"] and self.first_key == 63232):
 						print("DOUBLE UP PRESS")
 						self.selected_word = self.fourth_word["text"]
+						toSay = self.selected_word
 					# down press
 					elif(self.fifth_word["text"] and self.first_key == 63235):
 						print("DOUBLE RIGHT PRESS")
 						self.selected_word = self.fifth_word["text"]
+						toSay = self.selected_word
 					else:
 						self.selected_word = None
+						toSay = self.selected_word
 					self.first_key = None
 					self.second_key = None
 					self.end_time = None
@@ -214,11 +221,11 @@ class applicationScreen(Frame):
 					self.first_key = self.second_key
 					self.second_key = None
 
-				if self.selected_word is not None:
+				if toSay is not None:
 					# display the word
-					self.selected_word_label["text"] = self.selected_word
+					self.selected_word_label["text"] = toSay
 					# say the word
-					subprocess.call('say ' + self.selected_word, shell=True)
+					subprocess.call('say ' + toSay, shell=True)
 					
 
 
