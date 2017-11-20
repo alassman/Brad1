@@ -3,6 +3,8 @@ Creating a custom word prediction software to help increase speaking tempo
 
 # Instructions for Setup
 
+You must switch to desktop_version branch in order to run the version that runs on a computer.
+
 You must run the following terminal commands on a Mac computer:
 
 	1. /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -43,4 +45,7 @@ You must run the following terminal commands on a Mac computer:
 	
 	In addition, there is a tutorial which walks the user through the flow of the system. There are also customizable 
 	settings which can be changed at any time. 
+
+
+
 
