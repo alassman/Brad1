@@ -138,6 +138,7 @@ def new_next_word(word_1, word_2, model, num_returned = 5, explore_prob = 1):
     trigram_model = model.get_trigram_model(word_1, word_2)
     return_list = []
     for word, score in trigram_model.most_common(100):
+        print("word: " + word + " --- score: " + str(score))
         if word.isalpha():
             return_list.append(word)
             if len(return_list) >= num_returned:
