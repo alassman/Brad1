@@ -88,8 +88,19 @@ class applicationScreen(Frame):
 
 	def listen_for_words(self):
 		print("listening for words")
+<<<<<<< HEAD
 		# establish binary dictionary for later prediction		#binary_dict = BinaryDictionary.from_file(path)
+=======
+		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
+		print(model)
+		# establish binary dictionary for later prediction
+		path = os.getcwd() + "/mastodon/fiction.dict"
+		#binary_dict = BinaryDictionary.from_file(path)
+		words_list = []
+>>>>>>> d249e9f053e19a2ddbb201523f28503807c86285
 		while self.quit is not True:
+			# sleep for 5 seconds before listening again
+			time.sleep(self.sleeptime)
 			# no word on screen was selected
 			if self.selected_word is None:
 				print("no selected word")
@@ -109,9 +120,13 @@ class applicationScreen(Frame):
 				self.last_two_words[1] = words_list[1]
 			# predict word from selected word on screen
 			else:
+				print("IN HERE")
 				# append to words_list
 				words_list.append(self.selected_word)
-				words_list = words_list[len(words_list) - 2:]
+				if(len(words_list) >= 2):
+					words_list = words_list[len(words_list) - 2:]
+				elif len(words_list) == 1:
+					words_list.append(None)
 				# call Lihu's function
 				model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
@@ -130,8 +145,6 @@ class applicationScreen(Frame):
 				self.fourth_word["text"] = word_predictions[3]
 			if self.num_words > 4:
 				self.fifth_word["text"] = word_predictions[4]
-			# sleep for 5 seconds before listening again
-			time.sleep(self.sleeptime)
 			#words_list = []
 
 	# this function is alpha only
@@ -239,10 +252,14 @@ class applicationScreen(Frame):
 
 
 	def load_titles(self):
+<<<<<<< HEAD
 		# get word predictions
 		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
 		word_predictions = tellnext.new_next_word(None, None, model)
 		word_predictions = ['I', 'Brad', 'what', 'how', 'that']
+=======
+		word_predictions = ["I", "Hello", "How", "My", "Can"]
+>>>>>>> d249e9f053e19a2ddbb201523f28503807c86285
 		self.first_word = word_predictions[0]
 		self.second_word = word_predictions[1]
 		self.third_word = word_predictions[2]
