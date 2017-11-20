@@ -112,7 +112,7 @@ class applicationScreen(Frame):
 			# predict word from selected word on screen
 			else:
 				# append to words_list
-				words_list.append[selected_word]
+				words_list.append(self.selected_word)
 				words_list = words_list[len(words_list) - 2:]
 				# call Lihu's function
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
@@ -120,7 +120,7 @@ class applicationScreen(Frame):
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]
 				# set the selected word to None
-				selected_word = None
+				self.selected_word = None
 			print("length of word predictions: " +str(len(word_predictions)))
 			self.last_spoken = words_list
 			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
