@@ -252,14 +252,9 @@ class applicationScreen(Frame):
 
 
 	def load_titles(self):
-<<<<<<< HEAD
 		# get word predictions
 		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
 		word_predictions = tellnext.new_next_word(None, None, model)
-		word_predictions = ['I', 'Brad', 'what', 'how', 'that']
-=======
-		word_predictions = ["I", "Hello", "How", "My", "Can"]
->>>>>>> d249e9f053e19a2ddbb201523f28503807c86285
 		self.first_word = word_predictions[0]
 		self.second_word = word_predictions[1]
 		self.third_word = word_predictions[2]
