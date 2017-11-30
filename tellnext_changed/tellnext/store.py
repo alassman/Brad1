@@ -44,9 +44,10 @@ class SQLiteStore(BaseStore):
             ''')
 
     def add_many(self, trigrams):
-        trigrams = [(trigram[0] or '', trigram[1] or '', trigram[2] or '')
+        trigrams = [( (trigram[0] if trigram[0].isalpha() else '') if trigram[0] else '', 
+            (trigram[1] if trigram[1].isalpha() else '') if trigram[1] else '', 
+            (trigram[2] if trigram[2].isalpha() else '') if trigram[2] else '')
                     for trigram in trigrams]
-
         with self.connection:
             self.connection.executemany(
                 '''INSERT OR IGNORE INTO markov_model
@@ -65,8 +66,8 @@ class SQLiteStore(BaseStore):
     def get_trigram_values(self, word_1, word_2):
         query = self.connection.execute(
             '''SELECT word_3, count FROM markov_model
-            WHERE word_1 = ? AND word_2 = ?
-            ORDER BY count DESC LIMIT 1000
+            WHERE word_1 = ? AND word_2 = ? AND word_3 <> ""
+            ORDER BY count DESC LIMIT 100
             ''',
             (word_1 or '', word_2 or '')
         )
@@ -100,7 +101,8 @@ class SQLiteStore(BaseStore):
             for row in query:
                 delete_list.append(row)
             for i in delete_list:
-                sql_cmd_tmp = 'DELETE FROM markov_model WHERE word_1 = %s AND word_2 = %s AND word_3 = %s' %(i[0], i[1], i[2])
+                sql_cmd_tmp = '''DELETE FROM markov_model WHERE word_1 = \"%s\" AND word_2 = \"%s\" AND word_3 = \"%s\"'''%(i[0] or '', i[1] or '', i[2] or '')
+                print(sql_cmd_tmp)
                 self.connection.execute( sql_cmd_tmp )
 
     def get_rand_word(self):

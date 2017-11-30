@@ -1,3 +1,4 @@
+
 import argparse
 import logging
 import random
@@ -57,8 +58,8 @@ def main():
         arg_parser.print_usage()
         sys.exit(1)
 
-    store = store.SQLiteStore(path=args.database)
-    model = model.MarkovModel(store=store)
+    store = tellnext_changed.tellnext.store.SQLiteStore(path=args.database)
+    model = tellnext_changed.tellnext.model.MarkovModel(store=store)
     args.func(args, model)
 
 def train_by_twitter(args, model):
@@ -129,26 +130,33 @@ def next_word(args, model, num_returned = 5):
         return_list.append(word)
     return return_list
 
-def new_next_word(word_1, word_2, num_returned = 5, explore_prob = 1):
+def new_next_word(word_1, word_2, num_returned = 5, explore_prob = 0.8):
     model1 = model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
     if word_1 and not word_2:
         word_2 = word_1
         word_1 = None
         
     trigram_model = model1.get_trigram_model(word_1, word_2)
-    print(trigram_model)
     return_list = []
     for word, score in trigram_model.most_common(2 * num_returned):
-        if word.isalpha():
-            return_list.append(word)
-            if len(return_list) >= num_returned:
-                break
-    if random.random() < explore_prob and len(return_list) > 1:
-        return_list[len(return_list) - 1] = model1.store.get_rand_word()
-    preset_list = ['I', 'Brad', 'what', 'how', 'that']
+        if word and word.isalpha():
+            if len(word) > 1 or word == 'a' or word =='i' or word == 'o': 
+                return_list.append(word)
+                if len(return_list) >= num_returned:
+                    break
+
     if len(return_list) < num_returned:
-        return_list += preset_list[:(num_returned - len(return_list))]
-    return return_list
+        for _ in range(num_returned - len(return_list)):
+            rand_word = model1.store.get_rand_word()
+            while not rand_word or not (rand_word.isalpha() and (len(rand_word) > 1 or rand_word == 'a' or rand_word =='i' or rand_word == 'o')): 
+                rand_word = model1.store.get_rand_word()
+            return_list.append(rand_word)
+    elif random.random() < explore_prob and len(return_list) > 1:
+        rand_word = model1.store.get_rand_word()
+        while not rand_word or not (rand_word.isalpha() and (len(rand_word) > 1 or rand_word == 'a' or rand_word =='i' or rand_word == 'o')): 
+            rand_word = model1.store.get_rand_word()
+        return_list[len(return_list) - 1] = rand_word
+    return return_list    
 
 def update_model(word_1, word_2, word_3, lower_case = True):
     model1 = model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
@@ -157,11 +165,8 @@ def update_model(word_1, word_2, word_3, lower_case = True):
     if word_1 and not word_2:
         word_2 = word_1
         word_1 = None
-    line = word_1 + ' ' + word_2 + ' ' + word_3
+    line = (word_1 or '') + ' ' + (word_2 or '') + ' ' + (word_3 or '')
     trigrams = tellnext_changed.tellnext.training.process_trigrams([line], lower_case=lower_case)
     for index, trigrams_group in enumerate(tellnext_changed.tellnext.util.group(trigrams, size=10000)):
         model1.train(trigrams_group)
-
-def test(store=store.SQLiteStore(path='MODEL.db')):
-    print(store.get_rand_word())
 
