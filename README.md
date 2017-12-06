@@ -46,6 +46,8 @@ You must run the following terminal commands on a Mac computer:
 	In addition, there is a tutorial which walks the user through the flow of the system. There are also customizable 
 	settings which can be changed at any time. 
 
+# Note
 
-
+	Originally we were thinking about training Brad's voice with Sphinx. However, we found that the Google recogintion is
+	significantly better, with a 76% accuracy.
 

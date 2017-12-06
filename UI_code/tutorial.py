@@ -1,8 +1,9 @@
 from itertools import cycle
 import tkinter as tk 
+import os, sys
 from tkinter import *
 import UI_code.navigation
-import threadedDoublePress
+#import threadedDoublePress
 
 class tutorialScreen(Frame):
 	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
@@ -10,7 +11,7 @@ class tutorialScreen(Frame):
 		self.parent = parent
 		self.pack()
 		self.form_screen()
-		#self.parent.bind("<KeyRelease>", self.on_button_press)
+		self.parent.bind("<KeyRelease>", self.on_button_press)
 
 		# set up the slideshow
 		self.slideshow_counter = None
@@ -21,10 +22,12 @@ class tutorialScreen(Frame):
 		self.sleeptime = sleeptime
 		self.clicktime = clicktime
 
+		self.last_key = None
+		self.key = None
 		# start button listener
-		self.buttonListener = ButtonListener(self.clicktime)
-		self.buttonListener.launch()
-		_thread.start_new_thread(self.wait_on_button_signal, ())
+		#self.buttonListener = ButtonListener(self.clicktime)
+		#self.buttonListener.launch()
+		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal():
 		while True:
@@ -61,18 +64,19 @@ class tutorialScreen(Frame):
 	def slideshow(self):
 		# set up the slideshow variables
 		if self.slideshow_counter is None:
+			print(os.getcwd())
 			self.image_files = [
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/first_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/second_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/third_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/fourth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/fifth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/sixth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/seventh_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/eigth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/ninth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/tenth_slide.gif',
-				'/Users/roblevy/Desktop/Brad1/UI_code/tutorial_images/eleventh_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/first_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/second_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/third_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/fourth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/fifth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/sixth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/seventh_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/eigth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/ninth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/tenth_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/eleventh_slide.gif',
 				]
 			self.slideshow_counter = 0
 			self.picture_display = tk.Label(self)
@@ -82,10 +86,36 @@ class tutorialScreen(Frame):
 
 	# navigate back to the menu screen
 	def on_button_press(self, event):
-		if self.slideshow_counter < (len(self.image_files) - 1):
+		self.key = int(ord(event.char))
+		if (self.slideshow_counter == 0 or self.slideshow_counter == 4 
+			or self.slideshow_counter == 5 or self.slideshow_counter == 8
+			or self.slideshow_counter == 9):
 			self.slideshow_counter += 1
 			self.slideshow()
-		else:
+		elif (self.slideshow_counter == 1 and self.key == 63232):
+			print("Here")
+			self.slideshow_counter += 1
+			self.slideshow()
+		elif self.slideshow_counter == 2 and int(self.key) == 63235:
+			self.slideshow_counter += 1
+			self.slideshow()
+		elif self.slideshow_counter == 3 and self.key == 63234:
+			self.slideshow_counter += 1
+			self.slideshow()
+		elif self.slideshow_counter == 6:
+			if self.key == self.last_key:
+				self.last_key = None
+				self.slideshow_counter += 1
+				self.slideshow()
+			else:
+				self.last_key = self.key
+		elif self.slideshow_counter == 7:
+			if self.key == 63234 and self.last_key == 63234:
+				self.last_key = None
+				self.slideshow_counter += 1
+				self.slideshow()
+			else:
+				self.last_key = self.key
+		elif self.slideshow_counter == 10:
 			UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
 				self.sleeptime, self.clicktime)
-

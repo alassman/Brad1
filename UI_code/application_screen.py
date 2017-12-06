@@ -1,14 +1,15 @@
 import tkinter as tk 
 import _thread, time, os
 import subprocess
-import tty, termios, sys
+import sys
+
 import UI_code.navigation
 from tkinter import *
-from speechToText.speak import listen
+from speechToText.speak import Listener
 import tellnext_changed.tellnext.tool as tellnext
 import tellnext_changed.tellnext.model as tellnext_model
 import tellnext_changed.tellnext.store as store
-
+#import threadedDoublePress
 
 # from mastodon.bindict import BinaryDictionary
 
@@ -16,6 +17,7 @@ import tellnext_changed.tellnext.store as store
 
 class applicationScreen(Frame):
 	def __init__(self, parent=None, num_words=3, mic_sleep=3, clicktime=1):
+		print("Thread id in init(): " + str(_thread.get_ident()))
 		Frame.__init__(self, parent)
 		# THE FOLLOWING VARIABLES COME FROM SETTINGS
 		self.num_words = num_words
@@ -32,23 +34,24 @@ class applicationScreen(Frame):
 		self.selected_word_label = None
 		self.last_spoken = []
 		#self.t1 = _thread.start_new_thread(self.listen_for_words, ())
+
 		_thread.start_new_thread(self.listen_for_words, ())
-		#_thread.start_new_thread(self.listen_for_button_press, ())
 		self.pack()
 		self.form_screen()
+		self.listener = Listener()
 		# launch the button listener
-		self.buttonListener = ButtonListener(self.clicktime, True)
-		self.buttonListener.launch()
-		_thread.start_new_thread(self.wait_on_button_signal, ())
+		#self.buttonListener = ButtonListener(self.clicktime, True)
+		#self.buttonListener.launch()
+		#_thread.start_new_thread(self.wait_on_button_signal, ())
 		# ALPHA CODE ONLY
-		#self.first_key = None
-		#self.second_key = None
-		#self.end_time = None
+		self.first_key = None
+		self.second_key = None
+		self.end_time = None
 		self.quit = False
+		self.last_two_words = [None, None]
 
-		#self.parent.bind("<KeyRelease>", self.on_button_press)
-		#self.t2 = _thread.start_new_thread(self.wait_on_button_press, ())
-		#_thread.start_new_thread(self.wait_on_button_press, ())
+		self.parent.bind("<KeyRelease>", self.on_button_press)
+		_thread.start_new_thread(self.wait_on_button_press, ())
 
 	def wait_on_button_signal():
 		while self.quit is not True:
@@ -78,24 +81,36 @@ class applicationScreen(Frame):
 
 				# display the word
 				self.selected_word_label["text"] = self.selected_word
+				self.selected_word_label["foreground"] = "black"
 				# say the word
 				subprocess.call('say ' + self.selected_word, shell=True)
+				tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
+
+	def error_check_listening(self):
+		while True:
+			if(self.listener.speakAgain is True):
+				self.listener.speakAgain = False
+				self.selected_word_label["text"] = "Speak Again"
+				self.selected_word_label["foreground"] = "red"
 
 
 	def listen_for_words(self):
 		print("listening for words")
-		# establish binary dictionary for later prediction
-		path = os.getcwd() + "/mastodon/fiction.dict"
-		model = tellnext_model.MarkovModel(store=store.SQLiteStore(path='MODEL.db'))
-		#binary_dict = BinaryDictionary.from_file(path)
+
+		words_list = []
 		while self.quit is not True:
+			# sleep for 5 seconds before listening again
+			time.sleep(self.sleeptime)
 			# no word on screen was selected
 			if self.selected_word is None:
 				print("no selected word")
 				# call Jenny's function to hear from microphone
-				words_from_mic = listen()
+				_thread.start_new_thread(self.error_check_listening, ())
+				words_from_mic = self.listener.listen()
+				if self.selected_word_label["foreground"] == "red":
+					self.selected_word_label["text"] = ""
 				# parse words from Jenny's function
 				words_list = words_from_mic.split()
 				if(len(words_list) > 2):
@@ -103,28 +118,37 @@ class applicationScreen(Frame):
 				elif(len(words_list) == 1):
 					words_list.append(None) 
 				# call Lihu's function
-				self.last_spoken = words_list
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
+
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				print(word_predictions)
+				self.last_two_words[0] = words_list[0]
+				self.last_two_words[1] = words_list[1]
 			# predict word from selected word on screen
 			else:
 				# append to words_list
-				words_list.append[self.selected_word]
-				words_list = words_list[len(words_list) - 2:]
+				words_list.append(self.selected_word)
+				if(len(words_list) >= 2):
+					words_list = words_list[len(words_list) - 2:]
+				elif len(words_list) == 1:
+					words_list.append(None)
 				# call Lihu's function
-				self.last_spoken = words_list
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], model)
+				
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				print(word_predictions)
+				self.last_two_words[0] = words_list[0]
+				self.last_two_words[1] = words_list[1]
 				# set the selected word to None
 				self.selected_word = None
+			print("length of word predictions: " +str(len(word_predictions)))
+			self.last_spoken = words_list
 			# update the labels --> THIS NEEDS TO USE LIHU's PREDICTION
-			self.first_word["text"] = self.words_list[0]
-			self.second_word["text"] = self.words_list[1]
-			self.third_word["text"] = self.words_list[2]
+			self.first_word["text"] = word_predictions[0]
+			self.second_word["text"] = word_predictions[1]
+			self.third_word["text"] = word_predictions[2]
 			if self.num_words > 3:
-				self.fourth_word["text"] = self.words_list[3]
+				self.fourth_word["text"] = word_predictions[3]
 			if self.num_words > 4:
-				self.fifth_word["text"] = self.words_list[4]
-			# sleep for 5 seconds before listening again
-			time.sleep(self.sleeptime)
+				self.fifth_word["text"] = word_predictions[4]
 			#words_list = []
 
 	# this function is alpha only
@@ -154,6 +178,7 @@ class applicationScreen(Frame):
 		#engine.runAndWait()'''
 		#text = "HELLO WORLD I AM INITIALIZED, MY NAME IS ALFRED"
 		#subprocess.call('say ' + text, shell=True)
+		toSay = None
 		while not self.quit:
 			if self.end_time is not None:
 				# this is terrible, but keyboard interrupts are so terrible in this
@@ -165,16 +190,20 @@ class applicationScreen(Frame):
 					if(self.first_key == 63234):
 						print("SINGLE LEFT PRESS")
 						self.selected_word = self.first_word["text"]
+						toSay = self.selected_word
 					# up press
 					elif(self.first_key == 63232):
 						print("SINGLE UP PRESS")
 						self.selected_word = self.second_word["text"]
+						toSay = self.selected_word
 					# down press
 					elif(self.first_key == 63235):
 						print("SINGLE RIGHT PRESS")
 						self.selected_word = self.third_word["text"]
+						toSay = self.selected_word
 					else:
 						self.selected_word = None
+						toSay = self.selected_word
 					self.first_key = None
 					self.end_time = None
 				# double click
@@ -190,12 +219,15 @@ class applicationScreen(Frame):
 					elif(self.fourth_word["text"] and self.first_key == 63232):
 						print("DOUBLE UP PRESS")
 						self.selected_word = self.fourth_word["text"]
+						toSay = self.selected_word
 					# down press
 					elif(self.fifth_word["text"] and self.first_key == 63235):
 						print("DOUBLE RIGHT PRESS")
 						self.selected_word = self.fifth_word["text"]
+						toSay = self.selected_word
 					else:
 						self.selected_word = None
+						toSay = self.selected_word
 					self.first_key = None
 					self.second_key = None
 					self.end_time = None
@@ -206,7 +238,14 @@ class applicationScreen(Frame):
 					self.first_key = self.second_key
 					self.second_key = None
 
-				
+				if toSay is not None:
+					# display the word
+					self.selected_word_label["text"] = toSay
+					self.selected_word_label["foreground"] = "black"
+					# say the word
+					subprocess.call('say ' + toSay, shell=True)
+					
+
 
 
 
@@ -226,10 +265,21 @@ class applicationScreen(Frame):
 
 
 	def load_titles(self):
+		# get word predictions
+		#word_predictions = tellnext.new_next_word(None, None)
+		word_predictions = ["I", "How", "Hello",  "My", "Can"]
+		self.first_word = word_predictions[0]
+		self.second_word = word_predictions[1]
+		self.third_word = word_predictions[2]
+		if self.num_words > 3:
+			self.fourth_word = word_predictions[3]
+		if self.num_words > 4:
+			self.fifth_word = word_predictions[4]
+		# load titles
 		title = Label(self.parent, text="The Microphone is Listening", font=("Times New Roman", 60), fg="black")
 		title.pack(fill=X)
 		# back button - always there
-		back_button = Label(self.parent, text="Back", 
+		back_button = Label(self.parent, text="Exit", 
 			font=("Times New Roman", 48), fg="black", bg="#ff8080", width=10)
 		back_button.place(relx=0.05, rely=0.54, height=55)
 		# first word
