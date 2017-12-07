@@ -6,7 +6,7 @@ import UI_code.navigation
 #import threadedDoublePress
 
 class tutorialScreen(Frame):
-	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
+	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1, exploration=0.5):
 		Frame.__init__(self, parent)
 		self.parent = parent
 		self.pack()
@@ -21,6 +21,7 @@ class tutorialScreen(Frame):
 		self.num_words = num_words
 		self.sleeptime = sleeptime
 		self.clicktime = clicktime
+		self.exploration = exploration
 
 		self.last_key = None
 		self.key = None
@@ -39,7 +40,7 @@ class tutorialScreen(Frame):
 					self.slideshow()
 				else:
 					UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
-						self.sleeptime, self.clicktime)
+						self.sleeptime, self.clicktime, self.exploration)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
 
@@ -118,4 +119,4 @@ class tutorialScreen(Frame):
 				self.last_key = self.key
 		elif self.slideshow_counter == 10:
 			UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
-				self.sleeptime, self.clicktime)
+				self.sleeptime, self.clicktime, self.exploration)

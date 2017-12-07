@@ -5,12 +5,13 @@ import UI_code.navigation
 import _thread
 
 class settingsScreen(Frame):
-	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
+	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1, exploration=0.5):
 		Frame.__init__(self, parent)
 		# setting variables
 		self.num_words = num_words
 		self.clicktime = clicktime
 		self.sleeptime = sleeptime
+		self.exploration = exploration
 		self.parent = parent
 		self.pack()
 		
@@ -108,24 +109,31 @@ class settingsScreen(Frame):
 		text = "Press the up key to rotate.\nLeft to lessen variable.\nRight to increase variable value."
 		self.instructions = Label(self.parent, text= text, font=("Times New Roman", 18), fg="black")
 		self.instructions.place(relx=.35, rely=.2)
+		
+		# exploration_ratio
+		self.exploration_label = Label(self.parent,
+			text="Probability that a random word will be returned during prediction: " + str(self.exploration),
+			font=("Times New Roman", 18), fg="black")
+		self.exploration_label.place(relx=.3, rely=.4)
 		# number of words label
 		self.num_words_label = Label(self.parent, 
 			text="Number of words for the app to display is: " + str(self.num_words), 
 			font=("Times New Roman", 18), fg="black")
-		self.num_words_label.place(relx=.35, rely=.4)
+		self.num_words_label.place(relx=.35, rely=.5)
 		# sleep time label
 		self.sleeptime_label = Label(self.parent, 
 			text="Number of seconds for the microphone to sleep after listening: " + str(self.sleeptime), 
 			font=("Times New Roman", 18), fg="black")
-		self.sleeptime_label.place(relx=.35, rely=.5)
+		self.sleeptime_label.place(relx=.35, rely=.6)
 		# click time lable
 		self.clicktime_label = Label(self.parent, 
 			text="Number of seconds to consider the double-click interval: " + str(self.clicktime), 
 			font=("Times New Roman", 18), fg="black")
-		self.clicktime_label.place(relx=.35, rely=.6)
+		self.clicktime_label.place(relx=.35, rely=.7)
+		
 		# exit label
 		self.exit = Label(self.parent, text="Exit", font=("Times New Roman", 18, "bold"), fg="black")
-		self.exit.place(relx=.4, rely=.7)
+		self.exit.place(relx=.4, rely=.8)
 
 
 
@@ -144,15 +152,19 @@ class settingsScreen(Frame):
 			elif self.location == 2:
 				self.sleeptime_label["font"] = ("Times New Roman", 18)
 				self.num_words_label["font"] = ("Times New Roman", 18, "bold")
-			else:
+			elif self.location == 3:
 				self.num_words_label["font"] = ("Times New Roman", 18)
+				self.exploration_label["font"] = ("Times New Roman", 18, "bold")
+			else:
+				self.exploration_label["font"] = ("Times New Roman", 18)
 				self.exit["font"] = ("Times New Roman", 18, "bold")
-			self.location = (self.location + 1) % 4
+
+			self.location = (self.location + 1) % 5
 		elif(key == 63234):
 			if self.location == 0:
 				print("LEFT")
 				UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
-					self.sleeptime, self.clicktime)
+					self.sleeptime, self.clicktime, self.exploration)
 			elif self.location == 1:
 				if self.clicktime > 1:
 					self.clicktime = self.clicktime - 1
@@ -161,6 +173,10 @@ class settingsScreen(Frame):
 				if self.sleeptime > 1:
 					self.sleeptime = self.sleeptime - 1
 					self.sleeptime_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.sleeptime)
+			elif self.location == 4:
+				if self.exploration > 0:
+					self.exploration = self.exploration - 0.1
+					self.exploration_label["text"] = "Probability that a random word will be returned during prediction: " + str(self.exploration)
 			else:
 				if self.num_words > 3:
 					self.num_words = self.num_words - 1
@@ -170,13 +186,17 @@ class settingsScreen(Frame):
 			print("Right")
 			if self.location == 0:
 				UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
-					self.sleeptime, self.clicktime)
+					self.sleeptime, self.clicktime, self.exploration)
 			elif self.location == 1:
 				self.clicktime = 1 + self.clicktime
 				self.clicktime_label["text"] = ("Number of seconds to consider the double-click interval: " + str(self.clicktime))
 			elif self.location == 2:
 				self.sleeptime = self.sleeptime + 1
 				self.sleeptime_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.sleeptime)
+			elif self.location == 4:
+				if self.exploration < 1:
+					self.exploration = self.exploration + 0.1
+					self.exploration_label["text"] = "Probability that a random word will be returned during prediction: " + str(self.exploration)
 			else:
 				if self.num_words < 5:
 					self.num_words = self.num_words + 1

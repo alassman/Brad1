@@ -16,13 +16,14 @@ import tellnext_changed.tellnext.store as store
 # CHANGE TO LIHU'S CODE: I WILL ONLY NEED TO CALL next_word() FROM tellnext_changed.tellnext.tool
 
 class applicationScreen(Frame):
-	def __init__(self, parent=None, num_words=3, mic_sleep=3, clicktime=1):
+	def __init__(self, parent=None, num_words=3, mic_sleep=3, clicktime=1, exploration=0.5):
 		print("Thread id in init(): " + str(_thread.get_ident()))
 		Frame.__init__(self, parent)
 		# THE FOLLOWING VARIABLES COME FROM SETTINGS
 		self.num_words = num_words
 		self.sleeptime = mic_sleep
 		self.clicktime = clicktime
+		self.exploration = exploration
 		# THE FOLLOWING ARE NECESSARY FOR THIS APP TO FUNCTION
 		self.parent = parent
 		self.first_word = None
@@ -115,7 +116,8 @@ class applicationScreen(Frame):
 				elif(len(words_list) == 1):
 					words_list.append(None) 
 				# call Lihu's function
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], 
+					self.num_words, self.exploration)
 				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]
@@ -129,7 +131,8 @@ class applicationScreen(Frame):
 					words_list.append(None)
 				# call Lihu's function
 				
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1],
+					self.num_words, self.exploration)
 				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]

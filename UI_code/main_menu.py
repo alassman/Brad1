@@ -8,12 +8,13 @@ THEY SHOULD BE FRAMES NOT SEPARATE applications - maybe???
 '''
 
 class menuFrame(Frame):
-	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
+	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1, exploration=0.5):
 		Frame.__init__(self, parent)
 		self.parent = parent
 		self.sleeptime = sleeptime
 		self.clicktime = clicktime
 		self.num_words = num_words
+		self.exploration = exploration
 		self.pack()
 		self.form_screen()
 		# launch button listener
@@ -28,15 +29,15 @@ class menuFrame(Frame):
 				# left button was pressed
 				if self.buttonListener.selection == 1:
 					UI_code.navigation.startTutorial(self.parent, 
-						self.num_words, self.sleeptime, self.clicktime)
+						self.num_words, self.sleeptime, self.clicktime, self.exploration)
 				# up button was pressed
 				elif self.buttonListener.selection == 2:
 					UI_code.navigation.startApplication(self.parent,
-						self.num_words, self.sleeptime, self.clicktime)
+						self.num_words, self.sleeptime, self.clicktime, self.exploration)
 				# right button was pressed
 				else:
 					UI_code.navigation.startSettings(self.parent, 
-						self.num_words, self.sleeptime, self.clicktime)
+						self.num_words, self.sleeptime, self.clicktime, self.exploration)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
 
@@ -60,17 +61,17 @@ class menuFrame(Frame):
 		tutorial = Button(self.parent, text="Tutorial", 
 			font=("Times New Roman", 48), fg="black", width=10, 
 			command= lambda: UI_code.navigation.startTutorial(self.parent, 
-				self.num_words, self.sleeptime, self.clicktime))
+				self.num_words, self.sleeptime, self.clicktime, self.exploration))
 		tutorial.place(relx=0.04, rely=0.5, height=55)
 		start = Button(self.parent, text="Start", 
 			font=("Times New Roman", 48), fg="black", width=10, 
 			command= lambda: UI_code.navigation.startApplication(self.parent,
-				self.num_words, self.sleeptime, self.clicktime))
+				self.num_words, self.sleeptime, self.clicktime, self.exploration))
 		start.place(rely=.3, relx=.35, height=55)
 		settings = Button(self.parent, text="Settings", 
 			font=("Times New Roman", 48), fg="black", width=10, 
 			command =lambda: UI_code.navigation.startSettings(self.parent, 
-				self.num_words, self.sleeptime, self.clicktime))
+				self.num_words, self.sleeptime, self.clicktime, self.exploration))
 		settings.place(rely=0.5, relx=.66, height=55)
 
 	def load_arrows(self):
