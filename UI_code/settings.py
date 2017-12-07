@@ -15,11 +15,11 @@ class settingsScreen(Frame):
 		self.pack()
 		
 		self.font_size = 40
-		self.font_array = [12, 18, 24, 32, 40, 48, 56, 64]
+		#self.font_array = [12, 18, 24, 32, 40, 48, 56, 64]
 		self.parent.bind("<KeyRelease>", self.on_button_press)
 		# titles are below
 		self.title = None
-		self.font_size_label = None
+		#self.font_size_label = None
 		self.instructions = None
 		# location mapping: 0 - exit, 1 - clicktime, 2 - sleeptime, 3 - number of words
 		self.location = 0
@@ -52,7 +52,7 @@ class settingsScreen(Frame):
 					else:
 						if self.num_words > 3:
 							self.num_words = self.num_words - 1
-							self.num_words_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.num_words)
+							self.num_words_label["text"] = "Number of words for the app to display is: " + str(self.num_words)
 				# up button was pressed
 				elif self.buttonListener.selection == 2:
 					print("UP")
@@ -84,7 +84,7 @@ class settingsScreen(Frame):
 					else:
 						if self.num_words < 5:
 							self.num_words = self.num_words + 1
-							self.num_words_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.num_words)
+							self.num_words_label["text"] = "Number of words for the app to display is: " + str(self.num_words)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
 
@@ -164,7 +164,7 @@ class settingsScreen(Frame):
 			else:
 				if self.num_words > 3:
 					self.num_words = self.num_words - 1
-					self.num_words_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.num_words)
+					self.num_words_label["text"] = "Number of words for the app to display is: " + str(self.num_words)
 				
 		elif(key == 63235):
 			print("Right")
@@ -180,7 +180,7 @@ class settingsScreen(Frame):
 			else:
 				if self.num_words < 5:
 					self.num_words = self.num_words + 1
-					self.num_words_label["text"] = "Number of seconds for the microphone to sleep after listening: " + str(self.num_words)
+					self.num_words_label["text"] = "Number of words for the app to display is: " + str(self.num_words)
 
 
 

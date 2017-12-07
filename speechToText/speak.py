@@ -27,7 +27,7 @@ class Listener():
 
 			    r.dynamic_energy_threshold = True  
 			    print("listen")
-			    audio = r.record(source, duration = 3)
+			    audio = r.record(source, duration = 2)
 			    print("done")
 			with open("speechToText/microphone-results.wav", "wb") as f:
 			    f.write(audio.get_wav_data())
