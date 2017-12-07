@@ -11,7 +11,7 @@ class tutorialScreen(Frame):
 		self.parent = parent
 		self.pack()
 		self.form_screen()
-		self.parent.bind("<KeyRelease>", self.on_button_press)
+		#self.parent.bind("<KeyRelease>", self.on_button_press)
 
 		# set up the slideshow
 		self.slideshow_counter = None
@@ -25,19 +25,45 @@ class tutorialScreen(Frame):
 		self.last_key = None
 		self.key = None
 		# start button listener
-		#self.buttonListener = ButtonListener(self.clicktime)
-		#self.buttonListener.launch()
-		#_thread.start_new_thread(self.wait_on_button_signal, ())
+		self.buttonListener = ButtonListener(self.clicktime)
+		self.buttonListener.launch()
+		_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal():
 		while True:
 			# if there is a selection
+			# 1 = left
+			# 2 = up
+			# 3 = right
+			# 4 = double left
+			# 5 = double up
+			# 6 = double right
+
 			if self.buttonListener.selection:
-				# left button was pressed
-				if self.slideshow_counter < (len(self.image_files) - 1):
+				if (self.slideshow_counter == 0 or self.slideshow_counter == 4 
+					or self.slideshow_counter == 5 or self.slideshow_counter == 8
+					or self.slideshow_counter == 9):
 					self.slideshow_counter += 1
 					self.slideshow()
-				else:
+				elif (self.slideshow_counter == 1 and self.button.selection == 2):
+					print("Here")
+					self.slideshow_counter += 1
+					self.slideshow()
+				elif self.slideshow_counter == 2 and self.button.selection == 3:
+					self.slideshow_counter += 1
+					self.slideshow()
+				elif self.slideshow_counter == 3 and self.button.selection == 1:
+					self.slideshow_counter += 1
+					self.slideshow()
+				elif self.slideshow_counter == 6:
+					if self.button.selection > 3 and self.button.selection < 7:
+						self.slideshow_counter += 1
+						self.slideshow()
+				elif self.slideshow_counter == 7:
+					if self.buttonListener.selection == 4:
+						self.slideshow_counter += 1
+						self.slideshow()
+				elif self.slideshow_counter == 10:
 					UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
 						self.sleeptime, self.clicktime)
 			# this will ensure that the selected word is only spoken once

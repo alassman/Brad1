@@ -40,9 +40,9 @@ class applicationScreen(Frame):
 		self.form_screen()
 		self.listener = Listener()
 		# launch the button listener
-		#self.buttonListener = ButtonListener(self.clicktime, True)
-		#self.buttonListener.launch()
-		#_thread.start_new_thread(self.wait_on_button_signal, ())
+		self.buttonListener = ButtonListener(self.clicktime, True)
+		self.buttonListener.launch()
+		_thread.start_new_thread(self.wait_on_button_signal, ())
 		# ALPHA CODE ONLY
 		self.first_key = None
 		self.second_key = None
@@ -50,8 +50,8 @@ class applicationScreen(Frame):
 		self.quit = False
 		self.last_two_words = [None, None]
 
-		self.parent.bind("<KeyRelease>", self.on_button_press)
-		_thread.start_new_thread(self.wait_on_button_press, ())
+		#self.parent.bind("<KeyRelease>", self.on_button_press)
+		#_thread.start_new_thread(self.wait_on_button_press, ())
 
 	def wait_on_button_signal():
 		while self.quit is not True:
