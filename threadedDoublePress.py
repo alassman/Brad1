@@ -1,4 +1,4 @@
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 import threading
 
@@ -43,13 +43,13 @@ class ButtonListener:
             GPIO.cleanup()
 
     def buttonPress(self, buttonNum):
-        state = NotPressed
+        state = self.NotPressed
         while True:
             # get input from the GPIO
             newState = GPIO.input(buttonNum)
             # main application or potentially tutorial???
             if self.allowDoubleClick:
-                if newState == Pressed and state == NotPressed:
+                if newState == self.Pressed and state == self.NotPressed:
                     # two button presses have occurred within the double-click interval
                     if(self.lastTime is not None):
                         # potential double click (same button)
@@ -76,8 +76,8 @@ class ButtonListener:
                     # Deals with debouncing
                     time.sleep(0.05)
                 # no push --> not input to read
-                elif newState == NotPressed:
-                    state = NotPressed
+                elif newState == self.NotPressed:
+                    state = self.NotPressed
                             # check if the interval has expired to pick up a single press
                 if (self.lastTime is not None 
                     and time.time() >= (self.lastTime + self.MaxDelay)
@@ -93,7 +93,7 @@ class ButtonListener:
                         self.lastPressed = None
             # no double clicks - register click immediately
             else:
-                if newState == Pressed and state == NotPressed:
+                if newState == self.Pressed and state == self.NotPressed:
                     print("Single Press", buttonNum)
                     if(buttonNum == self.left):
                         self.selection = 1
@@ -101,9 +101,9 @@ class ButtonListener:
                         self.selection  = 2
                     else:
                         self.selection = 3
-                    state = Pressed
-                elif newState == NotPressed:
-                    state = NotPressed
+                    state = self.Pressed
+                elif newState == self.NotPressed:
+                    state = self.NotPressed
 
     def reset(self):
         self.lastPressed = None

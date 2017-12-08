@@ -29,7 +29,7 @@ class tutorialScreen(Frame):
 		self.buttonListener.launch()
 		_thread.start_new_thread(self.wait_on_button_signal, ())
 
-	def wait_on_button_signal():
+	def wait_on_button_signal(self):
 		while True:
 			# if there is a selection
 			# 1 = left

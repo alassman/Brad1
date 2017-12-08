@@ -53,7 +53,7 @@ class applicationScreen(Frame):
 		#self.parent.bind("<KeyRelease>", self.on_button_press)
 		#_thread.start_new_thread(self.wait_on_button_press, ())
 
-	def wait_on_button_signal():
+	def wait_on_button_signal(self):
 		while self.quit is not True:
 			# if there is a selection
 			if self.buttonListener.selection:
