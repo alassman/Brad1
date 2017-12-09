@@ -1,6 +1,10 @@
 import RPi.GPIO as GPIO
 import time
 import threading
+#from UI_code.application_screen import applicationScreen
+# from UI_code.main_menu import MainMenu
+# from UI_code.settings import settingsScreen
+# from UI_code.tutorial import tutorialScreen
 
 
 class ButtonListener:
@@ -99,8 +103,11 @@ class ButtonListener:
                         self.selection = 1
                     elif(buttonNum == self.up):
                         self.selection  = 2
+                        start.invoke()
+
                     else:
                         self.selection = 3
+                        settings.invoke()
                     state = self.Pressed
                 elif newState == self.NotPressed:
                     state = self.NotPressed

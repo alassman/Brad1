@@ -6,19 +6,21 @@ import _thread
 from threadedDoublePress import ButtonListener
 
 
-class settingsScreen(Frame):
-	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
-		Frame.__init__(self, parent)
+class settingsScreen(tk.Frame):
+	def __init__(self, parent, controller, num_words=3, sleeptime=3, clicktime=1):
+		tk.Frame.__init__(self, parent)
 		# setting variables
+		# self = parent
 		self.num_words = num_words
 		self.clicktime = clicktime
 		self.sleeptime = sleeptime
-		self.parent = parent
-		self.pack()
+		#self.parent = parent
+		#self.pack()
 		
 		self.font_size = 40
 		self.font_array = [12, 18, 24, 32, 40, 48, 56, 64]
-		#self.parent.bind("<KeyRelease>", self.on_button_press)
+		self.form_screen()
+		#self.bind("<KeyRelease>", self.on_button_press)
 		# titles are below
 		self.title = None
 		self.font_size_label = None
@@ -26,12 +28,11 @@ class settingsScreen(Frame):
 		# location mapping: 0 - exit, 1 - clicktime, 2 - sleeptime, 3 - number of words
 		self.location = 0
 
-		self.form_screen()
-
+	
 		# launch button listener
-		self.buttonListener = ButtonListener(self.clicktime)
-		self.buttonListener.launch()
-		_thread.start_new_thread(self.wait_on_button_signal, ())
+		#self.buttonListener = ButtonListener(self.clicktime)
+		#self.buttonListener.launch()
+		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal(self):
 		while True:
@@ -41,7 +42,7 @@ class settingsScreen(Frame):
 				if self.buttonListener.selection == 1:
 					print("LEFT")
 					if self.location == 0:
-						UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+						UI_code.navigation.back_to_menu(self, False, self.num_words, 
 							self.sleeptime, self.clicktime)
 					elif self.location == 1:
 						if self.clicktime > 1:
@@ -75,7 +76,7 @@ class settingsScreen(Frame):
 				else:
 					print("Right")
 					if self.location == 0:
-						UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+						UI_code.navigation.back_to_menu(self, False, self.num_words, 
 							self.sleeptime, self.clicktime)
 					elif self.location == 1:
 						self.clicktime = 1 + self.clicktime
@@ -104,22 +105,22 @@ class settingsScreen(Frame):
 		#self.load_arrows()
 
 	def load_titles(self):
-		self.title = Label(self.parent, text="Settings", font=("Times New Roman", self.font_size), fg="black")
+		self.title = Label(self, text="Settings", font=("Times New Roman", 40), fg="black")
 		self.title.pack(fill=X)
 		# instruction label
 		text = "Up to navigate | Left to lessen | Right to increase."
-		self.instructions = Label(self.parent, text= text, font=("Times New Roman", 18), fg="black")
+		self.instructions = Label(self, text= text, font=("Times New Roman", 18), fg="black")
 		#self.instructions.place(relx=.35, rely=.2)
 		self.instructions.place(x=400, y=100, anchor="center")
 		# number of words label
-		self.num_words_label = Label(self.parent, 
+		self.num_words_label = Label(self, 
 			text="Words for app to display: " + str(self.num_words), 
 			font=("Times New Roman", 24), fg="black")
 		#self.num_words_label.place(relx=.35, rely=.4)
 		self.num_words_label.place(x=400, y=160, anchor="center")
 
 		# sleep time label
-		self.sleeptime_label = Label(self.parent, 
+		self.sleeptime_label = Label(self, 
 			text="Seconds between speaking: " + str(self.sleeptime), 
 			font=("Times New Roman", 24), fg="black")
 		#self.sleeptime_label.place(relx=.35, rely=.5)
@@ -127,7 +128,7 @@ class settingsScreen(Frame):
 		self.sleeptime_label.place(x=400, y=220, anchor="center")
 
 		# click time lable
-		self.clicktime_label = Label(self.parent, 
+		self.clicktime_label = Label(self, 
 			text="Seconds allowed for double-click: " + str(self.clicktime), 
 			font=("Times New Roman", 24), fg="black")
 		#self.clicktime_label.place(relx=.35, rely=.6)
@@ -135,7 +136,7 @@ class settingsScreen(Frame):
 		self.clicktime_label.place(x=400, y=280, anchor="center")
 
 		# exit label
-		self.exit = Label(self.parent, text="Exit", font=("Times New Roman", 20, "bold"), fg="black")
+		self.exit = Label(self, text="Exit", font=("Times New Roman", 20, "bold"), fg="black")
 		#self.exit.place(relx=.4, rely=.7)
 		self.exit.place(x=400, y=350, anchor="center")
 
@@ -164,7 +165,7 @@ class settingsScreen(Frame):
 		elif(key == 63234):
 			if self.location == 0:
 				print("LEFT")
-				UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+				UI_code.navigation.back_to_menu(self, False, self.num_words, 
 					self.sleeptime, self.clicktime)
 			elif self.location == 1:
 				if self.clicktime > 1:
@@ -182,7 +183,7 @@ class settingsScreen(Frame):
 		elif(key == 63235):
 			print("Right")
 			if self.location == 0:
-				UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+				UI_code.navigation.back_to_menu(self, False, self.num_words, 
 					self.sleeptime, self.clicktime)
 			elif self.location == 1:
 				self.clicktime = 1 + self.clicktime

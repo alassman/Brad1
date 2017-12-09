@@ -12,11 +12,13 @@ from UI_code.tutorial import tutorialScreen
 # from UI_code.main_menu import menuFrame
 
 def startSettings(root, num_words, sleeptime, clicktime):
-	root.destroy()
+	print("started settings")
+	#root.destroy()
+	root.pack_forget()
 	settings = tk.Tk()
 	settings.geometry("800x480+0+0")
 	#settings.attributes('-fullscreen', True)
-	settings_screen = settings_ui.settingsScreen(settings, num_words, sleeptime, clicktime)
+	settings_screen = settings_ui.settingsScreen(root, num_words, sleeptime, clicktime)
 	settings.mainloop()
 
 def startTutorial(root, num_words, sleeptime, clicktime):

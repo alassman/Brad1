@@ -15,16 +15,16 @@ import tellnext_changed.tellnext.store as store
 
 # CHANGE TO LIHU'S CODE: I WILL ONLY NEED TO CALL next_word() FROM tellnext_changed.tellnext.tool
 
-class applicationScreen(Frame):
-	def __init__(self, parent=None, num_words=3, mic_sleep=3, clicktime=1):
-		print("Thread id in init(): " + str(_thread.get_ident()))
-		Frame.__init__(self, parent)
+class applicationScreen(tk.Frame):
+	def __init__(self, parent, controller, num_words=3, mic_sleep=3, clicktime=1):
+		#print("Thread id in init(): " + str(_thread.get_ident()))
+		tk.Frame.__init__(self, parent)
 		# THE FOLLOWING VARIABLES COME FROM SETTINGS
 		self.num_words = num_words
 		self.sleeptime = mic_sleep
 		self.clicktime = clicktime
 		# THE FOLLOWING ARE NECESSARY FOR THIS APP TO FUNCTION
-		self.parent = parent
+		#self = parent
 		self.first_word = None
 		self.second_word = None
 		self.third_word = None
@@ -35,14 +35,16 @@ class applicationScreen(Frame):
 		self.last_spoken = []
 		#self.t1 = _thread.start_new_thread(self.listen_for_words, ())
 
-		_thread.start_new_thread(self.listen_for_words, ())
-		self.pack()
+		#_thread.start_new_thread(self.listen_for_words, ())
+		#self.pack()
 		self.form_screen()
-		self.listener = Listener()
+		
+		#self.listener = Listener()
 		# launch the button listener
-		self.buttonListener = ButtonListener(self.clicktime, True)
-		self.buttonListener.launch()
-		_thread.start_new_thread(self.wait_on_button_signal, ())
+		#self.buttonListener = ButtonListener(self.clicktime, True)
+		#self.buttonListener.launch()
+		
+		#_thread.start_new_thread(self.wait_on_button_signal, ())
 		# ALPHA CODE ONLY
 		self.first_key = None
 		self.second_key = None
@@ -276,38 +278,39 @@ class applicationScreen(Frame):
 		if self.num_words > 4:
 			self.fifth_word = word_predictions[4]
 		# load titles
-		title = Label(self.parent, text="The Microphone is Listening", font=("Times New Roman", 60), fg="black")
+		title = Label(self, text="The Microphone is Listening", font=("Times New Roman", 60), fg="black")
 		title.pack(fill=X)
 		# back button - always there
-		back_button = Label(self.parent, text="Exit", 
+		back_button = Label(self, text="Exit", 
 			font=("Times New Roman", 48), fg="black", bg="#ff8080", width=10)
 		back_button.place(relx=0.05, rely=0.54, height=55)
+		#back_button.place(x=, y=, )
 		# first word
-		self.first_word = Label(self.parent, text=self.first_word, 
+		self.first_word = Label(self, text=self.first_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
 		self.first_word.place(relx=0.05, rely=0.44, height=55)
 		# second word
-		self.second_word = Label(self.parent, text=self.second_word, 
+		self.second_word = Label(self, text=self.second_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
 		self.second_word.place(rely=.17, relx=.365, height=55)
 		# third word
-		self.third_word = Label(self.parent, text=self.third_word , 
+		self.third_word = Label(self, text=self.third_word , 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
 		self.third_word.place(rely=0.44, relx=.675, height=55)
 		# fourth word
-		self.fourth_word = Label(self.parent, text=self.fourth_word, 
+		self.fourth_word = Label(self, text=self.fourth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
 		self.fourth_word.place(rely=.27, relx=.365, height=55)
 		# fifth word
-		self.fifth_word = Label(self.parent, text=self.fifth_word, 
+		self.fifth_word = Label(self, text=self.fifth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
 		self.fifth_word.place(rely=0.54, relx=.675, height=55)
 		# last selected word
-		self.selected_word_label = Label(self.parent, text="", 
+		self.selected_word_label = Label(self, text="", 
 			font=("Times New Roman", 48), fg="black", width=10, borderwidth=1,
 			relief="solid")
 		self.selected_word_label.place(rely=.7, relx=.6)
-		temp_label = Label(self.parent, text="Selected Word ^^^", 
+		temp_label = Label(self, text="Selected Word ^^^", 
 			font=("Times New Roman", 36), fg="black", width=15)
 		temp_label.place(rely=.83, relx=.58)
 
@@ -317,7 +320,7 @@ class applicationScreen(Frame):
 |   Single Click = Blue   |
 |  Double Click = Red   |
 ------------------------"""
-		legend_frame = LabelFrame(self.parent,text='Legend',padx=0, pady=5, 
+		legend_frame = LabelFrame(self,text='Legend',padx=0, pady=5, 
 			foreground="black", font=("Times New Roman", 24))
 		legend_frame.place(relx=.1, rely=.67)
 		legend_label = Label(legend_frame,text=legend_text, fg="black",
@@ -326,17 +329,17 @@ class applicationScreen(Frame):
 
 	def load_arrows(self):
 		# arrow left
-		canvas_left = Canvas(self.parent, width=55, height=20)
+		canvas_left = Canvas(self, width=55, height=20)
 		canvas_left.place(relx=.38, rely=.525)
 		left = canvas_left.create_line(5, 10, 55, 10, 
 			arrow=tk.FIRST, fill="black", width=10)
 		# arrow up
-		canvas_up = Canvas(self.parent, width=20, height=55)
+		canvas_up = Canvas(self, width=20, height=55)
 		canvas_up.place(relx=.5, rely=.4)
 		up = canvas_up.create_line(10, 5, 10, 55, 
 			arrow=tk.FIRST, fill="black", width=10)
 		# arrow right
-		canvas_right = Canvas(self.parent, width=55, height=20)
+		canvas_right = Canvas(self, width=55, height=20)
 		canvas_right.place(relx=.59 , rely=.525)
 		right = canvas_right.create_line(0, 10, 50, 10, 
 			arrow=tk.LAST, fill="black", width=10)

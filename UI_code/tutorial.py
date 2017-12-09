@@ -5,13 +5,13 @@ from tkinter import *
 import UI_code.navigation
 #import threadedDoublePress
 
-class tutorialScreen(Frame):
-	def __init__(self, parent=None, num_words=3, sleeptime=3, clicktime=1):
-		Frame.__init__(self, parent)
-		self.parent = parent
-		self.pack()
+class tutorialScreen(tk.Frame):
+	def __init__(self, parent, controller, num_words=3, sleeptime=3, clicktime=1):
+		tk.Frame.__init__(self, parent)
+		#self = parent
+		#self.pack()
 		self.form_screen()
-		#self.parent.bind("<KeyRelease>", self.on_button_press)
+		#self.bind("<KeyRelease>", self.on_button_press)
 
 		# set up the slideshow
 		self.slideshow_counter = None
@@ -25,9 +25,10 @@ class tutorialScreen(Frame):
 		self.last_key = None
 		self.key = None
 		# start button listener
-		self.buttonListener = ButtonListener(self.clicktime)
-		self.buttonListener.launch()
-		_thread.start_new_thread(self.wait_on_button_signal, ())
+		#self.buttonListener = ButtonListener(self.clicktime)
+		#self.buttonListener.launch()
+		
+		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal(self):
 		while True:
@@ -64,7 +65,7 @@ class tutorialScreen(Frame):
 						self.slideshow_counter += 1
 						self.slideshow()
 				elif self.slideshow_counter == 10:
-					UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+					UI_code.navigation.back_to_menu(self, False, self.num_words, 
 						self.sleeptime, self.clicktime)
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
@@ -80,11 +81,11 @@ class tutorialScreen(Frame):
 		#self.load_arrows()
 
 	def load_titles(self):
-		title = Label(self.parent, text="Tutorial", font=("Times New Roman", 60), fg="black")
+		title = Label(self, text="Tutorial", font=("Times New Roman", 60), fg="black")
 		#title.pack(fill=X, side=TOP, anchor=W)
 		title.place(relx=.38, rely=0)
 		#text = "FOR THIS ALPHA VERSION,\nNAVIGATE THE MAIN\nAPPLICATION PAGE USING THE ARROW KEYS\nPRESS ANY KEY TO GO BACK TO THE MAIN MENU"
-		#instructions = Label(self.parent, text= text, font=("Times New Roman", 48), fg="black")
+		#instructions = Label(self, text= text, font=("Times New Roman", 48), fg="black")
 		#instructions.place(relx=.05, rely=.4)
 
 	def slideshow(self):
@@ -143,5 +144,5 @@ class tutorialScreen(Frame):
 			else:
 				self.last_key = self.key
 		elif self.slideshow_counter == 10:
-			UI_code.navigation.back_to_menu(self.parent, False, self.num_words, 
+			UI_code.navigation.back_to_menu(self, False, self.num_words, 
 				self.sleeptime, self.clicktime)
