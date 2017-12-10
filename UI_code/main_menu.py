@@ -52,7 +52,7 @@ class MainMenu(tk.Frame):
 				# right button was pressed
 				else:
 					print("Settings")
-					controller.show_frame("tutorialScreen")
+					controller.show_frame("settingsScreen")
 
 					#UI_code.navigation.startSettings(self, 
 					#	self.num_words, self.sleeptime, self.clicktime)
@@ -89,7 +89,7 @@ class MainMenu(tk.Frame):
 		start = tk.Button(self, text="Start", 
 			font=("Times New Roman", 48), fg="black", width=7, 
 			command= lambda: controller.show_frame("applicationScreen"))
-		
+
 		#start.place(rely=.3, relx=.35, height=55)
 		start.place(x = 400, y = 160, anchor="center")
 		start.pack()

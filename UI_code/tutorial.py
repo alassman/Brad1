@@ -15,7 +15,7 @@ class tutorialScreen(tk.Frame):
 
 		# set up the slideshow
 		self.slideshow_counter = None
-		self.slideshow()
+		# self.slideshow()
 
 		# required for carrying the settings
 		self.num_words = num_words
@@ -30,7 +30,7 @@ class tutorialScreen(tk.Frame):
 		
 		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
-	def wait_on_button_signal(self):
+	def wait_on_button_signal(self, controller):
 		while True:
 			# if there is a selection
 			# 1 = left
@@ -65,15 +65,17 @@ class tutorialScreen(tk.Frame):
 						self.slideshow_counter += 1
 						self.slideshow()
 				elif self.slideshow_counter == 10:
-					UI_code.navigation.back_to_menu(self, False, self.num_words, 
-						self.sleeptime, self.clicktime)
+					# UI_code.navigation.back_to_menu(self, False, self.num_words, 
+					# 	self.sleeptime, self.clicktime)
+					controller.show_frame("MainMenu")
+
 			# this will ensure that the selected word is only spoken once
 			self.buttonListener.selection = None
 
 	def form_screen(self):
-    	# set color to off-white
+		# set color to off-white
 		self.configure(background="#FEFEFA")
-    	# set title of screen to none
+		# set title of screen to none
 		self.winfo_toplevel().title("")
 		# set titles
 		self.load_titles()
@@ -103,9 +105,10 @@ class tutorialScreen(tk.Frame):
 				os.getcwd() + '/UI_code/tutorial_images/eigth_slide.gif',
 				os.getcwd() + '/UI_code/tutorial_images/ninth_slide.gif',
 				os.getcwd() + '/UI_code/tutorial_images/tenth_slide.gif',
-				os.getcwd() + '/UI_code/tutorial_images/eleventh_slide.gif',
+				os.getcwd() + '/UI_code/tutorial_images/eleventh_slide.gif'
 				]
 			self.slideshow_counter = 0
+			# self = tk.Toplevel()
 			self.picture_display = tk.Label(self)
 			self.picture_display.pack(pady=57, anchor=CENTER)
 		self.picture = tk.PhotoImage(file=self.image_files[self.slideshow_counter])

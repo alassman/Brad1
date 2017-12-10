@@ -103,11 +103,11 @@ class ButtonListener:
                         self.selection = 1
                     elif(buttonNum == self.up):
                         self.selection  = 2
-                        start.invoke()
+                        #start.invoke()
 
                     else:
                         self.selection = 3
-                        settings.invoke()
+                        #settings.invoke()
                     state = self.Pressed
                 elif newState == self.NotPressed:
                     state = self.NotPressed

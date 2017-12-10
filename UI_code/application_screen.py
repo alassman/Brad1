@@ -55,7 +55,7 @@ class applicationScreen(tk.Frame):
 		#self.parent.bind("<KeyRelease>", self.on_button_press)
 		#_thread.start_new_thread(self.wait_on_button_press, ())
 
-	def wait_on_button_signal(self):
+	def wait_on_button_signal(self, controller):
 		while self.quit is not True:
 			# if there is a selection
 			if self.buttonListener.selection:
@@ -71,8 +71,10 @@ class applicationScreen(tk.Frame):
 					self.selected_word = self.third_word["text"]
 				elif self.buttonListener.selection == 4:
 					print("DOUBLE PRESS LEFT")
-					UI_code.navigation.back_to_menu(self.parent, True, 
-						self.num_words, self.sleeptime, self.clicktime)
+					# UI_code.navigation.back_to_menu(self.parent, True, 
+					# 	self.num_words, self.sleeptime, self.clicktime)
+					controller.show_frame("MainMenu")
+
 					self.quit = True
 				elif self.buttonListener.selection == 5:
 					print("DOUBLE PRESS UP")
@@ -214,8 +216,10 @@ class applicationScreen(tk.Frame):
 					if(self.first_key == 63234):
 						print("DOUBLE LEFT PRESS")
 						# WE NEED TO RESOLVE GOING BACK!!! CIRCULAR DEPENDENCIES
-						UI_code.navigation.back_to_menu(self.parent, True, 
-							self.num_words, self.sleeptime, self.clicktime)
+						# UI_code.navigation.back_to_menu(self.parent, True, 
+						# 	self.num_words, self.sleeptime, self.clicktime)
+						controller.show_frame("MainMenu")
+
 						self.quit = True
 					# up press
 					elif(self.fourth_word["text"] and self.first_key == 63232):

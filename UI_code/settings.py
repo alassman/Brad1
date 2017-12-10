@@ -34,7 +34,7 @@ class settingsScreen(tk.Frame):
 		#self.buttonListener.launch()
 		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
-	def wait_on_button_signal(self):
+	def wait_on_button_signal(self, controller):
 		while True:
 			# if there is a selection
 			if self.buttonListener.selection:
@@ -42,8 +42,10 @@ class settingsScreen(tk.Frame):
 				if self.buttonListener.selection == 1:
 					print("LEFT")
 					if self.location == 0:
-						UI_code.navigation.back_to_menu(self, False, self.num_words, 
-							self.sleeptime, self.clicktime)
+						# UI_code.navigation.back_to_menu(self, False, self.num_words, 
+						# 	self.sleeptime, self.clicktime)
+						controller.show_frame("MainMenu")
+
 					elif self.location == 1:
 						if self.clicktime > 1:
 							self.clicktime = self.clicktime - 1
@@ -76,8 +78,9 @@ class settingsScreen(tk.Frame):
 				else:
 					print("Right")
 					if self.location == 0:
-						UI_code.navigation.back_to_menu(self, False, self.num_words, 
-							self.sleeptime, self.clicktime)
+						#UI_code.navigation.back_to_menu(self, False, self.num_words, 
+							#self.sleeptime, self.clicktime)
+						controller.show_frame("MainMenu")
 					elif self.location == 1:
 						self.clicktime = 1 + self.clicktime
 						self.clicktime_label["text"] = ("Number of seconds to consider the double-click interval: " + str(self.clicktime))
@@ -165,8 +168,10 @@ class settingsScreen(tk.Frame):
 		elif(key == 63234):
 			if self.location == 0:
 				print("LEFT")
-				UI_code.navigation.back_to_menu(self, False, self.num_words, 
-					self.sleeptime, self.clicktime)
+				# UI_code.navigation.back_to_menu(self, False, self.num_words, 
+				# 	self.sleeptime, self.clicktime)
+				controller.show_frame("MainMenu")
+
 			elif self.location == 1:
 				if self.clicktime > 1:
 					self.clicktime = self.clicktime - 1
@@ -183,8 +188,10 @@ class settingsScreen(tk.Frame):
 		elif(key == 63235):
 			print("Right")
 			if self.location == 0:
-				UI_code.navigation.back_to_menu(self, False, self.num_words, 
-					self.sleeptime, self.clicktime)
+				# UI_code.navigation.back_to_menu(self, False, self.num_words, 
+				# 	self.sleeptime, self.clicktime)
+				controller.show_frame("MainMenu")
+
 			elif self.location == 1:
 				self.clicktime = 1 + self.clicktime
 				self.clicktime_label["text"] = ("Number of seconds to consider the double-click interval: " + str(self.clicktime))
