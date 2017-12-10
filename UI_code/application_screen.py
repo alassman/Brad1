@@ -56,45 +56,44 @@ class applicationScreen(tk.Frame):
 		#_thread.start_new_thread(self.wait_on_button_press, ())
 
 	def wait_on_button_signal(self, controller):
-		while True:
-			if self.screen == False:
-				break
-			else:
-				# if there is a selection
-				if controller.buttonListener.selection:
-					# set the selected word
-					if controller.buttonListener.selection == 1:
-						print("SINGLE PRESS LEFT")
-						self.selected_word = self.first_word["text"]
-					elif controller.buttonListener.selection == 2:
-						print("SINGLE PRESS UP")
-						self.selected_word = self.second_word["text"]
-					elif controller.buttonListener.selection == 3:
-						print("SINGLE PRESS RIGHT")
-						self.selected_word = self.third_word["text"]
-					elif controller.buttonListener.selection == 4:
-						print("DOUBLE PRESS LEFT")
-						# UI_code.navigation.back_to_menu(self, True, 
-						# 	self.num_words, self.sleeptime, self.clicktime)
-						# self.quit = True
-						controller.show_frame("MainMenu")
-					elif controller.buttonListener.selection == 5:
-						print("DOUBLE PRESS UP")
-						self.selected_word = self.fourth_word["text"]
-					else:
-						print("DOUBLE PRESS RIGHT")
-						self.selected_word = self.fifth_word["text"]
+		#subprocess.call(jack_control start)
+		controller.buttonListener.startListening(controller.clicktime)
+		while self.screen:
+			# if there is a selection
+			if controller.buttonListener.selection:
+				# set the selected word
+				if controller.buttonListener.selection == 1:
+					print("SINGLE PRESS LEFT")
+					self.selected_word = self.first_word["text"]
+				elif controller.buttonListener.selection == 2:
+					print("SINGLE PRESS UP")
+					self.selected_word = self.second_word["text"]
+				elif controller.buttonListener.selection == 3:
+					print("SINGLE PRESS RIGHT")
+					self.selected_word = self.third_word["text"]
+				elif controller.buttonListener.selection == 4:
+					print("DOUBLE PRESS LEFT")
+					# UI_code.navigation.back_to_menu(self, True, 
+					# 	self.num_words, self.sleeptime, self.clicktime)
+					# self.quit = True
+					controller.show_frame("MainMenu")
+				elif controller.buttonListener.selection == 5:
+					print("DOUBLE PRESS UP")
+					self.selected_word = self.fourth_word["text"]
+				elif controller.buttonListener.selection == 6:
+					print("DOUBLE PRESS RIGHT")
+					self.selected_word = self.fifth_word["text"]
+				else:
+					#should never be here
 
-					# display the word
-					self.selected_word_label["text"] = self.selected_word
-					self.selected_word_label["foreground"] = "black"
-					# say the word
-					subprocess.call('echo ' + self.selected_word +'| festival --tts', shell=True)
+				# display the word
+				self.selected_word_label["text"] = self.selected_word
+				self.selected_word_label["foreground"] = "black"
+				# say the word
+				subprocess.call('echo ' + self.selected_word +'| festival --tts', shell=True)
 
-					#subprocess.call('say ' + self.selected_word, shell=True)
-					tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word)
-				# this will ensure that the selected word is only spoken once
-				controller.buttonListener.selection = None
+				#subprocess.call('say ' + self.selected_word, shell=True)
+				tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word)
 
 	def error_check_listening(self):
 		while True:
@@ -258,9 +257,9 @@ class applicationScreen(tk.Frame):
 
 
 	def form_screen(self, controller):
-    	# set color to off-white
+		# set color to off-white
 		self.configure(background="#FEFEFA")
-    	# set title of screen to none
+		# set title of screen to none
 		self.winfo_toplevel().title("")
 		# cover full screen
 		#self.cover_full_screen()
@@ -272,7 +271,7 @@ class applicationScreen(tk.Frame):
 		self.load_legend()
 
 
-	def load_titles(self, controller):
+def load_titles(self, controller):
 		# get word predictions
 		#word_predictions = tellnext.new_next_word(None, None)
 		word_predictions = ["I", "How", "Hello",  "My", "Can"]
@@ -287,29 +286,41 @@ class applicationScreen(tk.Frame):
 		title = Label(self, text="The Microphone is Listening", font=("Times New Roman", 60), fg="black")
 		title.pack(fill=X)
 		# back button - always there
-		back_button = Label(self, text="Exit", 
+		back_button = Label(self, text="Back", 
 			font=("Times New Roman", 48), fg="black", bg="#ff8080", width=10)
-		back_button.place(relx=0.05, rely=0.54, height=55)
+		#back_button.place(relx=0.05, rely=0.54, height=55)
+		back_button.place(x=160, y=280 , anchor="center")
+
 		# first word
 		self.first_word = Label(self, text=self.first_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		self.first_word.place(relx=0.05, rely=0.44, height=55)
+		#self.first_word.place(relx=0.05, rely=0.44, height=55)
+		self.first_word.place(x=160, y=350 , anchor="center")
+
 		# second word
 		self.second_word = Label(self, text=self.second_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		self.second_word.place(rely=.17, relx=.365, height=55)
+		#self.second_word.place(rely=.17, relx=.365, height=55)
+		self.second_word.place(x=400, y=200, anchor="center")
+
 		# third word
 		self.third_word = Label(self, text=self.third_word , 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
-		self.third_word.place(rely=0.44, relx=.675, height=55)
+		#self.third_word.place(rely=0.44, relx=.675, height=55)
+		self.third.place(x=620, y=280, anchor="center")
+
 		# fourth word
 		self.fourth_word = Label(self, text=self.fourth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
-		self.fourth_word.place(rely=.27, relx=.365, height=55)
+		#self.fourth_word.place(rely=.27, relx=.365, height=55)
+		self.fourth.place(x=400, y=300, anchor="center")
+
 		# fifth word
 		self.fifth_word = Label(self, text=self.fifth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
-		self.fifth_word.place(rely=0.54, relx=.675, height=55)
+		#self.fifth_word.place(rely=0.54, relx=.675, height=55)
+		self.fifth.place(x=620, y=350, anchor="center")
+
 		# last selected word
 		self.selected_word_label = Label(self, text="", 
 			font=("Times New Roman", 48), fg="black", width=10, borderwidth=1,
@@ -319,6 +330,9 @@ class applicationScreen(tk.Frame):
 			font=("Times New Roman", 36), fg="black", width=15)
 		temp_label.place(rely=.83, relx=.58)
 
+
+
+
 	def load_legend(self):
 		legend_text = """
 ------------------------
@@ -327,7 +341,8 @@ class applicationScreen(tk.Frame):
 ------------------------"""
 		legend_frame = LabelFrame(self,text='Legend',padx=0, pady=5, 
 			foreground="black", font=("Times New Roman", 24))
-		legend_frame.place(relx=.1, rely=.67)
+		#legend_frame.place(relx=.1, rely=.67)
+		legend_frame.place(x=400, rely=350, anchor ="center")
 		legend_label = Label(legend_frame,text=legend_text, fg="black",
 			font=("Times New Roman", 24))
 		legend_label.pack()

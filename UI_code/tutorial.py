@@ -85,9 +85,10 @@ class tutorialScreen(tk.Frame):
 		#self.load_arrows()
 
 	def load_titles(self):
-		title = Label(self, text="Tutorial", font=("Times New Roman", 60), fg="black")
-		#title.pack(fill=X, side=TOP, anchor=W)
-		title.place(relx=.38, rely=0)
+		title = Label(self, text="Tutorial", font=("Times New Roman", 40), fg="black", bg="white")
+		title.pack(fill=X, side=TOP)
+		#title.place(x=400, y=50, anchor="center")
+
 		#text = "FOR THIS ALPHA VERSION,\nNAVIGATE THE MAIN\nAPPLICATION PAGE USING THE ARROW KEYS\nPRESS ANY KEY TO GO BACK TO THE MAIN MENU"
 		#instructions = Label(self, text= text, font=("Times New Roman", 48), fg="black")
 		#instructions.place(relx=.05, rely=.4)
@@ -111,7 +112,7 @@ class tutorialScreen(tk.Frame):
 				]
 			self.slideshow_counter = 0
 			self.picture_display = tk.Label(self)
-			self.picture_display.pack(pady=57, anchor=CENTER)
+			self.picture_display.pack(side=BOTTOM, anchor=CENTER)
 		self.picture = tk.PhotoImage(file=self.image_files[self.slideshow_counter])
 		self.picture_display.config(image=self.picture)
 

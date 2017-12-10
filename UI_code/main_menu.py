@@ -29,14 +29,18 @@ class MainMenu(tk.Frame):
 		# 	print(e)
 
 	def wait_on_button_signal(self, controller):
+		print("main menu wait")
+		print(self.screen)
+
 		while self.screen:
 			#print("selection:")
+			print(self.screen)
 			if controller.buttonListener.selection:
 				print(controller.buttonListener.selection)
 
 				# left button was pressed
 				if controller.buttonListener.selection == 1:
-					
+
 					controller.show_frame("tutorialScreen")
 				# up button was pressed
 				elif controller.buttonListener.selection == 2:
@@ -60,7 +64,7 @@ class MainMenu(tk.Frame):
 		# set titles
 		self.load_titles(controller)
 		# load arrows
-		#self.load_arrows()
+		self.load_arrows()
 
 
 	def load_titles(self, controller):
@@ -68,14 +72,14 @@ class MainMenu(tk.Frame):
 		#title.pack(fill=X)
 		#title.place(rely=0, relx=.3)
 		title.place(x = 400, y = 50, anchor="center")
-		title.pack()
+		#title.pack()
 
 		tutorial = tk.Button(self, text="Tutorial", 
 			font=("Times New Roman", 48), fg="black", width=7,
 			command= lambda: controller.show_frame("tutorialScreen"))
 		#tutorial.place(relx=0.04, rely=0.5, height=55)
 		tutorial.place(x = 160, y = 300, anchor="center")
-		tutorial.pack()
+		#tutorial.pack()
 
 		start = tk.Button(self, text="Start", 
 			font=("Times New Roman", 48), fg="black", width=7, 
@@ -83,7 +87,7 @@ class MainMenu(tk.Frame):
 
 		#start.place(rely=.3, relx=.35, height=55)
 		start.place(x = 400, y = 160, anchor="center")
-		start.pack()
+		#start.pack()
 
 		settings = tk.Button(self, text="Settings", 
 			font=("Times New Roman", 48), fg="black", width=7, 
@@ -91,7 +95,7 @@ class MainMenu(tk.Frame):
 		#settings.place(rely=0.5, relx=.66, height=55)
 
 		settings.place(x = 620, y = 300, anchor="center")
-		settings.pack()
+		#settings.pack()
 
 	def load_arrows(self):
 		# arrow left

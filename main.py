@@ -3,7 +3,7 @@ from UI_code.application_screen import applicationScreen
 from UI_code.main_menu import MainMenu
 from UI_code.settings import settingsScreen
 from UI_code.tutorial import tutorialScreen
-from threadedDoublePress import ButtonListener
+from ButtonListener import ButtonListener
 from tkinter import *
 import _thread
 
@@ -26,7 +26,7 @@ class RunApp(tk.Tk):
 
 		#Button()
 		#print("hello world")
-		container = tk.Frame(self)
+		container = tk.Frame(self, bg="white")
 		container.pack(side="top", fill="both", expand=True)
 		container.grid_rowconfigure(0, weight= 800)
 		container.grid_rowconfigure(0, weight = 480)
@@ -45,8 +45,8 @@ class RunApp(tk.Tk):
 		self.cur_thread = None
 		self.current_frame = None
 
-		self.buttonListener = ButtonListener(self.clicktime)
-		self.buttonListener.launch()
+		self.ButtonListener = ButtonListener()
+		self.ButtonListener.launch()
 
 		self.show_frame("MainMenu")
 
@@ -59,21 +59,25 @@ class RunApp(tk.Tk):
 
 	def show_frame(self, cont):
 		frame = self.frames[cont]
-		frame.tkraise()
-
+		
 		if not self.current_frame == None:
 			self.current_frame.screen = False
 
+		frame.tkraise()
+		frame.update()
+
+		frame.screen = True
+
 		self.current_frame = frame
 
-		self.current_frame.screen = True
+
+		#frame.wait_on_button_signal(self)
 
 		#start listener if main app
 		if cont == "applicationScreen":
 			_thread.start_new_thread(frame.listen_for_words, (self,))
 			print("made listeing thread")
 
-		#frame.wait_on_button_signal(self)
 
 		# if not self.cur_thread == None:
 		# 	self.cur_thread.exit()
@@ -82,9 +86,6 @@ class RunApp(tk.Tk):
 			self.cur_thread = _thread.start_new_thread(frame.wait_on_button_signal, (self,))
 		except Exception as e:
 			print(e)
-
-
-
 
 def main():
 	app = RunApp()

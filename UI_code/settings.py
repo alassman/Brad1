@@ -40,67 +40,65 @@ class settingsScreen(tk.Frame):
 		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal(self, controller):
-		while True:
-			if self.screen == False:
-				break
-			else:
-				# if there is a selection
-				if controller.buttonListener.selection:
-					print(controller.buttonListener.selection)
-					# left button was pressed
-					if controller.buttonListener.selection == 1:
-						print("LEFT")
-						if self.location == 0:
-							controller.show_frame("MainMenu")
-
-							# UI_code.navigation.back_to_menu(self, False, self.num_words, 
-							# 	self.sleeptime, self.clicktime)
-						elif self.location == 1:
-							if controller.clicktime > 1:
-								controller.clicktime = controller.clicktime - 1
-								self.clicktime_label["text"] = self.text[2] + str(controller.clicktime)
-						elif self.location == 2:
-							if controller.sleeptime > 1:
-								controller.sleeptime = controller.sleeptime - 1
-								self.sleeptime_label["text"] = self.text[1] + str(controller.sleeptime)
-						else:
-							if controller.num_words > 3:
-								controller.num_words = controller.num_words - 1
-								self.num_words_label["text"] = self.text[0] + str(controller.num_words)
-					# up button was pressed
-					elif controller.buttonListener.selection == 2:
-						print("UP")
-						if(self.location == 0):
-							self.exit["font"] = ("Times New Roman", 18)
-							self.clicktime_label["font"] = ("Times New Roman", 18, "bold")
-						elif self.location == 1:
-							self.clicktime_label["font"] = ("Times New Roman", 18)
-							self.sleeptime_label["font"] = ("Times New Roman", 18, "bold")
-						elif self.location == 2:
-							self.sleeptime_label["font"] = ("Times New Roman", 18)
-							self.num_words_label["font"] = ("Times New Roman", 18, "bold")
-						else:
-							self.num_words_label["font"] = ("Times New Roman", 18)
-							self.exit["font"] = ("Times New Roman", 18, "bold")
-						self.location = (self.location + 1) % 4
-					# right button was pressed
-					else:
-						print("Right")
-						if self.location == 0:
-							controller.show_frame("MainMenu")
-
-						elif self.location == 1:
-							controller.clicktime = 1 + controller.clicktime
+		while self.screen:
+		
+			# if there is a selection
+			if controller.buttonListener.selection:
+				print(controller.buttonListener.selection)
+				# left button was pressed
+				if controller.buttonListener.selection == 1:
+					print("LEFT")
+					if self.location == 0:
+						controller.show_frame("MainMenu")
+						#return
+						# UI_code.navigation.back_to_menu(self, False, self.num_words, 
+						# 	self.sleeptime, self.clicktime)
+					elif self.location == 1:
+						if controller.clicktime > 1:
+							controller.clicktime = controller.clicktime - 1
 							self.clicktime_label["text"] = self.text[2] + str(controller.clicktime)
-						elif self.location == 2:
-							controller.sleeptime = controller.sleeptime + 1
+					elif self.location == 2:
+						if controller.sleeptime > 1:
+							controller.sleeptime = controller.sleeptime - 1
 							self.sleeptime_label["text"] = self.text[1] + str(controller.sleeptime)
-						else:
-							if self.num_words < 5:
-								controller.num_words = controller.num_words + 1
-								self.num_words_label["text"] = self.text[0] + str(controller.num_words)
-				# this will ensure that the selected word is only spoken once
-				controller.buttonListener.selection = None
+					else:
+						if controller.num_words > 3:
+							controller.num_words = controller.num_words - 1
+							self.num_words_label["text"] = self.text[0] + str(controller.num_words)
+				# up button was pressed
+				elif controller.buttonListener.selection == 2:
+					print("UP")
+					if(self.location == 0):
+						self.exit["font"] = ("Times New Roman", 18)
+						self.clicktime_label["font"] = ("Times New Roman", 18, "bold")
+					elif self.location == 1:
+						self.clicktime_label["font"] = ("Times New Roman", 18)
+						self.sleeptime_label["font"] = ("Times New Roman", 18, "bold")
+					elif self.location == 2:
+						self.sleeptime_label["font"] = ("Times New Roman", 18)
+						self.num_words_label["font"] = ("Times New Roman", 18, "bold")
+					else:
+						self.num_words_label["font"] = ("Times New Roman", 18)
+						self.exit["font"] = ("Times New Roman", 18, "bold")
+					self.location = (self.location + 1) % 4
+				# right button was pressed
+				else:
+					print("Right")
+					if self.location == 0:
+						controller.show_frame("MainMenu")
+						#return
+					elif self.location == 1:
+						controller.clicktime = 1 + controller.clicktime
+						self.clicktime_label["text"] = self.text[2] + str(controller.clicktime)
+					elif self.location == 2:
+						controller.sleeptime = controller.sleeptime + 1
+						self.sleeptime_label["text"] = self.text[1] + str(controller.sleeptime)
+					else:
+						if controller.num_words < 5:
+							controller.num_words = controller.num_words + 1
+							self.num_words_label["text"] = self.text[0] + str(controller.num_words)
+			# this will ensure that the selected word is only spoken once
+			controller.buttonListener.selection = None
 
 
 	def form_screen(self, controller):
@@ -116,24 +114,25 @@ class settingsScreen(tk.Frame):
 		#self.load_arrows()
 
 	def load_titles(self, controller):
-		self.title = Label(self, text="Settings", font=("Times New Roman", self.font_size), fg="black")
-		self.title.pack(fill=X)
+		self.title = Label(self, text="Settings", font=("Times New Roman", self.font_size), fg="black", bg ="white" )
+		#self.title.pack(fill=X, relx=.45)
+		self.title.place(x=400, y=50, anchor="center")
 		# instruction label
 		text = "Up to navigate | Left to lessen | Right to increase."
-		self.instructions = Label(self, text= text, font=("Times New Roman", 18), fg="black")
+		self.instructions = Label(self, text= text, font=("Times New Roman", 18), fg="black", bg ="white")
 		#self.instructions.place(relx=.35, rely=.2)
 		self.instructions.place(x=400, y=100, anchor="center")
 		# number of words label
 		self.num_words_label = Label(self, 
 			text= self.text[0] + str(controller.num_words), 
-			font=("Times New Roman", 24), fg="black")
+			font=("Times New Roman", 24), fg="black", bg ="white")
 		#self.num_words_label.place(relx=.35, rely=.4)
 		self.num_words_label.place(x=400, y=160, anchor="center")
 
 		# sleep time label
 		self.sleeptime_label = Label(self, 
 			text= self.text[1] + str(controller.sleeptime), 
-			font=("Times New Roman", 24), fg="black")
+			font=("Times New Roman", 24), fg="black", bg ="white")
 		#self.sleeptime_label.place(relx=.35, rely=.5)
 		
 		self.sleeptime_label.place(x=400, y=220, anchor="center")
@@ -141,13 +140,13 @@ class settingsScreen(tk.Frame):
 		# click time lable
 		self.clicktime_label = Label(self, 
 			text= self.text[2] + str(controller.clicktime), 
-			font=("Times New Roman", 24), fg="black")
+			font=("Times New Roman", 24), fg="black", bg ="white")
 		#self.clicktime_label.place(relx=.35, rely=.6)
 		
 		self.clicktime_label.place(x=400, y=280, anchor="center")
 
 		# exit label
-		self.exit = Label(self, text="Exit", font=("Times New Roman", 20, "bold"), fg="black")
+		self.exit = Label(self, text="Exit", font=("Times New Roman", 20, "bold"), fg="black", bg ="white")
 		#self.exit.place(relx=.4, rely=.7)
 		self.exit.place(x=400, y=350, anchor="center")
 
