@@ -22,6 +22,7 @@ class ButtonListener:
         self.allowDoubleClick = mainApp
         # this variable will be set to 1-left, 2-up, 3-right, 4-double left, 5-double up, or 6-double right
         self.selection = None
+        self.tempSelection = None
         self.startTime = time.time()
         self.listening = False
         self.clicktime = 0.5
@@ -50,50 +51,49 @@ class ButtonListener:
             GPIO.cleanup()
 
     def startListening(self, clicktime=0.5):
-        print("self.selection: ", self.selection)
-        print("clicktime: ", clicktime)
-        print("self.listening", self.listening)
         self.clicktime = clicktime
         self.listening = True
 
+    def finishListening(self):
+        self.selection = None
+        self.tempSelection = None
+        
     def waitingToListen(self, buttonNum):
-        print("starting thread on button: ", buttonNum)
         while(True):
             if self.listening:
                 self.resetEventListenerQueue(buttonNum)
-                self.startTime = time.time() + 15 # give Brad 15 seconds to make any selection
-                self.selection = None
                 self.buttonPress(buttonNum)
                 self.listening = False
-
-
 
     # Function returns 'clicktime' seconds after first button is hit if no other button is hit.
     # Function returns immediatly if second button is hit and matches the first button hit
     # If a second button is hit that does not match the first, startTime is reset
     # Selected button is set in 'self.selection' variable
     def buttonPress(self, buttonNum):
+        self.startTime = time.time() + 15 # give Brad 15 seconds to make any selection
         while True:
-            if (time.time() > (self.startTime + self.clicktime)) and self.selection != None:
+            if (time.time() > (self.startTime + self.clicktime)) and self.tempSelection != None:
+                self.selection = self.tempSelection
+                print("Single click SET: ", buttonNum)
                 break
             if GPIO.event_detected(buttonNum):
                 time.sleep(0.01) # debounce for 1mSec
                 if GPIO.input(buttonNum) == self.Pressed:
                     # Push is registered
-                    if self.selection == None:
+                    if self.tempSelection == None:
                         # First click
                         print("First click on: ", buttonNum)
                         self.startTime = time.time()
-                        self.selection = buttonNum - 22
-                    elif self.selection == buttonNum - 22:
+                        self.tempSelection = buttonNum - 22
+                    elif self.tempSelection == (buttonNum - 22):
                         # Second click
-                        print("Second click on: ", buttonNum)
-                        self.selection = self.selection + 3
+                        print("Double click on: ", buttonNum)
+                        self.tempSelection = self.tempSelection + 3
+                        self.selection = self.tempSelection
                         break
                     else:
                         # Correction click
-                        print("Correction click on: ", buttonNum)
-                        self.selection = buttonNum - 22
+                        self.tempSelection = buttonNum - 22
                         self.startTime = time.time()
 
 

@@ -32,27 +32,27 @@ class MainMenu(tk.Frame):
 		print("main menu wait")
 		print(self.screen)
 
+		controller.buttonListener.startListening(controller.clicktime)
 		while self.screen:
 			#print("selection:")
-			print(self.screen)
 			if controller.buttonListener.selection:
 				print(controller.buttonListener.selection)
 
 				# left button was pressed
-				if controller.buttonListener.selection == 1:
-
+				if controller.buttonListener.selection == 1 or controller.buttonListener.selection == 4:
+					controller.buttonListener.finishListening()
+					print("tutorialScreen")
 					controller.show_frame("tutorialScreen")
 				# up button was pressed
-				elif controller.buttonListener.selection == 2:
-
+				elif controller.buttonListener.selection == 2 or controller.buttonListener.selection == 5:
+					controller.buttonListener.finishListening()
+					print("applicationScreen")
 					controller.show_frame("applicationScreen")
 				# right button was pressed
 				else:
 					print("Settings")
+					controller.buttonListener.finishListening()
 					controller.show_frame("settingsScreen")
-
-			# this will ensure that the selected word is only spoken once
-			controller.buttonListener.selection = None
 
 	def form_screen(self, controller):
 		# set color to off-white

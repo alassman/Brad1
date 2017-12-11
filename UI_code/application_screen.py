@@ -76,6 +76,7 @@ class applicationScreen(tk.Frame):
 					# UI_code.navigation.back_to_menu(self, True, 
 					# 	self.num_words, self.sleeptime, self.clicktime)
 					# self.quit = True
+					controller.buttonListener.finishListening()
 					controller.show_frame("MainMenu")
 				elif controller.buttonListener.selection == 5:
 					print("DOUBLE PRESS UP")
@@ -84,8 +85,9 @@ class applicationScreen(tk.Frame):
 					print("DOUBLE PRESS RIGHT")
 					self.selected_word = self.fifth_word["text"]
 				else:
+					continue
 					#should never be here
-
+				controller.buttonListener.finishListening()
 				# display the word
 				self.selected_word_label["text"] = self.selected_word
 				self.selected_word_label["foreground"] = "black"
@@ -94,6 +96,8 @@ class applicationScreen(tk.Frame):
 
 				#subprocess.call('say ' + self.selected_word, shell=True)
 				tellnext.update_model(self.last_two_words[0], self.last_two_words[1], self.selected_word)
+				controller.buttonListener.startListening(controller.clicktime)
+
 
 	def error_check_listening(self):
 		while True:
@@ -271,7 +275,7 @@ class applicationScreen(tk.Frame):
 		self.load_legend()
 
 
-def load_titles(self, controller):
+	def load_titles(self, controller):
 		# get word predictions
 		#word_predictions = tellnext.new_next_word(None, None)
 		word_predictions = ["I", "How", "Hello",  "My", "Can"]
@@ -307,19 +311,19 @@ def load_titles(self, controller):
 		self.third_word = Label(self, text=self.third_word , 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
 		#self.third_word.place(rely=0.44, relx=.675, height=55)
-		self.third.place(x=620, y=280, anchor="center")
+		self.third_word.place(x=620, y=280, anchor="center")
 
 		# fourth word
 		self.fourth_word = Label(self, text=self.fourth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
 		#self.fourth_word.place(rely=.27, relx=.365, height=55)
-		self.fourth.place(x=400, y=300, anchor="center")
+		self.fourth_word.place(x=400, y=300, anchor="center")
 
 		# fifth word
 		self.fifth_word = Label(self, text=self.fifth_word, 
 			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
 		#self.fifth_word.place(rely=0.54, relx=.675, height=55)
-		self.fifth.place(x=620, y=350, anchor="center")
+		self.fifth_word.place(x=620, y=350, anchor="center")
 
 		# last selected word
 		self.selected_word_label = Label(self, text="", 
@@ -331,12 +335,10 @@ def load_titles(self, controller):
 		temp_label.place(rely=.83, relx=.58)
 
 
-
-
-	def load_legend(self):
+	def load_legend(self): 
 		legend_text = """
 ------------------------
-|   Single Click = Blue   |
+|   Single Click = Blue |
 |  Double Click = Red   |
 ------------------------"""
 		legend_frame = LabelFrame(self,text='Legend',padx=0, pady=5, 

@@ -15,7 +15,6 @@ class tutorialScreen(tk.Frame):
 
 		# set up the slideshow
 		self.slideshow_counter = None
-		self.slideshow()
 
 		# required for carrying the settings
 		# self.num_words = num_words
@@ -32,6 +31,8 @@ class tutorialScreen(tk.Frame):
 		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal(self, controller):
+		self.slideshow(controller)
+		controller.buttonListener.startListening(controller.clicktime)
 		while self.screen:
 			# if there is a selection
 			# 1 = left
@@ -47,32 +48,32 @@ class tutorialScreen(tk.Frame):
 					or self.slideshow_counter == 5 or self.slideshow_counter == 8
 					or self.slideshow_counter == 9):
 					self.slideshow_counter += 1
-					self.slideshow()
+					self.slideshow(controller)
 				elif (self.slideshow_counter == 1 and controller.buttonListener.selection == 2):
 					print("Here")
 					self.slideshow_counter += 1
-					self.slideshow()
+					self.slideshow(controller)
 				elif self.slideshow_counter == 2 and controller.buttonListener.selection == 3:
 					self.slideshow_counter += 1
-					self.slideshow()
+					self.slideshow(controller)
 				elif self.slideshow_counter == 3 and controller.buttonListener.selection == 1:
 					self.slideshow_counter += 1
-					self.slideshow()
+					self.slideshow(controller)
 				elif self.slideshow_counter == 6:
 					if controller.buttonListener.selection > 3 and controller.buttonListener.selection < 7:
 						self.slideshow_counter += 1
-						self.slideshow()
+						self.slideshow(controller)
 				elif self.slideshow_counter == 7:
 					if controller.buttonListener.selection >= 4:
 						self.slideshow_counter += 1
-						self.slideshow()
+						self.slideshow(controller)
 				elif self.slideshow_counter == 10:
 					# UI_code.navigation.back_to_menu(self, False, self.num_words, 
 					# 	self.sleeptime, self.clicktime)
-					controller.show_frames("MainMenu")
+					controller.buttonListener.finishListening()
+					controller.show_frame("MainMenu")
 					#return
-			# this will ensure that the selected word is only spoken once
-			controller.buttonListener.selection = None
+				controller.buttonListener.finishListening()
 
 	def form_screen(self):
     	# set color to off-white
@@ -93,7 +94,7 @@ class tutorialScreen(tk.Frame):
 		#instructions = Label(self, text= text, font=("Times New Roman", 48), fg="black")
 		#instructions.place(relx=.05, rely=.4)
 
-	def slideshow(self):
+	def slideshow(self, controller):
 		# set up the slideshow variables
 		if self.slideshow_counter is None:
 			print(os.getcwd())
@@ -115,6 +116,9 @@ class tutorialScreen(tk.Frame):
 			self.picture_display.pack(side=BOTTOM, anchor=CENTER)
 		self.picture = tk.PhotoImage(file=self.image_files[self.slideshow_counter])
 		self.picture_display.config(image=self.picture)
+		# Have to restart listening for next slide
+		controller.buttonListener.startListening(controller.clicktime)
+
 
 	# # navigate back to the menu screen
 	# def on_button_press(self, event):

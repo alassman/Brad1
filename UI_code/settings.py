@@ -40,8 +40,8 @@ class settingsScreen(tk.Frame):
 		#_thread.start_new_thread(self.wait_on_button_signal, ())
 
 	def wait_on_button_signal(self, controller):
+		controller.buttonListener.startListening(controller.clicktime)
 		while self.screen:
-		
 			# if there is a selection
 			if controller.buttonListener.selection:
 				print(controller.buttonListener.selection)
@@ -49,6 +49,7 @@ class settingsScreen(tk.Frame):
 				if controller.buttonListener.selection == 1:
 					print("LEFT")
 					if self.location == 0:
+						controller.buttonListener.finishListening()
 						controller.show_frame("MainMenu")
 						#return
 						# UI_code.navigation.back_to_menu(self, False, self.num_words, 
@@ -85,6 +86,7 @@ class settingsScreen(tk.Frame):
 				else:
 					print("Right")
 					if self.location == 0:
+						controller.buttonListener.finishListening()
 						controller.show_frame("MainMenu")
 						#return
 					elif self.location == 1:
@@ -97,8 +99,8 @@ class settingsScreen(tk.Frame):
 						if controller.num_words < 5:
 							controller.num_words = controller.num_words + 1
 							self.num_words_label["text"] = self.text[0] + str(controller.num_words)
-			# this will ensure that the selected word is only spoken once
-			controller.buttonListener.selection = None
+				controller.buttonListener.finishListening()
+				controller.buttonListener.startListening(controller.clicktime)
 
 
 	def form_screen(self, controller):

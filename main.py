@@ -37,6 +37,9 @@ class RunApp(tk.Tk):
 
 		self.frames = {}
 
+		self.buttonListener = ButtonListener()
+		self.buttonListener.launch()
+		
 		self.init_frames("MainMenu", MainMenu, container)
 		self.init_frames("applicationScreen", applicationScreen, container)
 		self.init_frames("settingsScreen", settingsScreen, container)
@@ -45,8 +48,6 @@ class RunApp(tk.Tk):
 		self.cur_thread = None
 		self.current_frame = None
 
-		self.ButtonListener = ButtonListener()
-		self.ButtonListener.launch()
 
 		self.show_frame("MainMenu")
 
