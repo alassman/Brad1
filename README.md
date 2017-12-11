@@ -3,37 +3,15 @@ Creating a custom word prediction software to help increase speaking tempo
 
 # Instructions for Setup
 
-You must switch to desktop_version branch in order to run the version that runs on a computer.
+	Our application is run off a a Raspberry Pi, which has been preloaded with the 
+	software. You interact with our application through use of a custom-built
+	footpedal, which has been attached to the Raspberry Pi. Both the Raspberry Pi and
+	the footpedal should be in your posession prior to use. 
 
-You must run the following terminal commands on a Mac computer:
+	The only setup required is to plug in and turn on the Raspberry Pi, and attach the loose
+	HDMI cord from the Raspberry Pi to a computer monitor.
 
-	1. /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-		- The above install Homebrew for Mac
-
-	2. sudo apt-get install python3-pip
-		- The above installs pip3 for the Mac
-
-	3. follow the instructions in the following link to configure sphinxbase and pocketsphinx
-		- https://cmusphinx.github.io/wiki/tutorialpocketsphinx/
-
-	4. brew install portaudio
-
-	5. pip install pyaudio
-		- The above installs the requirement for using the microphone with the Mac
-
-	6. pip install SpeechRecognition
-		- The above installs the requirement for using the sphinx engine on the Mac
-
-	7. pip install tkinter
-		- This installs the tkinter package for building GUIs in Python
-		
-	8. follow the instructions in the following link to install NLTK (version >= 3.0)
-		- http://www.nltk.org/install.html
-	
-	9. pip install langdetect
-		- The above installs the requirement for using tellnext word prediction
-			
-	8. navigate to the directory entitled "Brad1" and run: python main.py
+	The app should begin and you can interact with it using the footpedal
 
 # User Instructions:
 
