@@ -30,6 +30,7 @@ class settingsScreen(tk.Frame):
 		self.text[0] = "Words for app to display: "
 		self.text[1] = "Seconds between speaking: "
 		self.text[2] = "Seconds allowed for double-click: "
+		self.text[3] = "Probability that a random word will be returned during prediction: "
 
 		self.form_screen(controller)
 		self.screen = False
@@ -62,6 +63,10 @@ class settingsScreen(tk.Frame):
 						if controller.sleeptime > 1:
 							controller.sleeptime = controller.sleeptime - 1
 							self.sleeptime_label["text"] = self.text[1] + str(controller.sleeptime)
+					elif self.location == 4:
+						if controller.exploration > 0:
+							controller.exploration = controller.exploration - 0.1
+							self.exploration_label["text"] =  self.text[3] + str(controller.exploration)
 					else:
 						if controller.num_words > 3:
 							controller.num_words = controller.num_words - 1
@@ -78,8 +83,11 @@ class settingsScreen(tk.Frame):
 					elif self.location == 2:
 						self.sleeptime_label["font"] = ("Times New Roman", 18)
 						self.num_words_label["font"] = ("Times New Roman", 18, "bold")
-					else:
+					elif self.location == 3:
 						self.num_words_label["font"] = ("Times New Roman", 18)
+						self.exploration_label["font"] = ("Times New Roman", 18, "bold")
+					else:
+						self.exploration_label["font"] = ("Times New Roman", 18)
 						self.exit["font"] = ("Times New Roman", 18, "bold")
 					self.location = (self.location + 1) % 4
 				# right button was pressed
@@ -95,6 +103,10 @@ class settingsScreen(tk.Frame):
 					elif self.location == 2:
 						controller.sleeptime = controller.sleeptime + 1
 						self.sleeptime_label["text"] = self.text[1] + str(controller.sleeptime)
+					elif self.location == 4:
+						if controller.exploration < 1:
+							controller.exploration = controller.exploration + 0.1
+							self.exploration_label["text"] = self.text[3] + str(controller.exploration)
 					else:
 						if controller.num_words < 5:
 							controller.num_words = controller.num_words + 1
@@ -118,12 +130,17 @@ class settingsScreen(tk.Frame):
 	def load_titles(self, controller):
 		self.title = Label(self, text="Settings", font=("Times New Roman", self.font_size), fg="black", bg ="white" )
 		#self.title.pack(fill=X, relx=.45)
-		self.title.place(x=400, y=50, anchor="center")
+		self.title.place(x=400, y=10, anchor="center")
 		# instruction label
 		text = "Up to navigate | Left to lessen | Right to increase."
 		self.instructions = Label(self, text= text, font=("Times New Roman", 18), fg="black", bg ="white")
 		#self.instructions.place(relx=.35, rely=.2)
-		self.instructions.place(x=400, y=100, anchor="center")
+		self.instructions.place(x=400, y=40, anchor="center")
+		# exploration ratio
+		self.exploration_label = Label(self.parent,
+			text=self.text[3] + str(controller.exploration),
+			font=("Times New Roman", 18), fg="black")
+		self.exploration_label.place(x=400, y=100, anchor="center")
 		# number of words label
 		self.num_words_label = Label(self, 
 			text= self.text[0] + str(controller.num_words), 

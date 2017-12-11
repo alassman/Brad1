@@ -130,7 +130,8 @@ class applicationScreen(tk.Frame):
 					words_list.append(None) 
 				# call Lihu's function
 
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], 
+					controller.num_words, controller.exploration)
 				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]
@@ -144,7 +145,8 @@ class applicationScreen(tk.Frame):
 					words_list.append(None)
 				# call Lihu's function
 				
-				word_predictions = tellnext.new_next_word(words_list[0], words_list[1])
+				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], 
+					controller.num_words, controller.exploration)
 				print(word_predictions)
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]
