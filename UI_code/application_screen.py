@@ -31,6 +31,7 @@ class applicationScreen(tk.Frame):
 		self.fifth_word = None
 		self.selected_word = None
 		self.selected_word_label = None
+		self.command_label = None
 		self.last_spoken = []
 		#self.t1 = _thread.start_new_thread(self.listen_for_words, ())
 
@@ -61,8 +62,10 @@ class applicationScreen(tk.Frame):
 			self.wait_on_button_signal(controller)
 			#print("waiting on listen")
 			controller.buttonListener.kill()
+			self.command_label["text"] = "Speak!"
 			self.listen_for_words(controller)
 			controller.buttonListener.launch()
+			self.command_label["text"] = "Use Buttons!"
 
 
 	def wait_on_button_signal(self, controller):
@@ -359,6 +362,11 @@ class applicationScreen(tk.Frame):
 			font=("Times New Roman", 26), fg="black", bg="#FEFEFA", width=13, highlightthickness=0)
 		#temp_label.place(rely=.83, relx=.58)
 		temp_label.place(x=660, y=390, anchor="center")
+
+		self.command_label = Label(self, text="Use Buttons!",
+			font("Times New Roman", 26), fg="red", bg="#FEFEFA", width=13,
+			borderwidth=1)
+		self.command_label.place(x=140, y=390, anchor="center")
 
 
 
