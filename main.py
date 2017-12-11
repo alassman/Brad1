@@ -34,6 +34,7 @@ class RunApp(tk.Tk):
 		self.sleeptime = 3
 		self.clicktime = 3
 		self.num_words = 1
+		self.exploration = 0.5
 
 		self.frames = {}
 
