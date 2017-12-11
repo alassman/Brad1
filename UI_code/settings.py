@@ -137,7 +137,7 @@ class settingsScreen(tk.Frame):
 		#self.instructions.place(relx=.35, rely=.2)
 		self.instructions.place(x=400, y=40, anchor="center")
 		# exploration ratio
-		self.exploration_label = Label(self.parent,
+		self.exploration_label = Label(self,
 			text=self.text[3] + str(controller.exploration),
 			font=("Times New Roman", 18), fg="black")
 		self.exploration_label.place(x=400, y=100, anchor="center")
