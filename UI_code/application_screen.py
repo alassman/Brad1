@@ -111,6 +111,7 @@ class applicationScreen(tk.Frame):
 		print("listening for words")
 
 		words_list = []
+
 		while self.screen == True:
 			# sleep for 5 seconds before listening again
 			time.sleep(controller.sleeptime)
@@ -127,7 +128,9 @@ class applicationScreen(tk.Frame):
 				if(len(words_list) > 2):
 					words_list = words_list[len(words_list) - 2:]
 				elif(len(words_list) == 1):
-					words_list.append(None) 
+					words_list.append(None)
+				else:
+					words_list = [None, None] 
 				# call Lihu's function
 
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], 
@@ -366,7 +369,7 @@ class applicationScreen(tk.Frame):
 		# arrow up
 		canvas_up = Canvas(self, width=20, height=55, bg="#FEFEFA", highlightthickness=0)
 		#canvas_up.place(relx=.5, rely=.4)
-		canvas_up.place(x=400, y=215, anchor="center")
+		canvas_up.place(x=400, y=218, anchor="center")
 		up = canvas_up.create_line(10, 5, 10, 55, 
 			arrow=tk.FIRST, fill="black", width=10)
 		# arrow right
