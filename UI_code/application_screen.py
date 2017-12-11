@@ -364,7 +364,7 @@ class applicationScreen(tk.Frame):
 		temp_label.place(x=660, y=390, anchor="center")
 
 		self.command_label = Label(self, text="Use Buttons!",
-			font("Times New Roman", 26), fg="red", bg="#FEFEFA", width=13,
+			font=("Times New Roman", 26), fg="red", bg="#FEFEFA", width=13,
 			borderwidth=1)
 		self.command_label.place(x=140, y=390, anchor="center")
 
