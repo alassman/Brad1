@@ -31,7 +31,7 @@ class RunApp(tk.Tk):
 		container.grid_rowconfigure(0, weight= 800)
 		container.grid_columnconfigure(0, weight = 480)
 
-		self.sleeptime = 3
+		self.sleeptime = 1
 		self.clicktime = 1
 		self.num_words = 3
 		self.exploration = 0.5
@@ -76,9 +76,9 @@ class RunApp(tk.Tk):
 		#frame.wait_on_button_signal(self)
 
 		#start listener if main app
-		# if cont == "applicationScreen":
-		# 	_thread.start_new_thread(frame.listen_for_words, (self,))
-		# 	print("made listeing thread")
+		if cont == "applicationScreen":
+			_thread.start_new_thread(frame.listen_for_words, (self,))
+			print("made listeing thread")
 
 
 		# if not self.cur_thread == None:

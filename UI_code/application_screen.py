@@ -87,6 +87,7 @@ class applicationScreen(tk.Frame):
 				else:
 					continue
 					#should never be here
+				print(self.selected_word)
 				controller.buttonListener.finishListening()
 				# display the word
 				self.selected_word_label["text"] = self.selected_word
