@@ -10,9 +10,9 @@ class ButtonListener:
         # variables that Adam uses in his function
         self.Pressed = 0
         self.NotPressed = 1
-        self.left = 23
-        self.up = 24
-        self.right = 25
+        self.left = 2
+        self.up = 3
+        self.right = 4
         self.leftListen = False
         self.upListen = False
         self.rightListen = False
@@ -84,8 +84,8 @@ class ButtonListener:
                         # First click
                         print("First click on: ", buttonNum)
                         self.startTime = time.time()
-                        self.tempSelection = buttonNum - 22
-                    elif self.tempSelection == (buttonNum - 22):
+                        self.tempSelection = buttonNum - 1
+                    elif self.tempSelection == (buttonNum - 1):
                         # Second click
                         print("Double click on: ", buttonNum)
                         self.tempSelection = self.tempSelection + 3
@@ -93,7 +93,7 @@ class ButtonListener:
                         break
                     else:
                         # Correction click
-                        self.tempSelection = buttonNum - 22
+                        self.tempSelection = buttonNum - 1
                         self.startTime = time.time()
 
 

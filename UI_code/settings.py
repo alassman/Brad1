@@ -30,7 +30,7 @@ class settingsScreen(tk.Frame):
 		self.text[0] = "Words for app to display: "
 		self.text[1] = "Seconds between speaking: "
 		self.text[2] = "Seconds allowed for double-click: "
-		self.text[3] = "Probability that a random word will be returned during prediction: "
+		self.text[3] = "Random word probability: "
 
 		self.form_screen(controller)
 		self.screen = False
@@ -128,46 +128,46 @@ class settingsScreen(tk.Frame):
 		#self.load_arrows()
 
 	def load_titles(self, controller):
-		self.title = Label(self, text="Settings", font=("Times New Roman", self.font_size), fg="black", bg ="white" )
+		self.title = Label(self, text="Settings", font=("Times New Roman", self.font_size), fg="black", bg ="#FEFEFA" )
 		#self.title.pack(fill=X, relx=.45)
-		self.title.place(x=400, y=10, anchor="center")
+		self.title.place(x=400, y=20, anchor="center")
 		# instruction label
 		text = "Up to navigate | Left to lessen | Right to increase."
-		self.instructions = Label(self, text= text, font=("Times New Roman", 18), fg="black", bg ="white")
+		self.instructions = Label(self, text= text, font=("Times New Roman", 18), fg="black", bg ="#FEFEFA")
 		#self.instructions.place(relx=.35, rely=.2)
-		self.instructions.place(x=400, y=40, anchor="center")
+		self.instructions.place(x=400, y=80, anchor="center")
 		# exploration ratio
 		self.exploration_label = Label(self,
 			text=self.text[3] + str(controller.exploration),
-			font=("Times New Roman", 18), fg="black")
-		self.exploration_label.place(x=400, y=100, anchor="center")
+			font=("Times New Roman", 24), fg="black", bg="#FEFEFA")
+		self.exploration_label.place(x=400, y=140, anchor="center")
 		# number of words label
 		self.num_words_label = Label(self, 
 			text= self.text[0] + str(controller.num_words), 
-			font=("Times New Roman", 24), fg="black", bg ="white")
+			font=("Times New Roman", 24), fg="black", bg ="#FEFEFA")
 		#self.num_words_label.place(relx=.35, rely=.4)
-		self.num_words_label.place(x=400, y=160, anchor="center")
+		self.num_words_label.place(x=400, y=200, anchor="center")
 
 		# sleep time label
 		self.sleeptime_label = Label(self, 
 			text= self.text[1] + str(controller.sleeptime), 
-			font=("Times New Roman", 24), fg="black", bg ="white")
+			font=("Times New Roman", 24), fg="black", bg ="#FEFEFA")
 		#self.sleeptime_label.place(relx=.35, rely=.5)
 		
-		self.sleeptime_label.place(x=400, y=220, anchor="center")
+		self.sleeptime_label.place(x=400, y=260, anchor="center")
 
 		# click time lable
 		self.clicktime_label = Label(self, 
 			text= self.text[2] + str(controller.clicktime), 
-			font=("Times New Roman", 24), fg="black", bg ="white")
+			font=("Times New Roman", 24), fg="black", bg ="#FEFEFA")
 		#self.clicktime_label.place(relx=.35, rely=.6)
 		
-		self.clicktime_label.place(x=400, y=280, anchor="center")
+		self.clicktime_label.place(x=400, y=320, anchor="center")
 
 		# exit label
-		self.exit = Label(self, text="Exit", font=("Times New Roman", 20, "bold"), fg="black", bg ="white")
+		self.exit = Label(self, text="Exit", font=("Times New Roman", 24, "bold"), fg="black", bg ="white")
 		#self.exit.place(relx=.4, rely=.7)
-		self.exit.place(x=400, y=350, anchor="center")
+		self.exit.place(x=400, y=380, anchor="center")
 
 
 

@@ -29,7 +29,7 @@ class RunApp(tk.Tk):
 		container = tk.Frame(self, bg="white")
 		container.pack(side="top", fill="both", expand=True)
 		container.grid_rowconfigure(0, weight= 800)
-		container.grid_rowconfigure(0, weight = 480)
+		container.grid_columnconfigure(0, weight = 480)
 
 		self.sleeptime = 3
 		self.clicktime = 3

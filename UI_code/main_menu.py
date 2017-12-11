@@ -68,21 +68,21 @@ class MainMenu(tk.Frame):
 
 
 	def load_titles(self, controller):
-		title = tk.Label(self, text="Main Menu", font=("Times New Roman", 72), fg="black")
+		title = tk.Label(self, text="Main Menu", font=("Times New Roman", 72), fg="black", bg="#FEFEFA")
 		#title.pack(fill=X)
 		#title.place(rely=0, relx=.3)
 		title.place(x = 400, y = 50, anchor="center")
 		#title.pack()
 
 		tutorial = tk.Button(self, text="Tutorial", 
-			font=("Times New Roman", 48), fg="black", width=7,
+			font=("Times New Roman", 48), fg="black", bg="#FEFEFA", width=7,
 			command= lambda: controller.show_frame("tutorialScreen"))
 		#tutorial.place(relx=0.04, rely=0.5, height=55)
 		tutorial.place(x = 160, y = 300, anchor="center")
 		#tutorial.pack()
 
 		start = tk.Button(self, text="Start", 
-			font=("Times New Roman", 48), fg="black", width=7, 
+			font=("Times New Roman", 48), fg="black", bg="#FEFEFA",width=7, 
 			command= lambda: controller.show_frame("applicationScreen"))
 
 		#start.place(rely=.3, relx=.35, height=55)
@@ -90,7 +90,7 @@ class MainMenu(tk.Frame):
 		#start.pack()
 
 		settings = tk.Button(self, text="Settings", 
-			font=("Times New Roman", 48), fg="black", width=7, 
+			font=("Times New Roman", 48), fg="black", bg="#FEFEFA",width=7, 
 			command =lambda: controller.show_frame("settingsScreen"))
 		#settings.place(rely=0.5, relx=.66, height=55)
 
@@ -99,29 +99,30 @@ class MainMenu(tk.Frame):
 
 	def load_arrows(self):
 		# arrow left
-		canvas_left = Canvas(self, width=55, height=20)
+		canvas_left = Canvas(self, width=55, height=20, bg="#FEFEFA", highlightthickness=0)
 		#canvas_left.place(relx=.38, rely=.525)
 
 		canvas_left.place(x = 350, y = 310, anchor="center")
 
 		left = canvas_left.create_line(5, 10, 55, 10, 
-			arrow=tk.FIRST, fill="#FF0000", width=12)
+			arrow=tk.FIRST, fill="black", width=12)
 		# arrow up
-		canvas_up = Canvas(self, width=20, height=55)
+		canvas_up = Canvas(self, width=20, height=55, bg="#FEFEFA", highlightthickness=0)
 		#canvas_up.place(relx=.5, rely=.4)
 
 		canvas_up.place(x = 400, y = 250, anchor="center")
 
 		up = canvas_up.create_line(10, 5, 10, 55, 
-			arrow=tk.FIRST, fill="#FF0000", width=12)
+			arrow=tk.FIRST, fill="black", width=12)
 		# arrow right
-		canvas_right = Canvas(self, width=55, height=20)
+		canvas_right = Canvas(self, width=55, height=20, bg="#FEFEFA", highlightthickness=0)
 		#canvas_right.place(relx=.59 , rely=.525)
 
 		canvas_right.place(x = 450, y = 310, anchor="center")
 
 		right = canvas_right.create_line(0, 10, 50, 10, 
-			arrow=tk.LAST, fill="#FF0000", width=12)
+			arrow=tk.LAST, fill="black", width=12)
+
 
 
 

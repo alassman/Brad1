@@ -289,81 +289,89 @@ class applicationScreen(tk.Frame):
 		if controller.num_words > 4:
 			self.fifth_word = word_predictions[4]
 		# load titles
-		title = Label(self, text="The Microphone is Listening", font=("Times New Roman", 60), fg="black")
+		title = Label(self, text="The Microphone is Listening", font=("Times New Roman", 40), fg="black", bg ="#FEFEFA")
 		title.pack(fill=X)
 		# back button - always there
 		back_button = Label(self, text="Back", 
-			font=("Times New Roman", 48), fg="black", bg="#ff8080", width=10)
+			font=("Times New Roman", 36), fg="black", bg="#ff8080", width=9)
 		#back_button.place(relx=0.05, rely=0.54, height=55)
-		back_button.place(x=160, y=280 , anchor="center")
+		back_button.place(x=140, y=260 , anchor="center")
 
 		# first word
 		self.first_word = Label(self, text=self.first_word, 
-			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
+			font=("Times New Roman", 36), fg="black", width=9, bg="#80bfff")
 		#self.first_word.place(relx=0.05, rely=0.44, height=55)
-		self.first_word.place(x=160, y=350 , anchor="center")
+		self.first_word.place(x=140, y=200 , anchor="center")
 
 		# second word
 		self.second_word = Label(self, text=self.second_word, 
-			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
+			font=("Times New Roman", 36), fg="black", width=9, bg="#80bfff")
 		#self.second_word.place(rely=.17, relx=.365, height=55)
-		self.second_word.place(x=400, y=200, anchor="center")
+		self.second_word.place(x=400, y=100, anchor="center")
 
 		# third word
 		self.third_word = Label(self, text=self.third_word , 
-			font=("Times New Roman", 48), fg="black", width=10, bg="#80bfff")
+			font=("Times New Roman", 36), fg="black", width=9, bg="#80bfff")
 		#self.third_word.place(rely=0.44, relx=.675, height=55)
-		self.third_word.place(x=620, y=280, anchor="center")
+		self.third_word.place(x=660, y=200, anchor="center")
 
 		# fourth word
 		self.fourth_word = Label(self, text=self.fourth_word, 
-			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
+			font=("Times New Roman", 36), fg="black", width=9, bg="#ff8080")
 		#self.fourth_word.place(rely=.27, relx=.365, height=55)
-		self.fourth_word.place(x=400, y=300, anchor="center")
+		self.fourth_word.place(x=400, y=160, anchor="center")
 
 		# fifth word
 		self.fifth_word = Label(self, text=self.fifth_word, 
-			font=("Times New Roman", 48), fg="black", width=10, bg="#ff8080")
+			font=("Times New Roman", 36), fg="black", width=9, bg="#ff8080")
 		#self.fifth_word.place(rely=0.54, relx=.675, height=55)
-		self.fifth_word.place(x=620, y=350, anchor="center")
+		self.fifth_word.place(x=660, y=260, anchor="center")
 
 		# last selected word
 		self.selected_word_label = Label(self, text="", 
-			font=("Times New Roman", 48), fg="black", width=10, borderwidth=1,
+			font=("Times New Roman", 36), fg="black", width=9, borderwidth=1,
 			relief="solid")
-		self.selected_word_label.place(rely=.7, relx=.6)
-		temp_label = Label(self, text="Selected Word ^^^", 
-			font=("Times New Roman", 36), fg="black", width=15)
-		temp_label.place(rely=.83, relx=.58)
+		#self.selected_word_label.place(rely=.7, relx=.6)
+		self.selected_word_label.place(x= 660, y= 340, anchor="center")
+
+		temp_label = Label(self, text="Selected Word", 
+			font=("Times New Roman", 26), fg="black", bg="#FEFEFA", width=13, highlightthickness=0)
+		#temp_label.place(rely=.83, relx=.58)
+		temp_label.place(x=660, y=390, anchor="center")
+
 
 
 	def load_legend(self): 
 		legend_text = """
 ------------------------
-|   Single Click = Blue |
+|    Single Click = Blue  |
 |  Double Click = Red   |
 ------------------------"""
-		legend_frame = LabelFrame(self,text='Legend',padx=0, pady=5, 
-			foreground="black", font=("Times New Roman", 24))
+		legend_frame = LabelFrame(self,text='Legend',padx=5, pady=5, 
+			foreground="black", bg="#FEFEFA",font=("Times New Roman", 14))
 		#legend_frame.place(relx=.1, rely=.67)
-		legend_frame.place(x=400, rely=350, anchor ="center")
-		legend_label = Label(legend_frame,text=legend_text, fg="black",
-			font=("Times New Roman", 24))
+		legend_frame.place(x=400, y=335, anchor="center")
+		legend_label = Label(legend_frame,text=legend_text, fg="black", bg="#FEFEFA",
+			font=("Times New Roman", 14))
 		legend_label.pack()
 
 	def load_arrows(self):
 		# arrow left
-		canvas_left = Canvas(self, width=55, height=20)
-		canvas_left.place(relx=.38, rely=.525)
+		canvas_left = Canvas(self, width=55, height=20,bg="#FEFEFA", highlightthickness=0)
+		#canvas_left.place(relx=.38, rely=.525)
+		canvas_left.place(x=320, y=230, anchor="center")
+
 		left = canvas_left.create_line(5, 10, 55, 10, 
 			arrow=tk.FIRST, fill="black", width=10)
 		# arrow up
-		canvas_up = Canvas(self, width=20, height=55)
-		canvas_up.place(relx=.5, rely=.4)
+		canvas_up = Canvas(self, width=20, height=55, bg="#FEFEFA", highlightthickness=0)
+		#canvas_up.place(relx=.5, rely=.4)
+		canvas_up.place(x=400, y=215, anchor="center")
 		up = canvas_up.create_line(10, 5, 10, 55, 
 			arrow=tk.FIRST, fill="black", width=10)
 		# arrow right
-		canvas_right = Canvas(self, width=55, height=20)
-		canvas_right.place(relx=.59 , rely=.525)
+		canvas_right = Canvas(self, width=55, height=20, bg="#FEFEFA", highlightthickness=0)
+		#canvas_right.place(relx=.59 , rely=.525)
+		canvas_right.place(x=480, y=230, anchor="center")
 		right = canvas_right.create_line(0, 10, 50, 10, 
 			arrow=tk.LAST, fill="black", width=10)
