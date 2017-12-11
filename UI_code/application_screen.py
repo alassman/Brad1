@@ -68,7 +68,7 @@ class applicationScreen(tk.Frame):
 	def wait_on_button_signal(self, controller):
 		#subprocess.call(jack_control start)
 		controller.buttonListener.startListening(controller.clicktime)
-		endtime = time.time() + 5
+		endtime = time.time() + controller.clicktime + 2
 		while self.screen and time.time() < endtime:
 			# if there is a selection
 			if controller.buttonListener.selection:
