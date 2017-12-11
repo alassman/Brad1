@@ -73,14 +73,16 @@ class RunApp(tk.Tk):
 		self.current_frame = frame
 
 
-		#frame.wait_on_button_signal(self)
-
-		self.cur_thread = _thread.start_new_thread(frame.wait_on_button_signal, (self,))
-
 		#start listener if main app
 		if cont == "applicationScreen":
-			_thread.start_new_thread(frame.listen_for_words, (self,))
-			print("made listeing thread")
+			_thread.start_new_thread(frame.wrapper, (self,))
+			#frame.wrapper(self)
+		else:
+			_thread.start_new_thread(frame.wait_on_button_signal, (self,))
+			#frame.wait_on_button_signal(self)
+
+
+
 
 
 

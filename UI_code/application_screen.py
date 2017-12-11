@@ -17,7 +17,6 @@ import tellnext_changed.tellnext.store as store
 
 class applicationScreen(tk.Frame):
 	def __init__(self, parent, controller):
-		print("Thread id in init(): " + str(_thread.get_ident()))
 		tk.Frame.__init__(self, parent)
 		# THE FOLLOWING VARIABLES COME FROM SETTINGS
 		# self.num_words = num_words
@@ -55,10 +54,22 @@ class applicationScreen(tk.Frame):
 		#self.bind("<KeyRelease>", self.on_button_press)
 		#_thread.start_new_thread(self.wait_on_button_press, ())
 
+
+	def wrapper(self, controller):
+		while self.screen:
+			print("waiting on button")
+			self.wait_on_button_signal(controller)
+			#print("waiting on listen")
+			controller.buttonListener.kill()
+			self.listen_for_words(controller)
+			controller.buttonListener.launch()
+
+
 	def wait_on_button_signal(self, controller):
 		#subprocess.call(jack_control start)
 		controller.buttonListener.startListening(controller.clicktime)
-		while self.screen:
+		endtime = time.time() + 5
+		while self.screen and time.time() < endtime:
 			# if there is a selection
 			if controller.buttonListener.selection:
 				# set the selected word
@@ -109,13 +120,11 @@ class applicationScreen(tk.Frame):
 
 
 	def listen_for_words(self, controller):
-		print("listening for words")
-
 		words_list = []
-
-		while self.screen == True:
+		words_predicted = False
+		while self.screen and not words_predicted:
 			# sleep for 5 seconds before listening again
-			time.sleep(controller.sleeptime)
+			#time.sleep(controller.sleeptime)
 			# no word on screen was selected
 			if self.selected_word is None:
 				# print("no selected word")
@@ -126,6 +135,7 @@ class applicationScreen(tk.Frame):
 					self.selected_word_label["text"] = "Speak Again"
 					self.selected_word_label["foreground"] = "red"
 					continue
+				words_predicted = True
 
 				# words_from_mic = self.listener.listen()
 				if self.selected_word_label["foreground"] == "red":
@@ -142,11 +152,12 @@ class applicationScreen(tk.Frame):
 
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], 
 					controller.num_words, controller.exploration)
-				print(word_predictions)
+				
 				self.last_two_words[0] = words_list[0]
 				self.last_two_words[1] = words_list[1]
 			# predict word from selected word on screen
 			else:
+				print("choosing words off of selection")
 				# append to words_list
 				words_list.append(self.selected_word)
 				if(len(words_list) >= 2):
@@ -154,7 +165,7 @@ class applicationScreen(tk.Frame):
 				elif len(words_list) == 1:
 					words_list.append(None)
 				# call Lihu's function
-				
+				words_predicted = True
 				word_predictions = tellnext.new_next_word(words_list[0], words_list[1], 
 					controller.num_words, controller.exploration)
 				print(word_predictions)
@@ -339,7 +350,7 @@ class applicationScreen(tk.Frame):
 
 		# last selected word
 		self.selected_word_label = Label(self, text="", 
-			font=("Times New Roman", 26), fg="black", width=9, borderwidth=1,
+			font=("Times New Roman", 26), fg="black", width=12, borderwidth=1,
 			relief="solid")
 		#self.selected_word_label.place(rely=.7, relx=.6)
 		self.selected_word_label.place(x= 660, y= 340, anchor="center")

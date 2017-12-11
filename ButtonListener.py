@@ -16,6 +16,7 @@ class ButtonListener:
         self.leftListen = False
         self.upListen = False
         self.rightListen = False
+        self.killProgram = False
 
         # the interval over which to consider a double click
         # disable double clicks when not in the main app
@@ -50,6 +51,9 @@ class ButtonListener:
             print("Unable to start thread")
             GPIO.cleanup()
 
+    def kill(self):
+        self.killProgram = True
+
     def startListening(self, clicktime=0.5):
         self.clicktime = clicktime
         self.listening = True
@@ -60,6 +64,8 @@ class ButtonListener:
         
     def waitingToListen(self, buttonNum):
         while(True):
+            if self.kill:
+                break
             if self.listening:
                 self.resetEventListenerQueue(buttonNum)
                 self.buttonPress(buttonNum)

@@ -20,6 +20,8 @@ class Listener():
 		# 						input = True
 		# )
 
+		# self.r = sr.Recognizer()
+		# self.m = sr.Microphone()
 
 # 	# def listen1(self):
 
@@ -80,42 +82,47 @@ class Listener():
 
 
 	def listen(self):
-		print("IN LISTEN")
 		r = sr.Recognizer()
 		m = sr.Microphone()
 
-		
-		with m as source: r.adjust_for_ambient_noise(source)
+		with m as source: r.adjust_for_ambient_noise(source, duration =1)
 		#print("Set minimum energy threshold to {}".format(r.energy_threshold))
 		
 		
 		print("Speak!")
-		with m as source: audio = r.record(source, duration=0.5)
+		with m as source: audio = r.record(source, duration=2)
 		print("Got it! Now to recognize it...")
 
-		with open("speechToText/microphone-results.wav", "wb") as f:
+		AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "microphone-results.wav")
+
+		# print("1: ")
+		# print(AUDIO_FILE)
+		with open(AUDIO_FILE, "wb") as f:
 			f.write(audio.get_wav_data())
 
-
-
-		AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "microphone-results.wav")
+		#AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "microphone-results.wav")
+		# print("2: ")
+		# print(AUDIO_FILE)
 		
-		try:
-			# recognize speech using Google Speech Recognition
-			value = r.recognize_google(audio)
+		with sr.AudioFile(AUDIO_FILE) as source:
+			words = r.record(source)
+		
+			try:
+				# recognize speech using Google Speech Recognition
+				value = r.recognize_google(words)
 
 
-			# we need some special handling here to correctly print unicode characters to standard output
-			if str is bytes:  # this version of Python uses bytes for strings (Python 2)
-				print(u"You said {}".format(value).encode("utf-8"))
-			else:  # this version of Python uses unicode for strings (Python 3+)
-				print("You said {}".format(value))
-			return value
+				# we need some special handling here to correctly print unicode characters to standard output
+				if str is bytes:  # this version of Python uses bytes for strings (Python 2)
+					print(u"You said {}".format(value).encode("utf-8"))
+				else:  # this version of Python uses unicode for strings (Python 3+)
+					print("You said {}".format(value))
+				return value
 
-		except sr.UnknownValueError:
-			print("Oops! Didn't catch that")
-		except sr.RequestError as e:
-			print("Uh oh! Couldn't request results from Google Speech Recognition service; {0}".format(e))
+			except sr.UnknownValueError:
+				print("Oops! Didn't catch that")
+			except sr.RequestError as e:
+				print("Uh oh! Couldn't request results from Google Speech Recognition service; {0}".format(e))
 
 		return None
 
