@@ -22,11 +22,10 @@ import _thread
 #controller
 class RunApp(tk.Tk):
 	def __init__(self, *args, **kwargs):
-		#root = tk.Tk()
-		#root.attributes("-fullscreen", True)
-
 		tk.Tk.__init__(self, *args, **kwargs)
-		self.attributes("-fullscreen", True)
+		#makes screen full screen
+
+		#self.attributes("-fullscreen", True)
 
 		#Button()
 		#print("hello world")

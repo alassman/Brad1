@@ -34,7 +34,7 @@ class MainMenu(tk.Frame):
 
 		controller.buttonListener.startListening(controller.clicktime)
 		while self.screen:
-			#print("selection:")
+			# print("selection:")
 			if controller.buttonListener.selection:
 				print(controller.buttonListener.selection)
 

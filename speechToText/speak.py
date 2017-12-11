@@ -85,7 +85,7 @@ class Listener():
 		r = sr.Recognizer()
 		m = sr.Microphone()
 
-		with m as source: r.adjust_for_ambient_noise(source, duration =1)
+		#with m as source: r.adjust_for_ambient_noise(source, duration =1)
 		#print("Set minimum energy threshold to {}".format(r.energy_threshold))
 		
 		

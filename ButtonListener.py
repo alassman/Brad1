@@ -10,9 +10,9 @@ class ButtonListener:
         # variables that Adam uses in his function
         self.Pressed = 0
         self.NotPressed = 1
-        self.left = 9
-        self.up = 10
-        self.right = 11
+        self.left = 2
+        self.up = 3
+        self.right = 4
         self.leftListen = False
         self.upListen = False
         self.rightListen = False
@@ -40,6 +40,11 @@ class ButtonListener:
         
     def launch(self):
         try:
+            self.killProgram = False
+            self.selection = None
+            self.tempSelection = None
+            self.startTime = time.time()
+            self.listening = False
             threads = []
             buttonNums = [self.left, self.up, self.right]
             for i in range(3):
@@ -55,6 +60,7 @@ class ButtonListener:
         self.killProgram = True
 
     def startListening(self, clicktime=0.5):
+        print("startListening")
         self.clicktime = clicktime
         self.listening = True
 
@@ -64,9 +70,10 @@ class ButtonListener:
         
     def waitingToListen(self, buttonNum):
         while(True):
-            if self.kill:
+            if self.killProgram:
                 break
             if self.listening:
+                #print("here")
                 self.resetEventListenerQueue(buttonNum)
                 self.buttonPress(buttonNum)
                 self.listening = False
@@ -76,22 +83,27 @@ class ButtonListener:
     # If a second button is hit that does not match the first, startTime is reset
     # Selected button is set in 'self.selection' variable
     def buttonPress(self, buttonNum):
-        self.startTime = time.time() + 15 # give Brad 15 seconds to make any selection
+        print("buttonPress")
+        self.startTime = time.time() + 5 # give Brad 15 seconds to make any selection
         while True:
             if (time.time() > (self.startTime + self.clicktime)) and self.tempSelection != None:
+                print("TIMEOUTHUIUVIYTVIYTF")
                 self.selection = self.tempSelection
                 print("Single click SET: ", buttonNum)
                 break
             if GPIO.event_detected(buttonNum):
+                print("IEENT DETECTED")
                 time.sleep(0.01) # debounce for 1mSec
-                if GPIO.input(buttonNum) == self.Pressed:
+                print(GPIO.input(buttonNum))
+                if int(GPIO.input(buttonNum)) == self.Pressed:
+                    print("FLAG 1")
                     # Push is registered
                     if self.tempSelection == None:
                         # First click
                         print("First click on: ", buttonNum)
                         self.startTime = time.time()
-                        self.tempSelection = buttonNum - 8
-                    elif self.tempSelection == (buttonNum - 8):
+                        self.tempSelection = buttonNum - 1
+                    elif self.tempSelection == (buttonNum - 1):
                         # Second click
                         print("Double click on: ", buttonNum)
                         self.tempSelection = self.tempSelection + 3
@@ -99,7 +111,7 @@ class ButtonListener:
                         break
                     else:
                         # Correction click
-                        self.tempSelection = buttonNum - 8
+                        self.tempSelection = buttonNum - 1
                         self.startTime = time.time()
 
 
