@@ -75,19 +75,15 @@ class RunApp(tk.Tk):
 
 		#frame.wait_on_button_signal(self)
 
+		self.cur_thread = _thread.start_new_thread(frame.wait_on_button_signal, (self,))
+
 		#start listener if main app
 		if cont == "applicationScreen":
 			_thread.start_new_thread(frame.listen_for_words, (self,))
 			print("made listeing thread")
 
 
-		# if not self.cur_thread == None:
-		# 	self.cur_thread.exit()
 
-		try:
-			self.cur_thread = _thread.start_new_thread(frame.wait_on_button_signal, (self,))
-		except Exception as e:
-			print(e)
 
 def main():
 	app = RunApp()

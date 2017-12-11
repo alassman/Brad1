@@ -100,12 +100,12 @@ class applicationScreen(tk.Frame):
 				controller.buttonListener.startListening(controller.clicktime)
 
 
-	def error_check_listening(self):
-		while True:
-			if(self.listener.speakAgain is True):
-				self.listener.speakAgain = False
-				self.selected_word_label["text"] = "Speak Again"
-				self.selected_word_label["foreground"] = "red"
+	# def error_check_listening(self):
+	# 	while True:
+	# 		if(self.listener.speakAgain is True):
+	# 			self.listener.speakAgain = False
+	# 			self.selected_word_label["text"] = "Speak Again"
+	# 			self.selected_word_label["foreground"] = "red"
 
 
 	def listen_for_words(self, controller):
@@ -118,10 +118,16 @@ class applicationScreen(tk.Frame):
 			time.sleep(controller.sleeptime)
 			# no word on screen was selected
 			if self.selected_word is None:
-				print("no selected word")
+				# print("no selected word")
 				# call Jenny's function to hear from microphone
-				_thread.start_new_thread(self.error_check_listening, ())
+				# _thread.start_new_thread(self.error_check_listening, ())
 				words_from_mic = self.listener.listen()
+				if words_from_mic == None:
+					self.selected_word_label["text"] = "Speak Again"
+					self.selected_word_label["foreground"] = "red"
+					continue
+
+				# words_from_mic = self.listener.listen()
 				if self.selected_word_label["foreground"] == "red":
 					self.selected_word_label["text"] = ""
 				# parse words from Jenny's function
@@ -333,7 +339,7 @@ class applicationScreen(tk.Frame):
 
 		# last selected word
 		self.selected_word_label = Label(self, text="", 
-			font=("Times New Roman", 36), fg="black", width=9, borderwidth=1,
+			font=("Times New Roman", 26), fg="black", width=9, borderwidth=1,
 			relief="solid")
 		#self.selected_word_label.place(rely=.7, relx=.6)
 		self.selected_word_label.place(x= 660, y= 340, anchor="center")
